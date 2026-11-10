@@ -1,0 +1,35 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "./apps/sprite"
+    },
+    {
+      "path": "./apps/node"
+    },
+    {
+      "path": "./apps/relay-cf"
+    },
+    {
+      "path": "./apps/relay-node"
+    },
+    {
+      "path": "./packages/acp-lite"
+    },
+    {
+      "path": "./packages/crypto"
+    },
+    {
+      "path": "./packages/fakes"
+    },
+    {
+      "path": "./packages/protocol"
+    },
+    {
+      "path": "./packages/relay-core"
+    },
+    {
+      "path": "./packages/ui-kit"
+    }
+  ]
+}

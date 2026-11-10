@@ -1,0 +1,7 @@
+{
+  "name": "@wraith/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "PWA for phone and desktop WebView, plus demo/replay build (§4.5, §14, §15)."
+}

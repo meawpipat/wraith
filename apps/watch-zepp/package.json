@@ -1,0 +1,7 @@
+{
+  "name": "@wraith/watch-zepp",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Zepp OS Mini Program for Amazfit Active 2 (Square): Device App, Side Service, Settings App, App Service (§4.7.2, §14.4)."
+}

@@ -1,0 +1,7 @@
+{
+  "name": "wraith-node",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Per-machine daemon: herdr-core client, sprite hub, verifier, outbox, local MCP/hook endpoints, embedded Local relay (§4.3)."
+}

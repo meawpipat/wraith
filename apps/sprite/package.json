@@ -1,0 +1,7 @@
+{
+  "name": "wraith-sprite",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "ACP client running inside a herdr-core pane; renderer, prompt queue, approvals, OSC 7501 status (§4.4)."
+}

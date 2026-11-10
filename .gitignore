@@ -1,0 +1,17 @@
+node_modules/
+dist/
+build/
+.wrangler/
+.dev.vars
+*.log
+.DS_Store
+coverage/
+apps/desktop/src-tauri/target/
+apps/desktop/src-tauri/binaries/
+# secrets (SI-12)
+.env
+.env.*
+*.key
+*.pem
+# NOTE: never ignore .kiro/ (Kiroween rule)
+*.tsbuildinfo

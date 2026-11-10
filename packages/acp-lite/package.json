@@ -1,0 +1,7 @@
+{
+  "name": "@wraith/acp-lite",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Minimal ACP JSON-RPC client; only built if the ACP SDK fails spike Q10 (§19)."
+}

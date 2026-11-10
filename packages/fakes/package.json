@@ -1,0 +1,7 @@
+{
+  "name": "@wraith/fakes",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Test fakes: fake-acp-agent, fake-hc, fake-kiro-exec, fake-push-service (§21.2)."
+}

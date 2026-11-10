@@ -1,0 +1,7 @@
+{
+  "name": "@wraith/protocol",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Zod schemas and message catalogue; the only place schemas are declared (§6.1, §6.2, §6.9)."
+}

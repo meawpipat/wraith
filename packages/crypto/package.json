@@ -1,0 +1,7 @@
+{
+  "name": "@wraith/crypto",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "JCS canonical JSON, ECDSA P-256 sign/verify, HMAC, hashing; byte-identical across Node, Workers, browsers (§6.1)."
+}

@@ -1,0 +1,7 @@
+{
+  "name": "wraith-relay",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Standalone self-hosted relay: relay-core + Node adapter, Docker image (§3.2, §11.3)."
+}
