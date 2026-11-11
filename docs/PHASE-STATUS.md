@@ -10,5 +10,6 @@ Current phase: **P0 — Spikes & Scaffold**
 | P0 | P0-D4 RESULTS.md answers Q1, Q2, Q3, Q3b, Q4, Q6, Q7, Q10, Q11, Q12, Q13, Q23, Q30, Q31, Q32, Q33, Q35, Q43 with evidence + chosen branch (Q14 may be PARTIAL, needs human) | todo | | |
 | P0 | P0-D5 `.kiro/steering` states SI-1, SI-2, SI-6, SI-8 as plain sentences (same meaning as §12.1) | pass | `.kiro/steering/security.md` | 2026-11-01 |
 | P0 | P0-D6 hooks `no-trust-all-tools`, `no-auto-approve`, `secret-scan` catch sample violations | todo | | |
+| P0 | P0-D7 `tools/check-platform.ts` fails on a sample file outside `packages/platform` that uses `process.platform` or `SIGHUP`, and passes on the real tree | todo | | |
 
 Later phases (P1–P9): copy DoD ids from `docs/architecture.md` §18 when the phase starts.
