@@ -6,7 +6,7 @@ S-crypto is the second spec of Project Wraith (architecture.md §20 row 2, phase
 
 Source of truth: `docs/architecture.md` §20 row 2 and the §20 intro rules, §6.1 (Envelope, signature scope, "Who signs what", `requestHash`), §6.2 (`Sig`, `RosterEntry.signPub`, the `pair.complete` fields `ownerPub`, `rosterEntries` and `hmac`), §6.3 (WebSocket authentication challenge), §6.7 (`WraithSig` request signature), §3.4 (pairing HMAC and the `WRP1-` payload, read to find which primitives pairing needs), §12.1 (SI-3, SI-4, SI-5, SI-12), §16 (Crypto row), §18.1 (P0-D1, P0-D2, P0-D3) and §21.1 (PBT #6 and #14, crypto parts). Each requirement carries an "Implements" line so design and tasks can map back. Appendix A lists the mapping.
 
-S-crypto depends on S-protocol (spec 1, §20 row 2): it uses the `SignatureScope` type and `signatureScope` function, the `signed` member returned by `parseRaw`, the `JWK` and `Sig` schemas, the error codes and the limits of `@wraith/protocol`, and it does not redeclare any of them (Requirement 1). Architecture v4.1.6 (C78) fixes the byte-level choices that this spec implements: ES256 signature encoding (§6.1), pairing HMAC framing and key fingerprint (§3.4) and `WraithSig` field encodings (§6.7).
+S-crypto depends on S-protocol (spec 1, §20 row 2): it uses the `SignatureScope` type and `signatureScope` function, the `signed` member returned by `parseRaw`, the `JWK` and `Sig` schemas, and the error codes of `@wraith/protocol`, and it does not redeclare any of them (Requirement 1). Architecture v4.1.6 (C78) fixes the byte-level choices that this spec implements: ES256 signature encoding (§6.1), pairing HMAC framing and key fingerprint (§3.4) and `WraithSig` field encodings (§6.7).
 
 Boundary (out of scope, owned by other specs):
 - Roster lookup, owner-key pinning, `sig.by` to `memberId` binding, cap checks, replay store (`meta.id`, `ts` age, API nonce), revocation and `rosterVersion` monotonicity belong to the Verifier in S-node-core, S-approval and S-pairing-trust. S-crypto only answers "do these bytes verify under this public key".
@@ -65,7 +65,7 @@ Implements §20 row 2 (depends on 1), §6 preamble ("Do not redeclare shapes in 
 #### Acceptance Criteria
 
 1. THE Crypto_Package SHALL declare `@wraith/protocol` as a workspace dependency and SHALL import from it only through its public entry point `@wraith/protocol`.
-2. THE Crypto_Package SHALL use `SignatureScope`, `signatureScope`, the `signed` member of `parseRaw` (as the verification input), the `JWK` schema, the `Sig` shape, the `ErrorCode` type and the limits of the Protocol_Package, and SHALL NOT redeclare any of them.
+2. THE Crypto_Package SHALL use `SignatureScope`, `signatureScope`, the `signed` member of `parseRaw` (as the verification input), the `JWK` schema, the `Sig` shape and the `ErrorCode` type of the Protocol_Package, and SHALL NOT redeclare any of them.
 3. THE Crypto_Package SHALL declare no zod schema and no wire message shape.
 4. THE Crypto_Package SHALL declare no runtime dependency other than `@wraith/protocol`; JCS is implemented in-house, `@noble/curves` and `@noble/hashes` are not used, and `zod` is a transitive dependency only.
 5. THE Crypto_Package SHALL export its public API from `packages/crypto/src/index.ts`.
