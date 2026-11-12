@@ -10,8 +10,8 @@
       "default": "./dist/src/index.js"
     },
     "./testing": {
-      "types": "./dist/src/testing/index.d.ts",
-      "default": "./dist/src/testing/index.js"
+      "types": "./dist/src/testing/builders.d.ts",
+      "default": "./dist/src/testing/builders.js"
     },
     "./testing/arbitraries": {
       "types": "./dist/src/testing/arbitraries.d.ts",
@@ -19,10 +19,10 @@
     }
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "node --experimental-strip-types scripts/check-boundaries.ts && tsc -p tsconfig.json",
     "test": "vitest run",
     "codegen": "node --experimental-strip-types scripts/codegen.ts",
-    "check": "tsc -p tsconfig.scripts.json --noEmit"
+    "check": "node --experimental-strip-types scripts/check-boundaries.ts && tsc -p tsconfig.scripts.json --noEmit"
   },
   "dependencies": {
     "zod": "3.25.76"
