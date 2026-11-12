@@ -36,7 +36,7 @@ There is no primary machine (DECISION-4, DECISION-10).
 - Tests:
   - Vitest and **fast-check** (PBT).
   - Playwright.
-  - `@cloudflare/vitest-pool-workers`.
+  - `@cloudflare/vitest-plugin` (the renamed, Vitest 5 compatible successor of the deprecated `@cloudflare/vitest-pool-workers`; do not install the old name).
   - Fakes in `packages/fakes`: fake ACP agent and `fake-hc` (herdr-core JSON-RPC socket), so CI never needs real Kiro or herdr-core. A contract test checks every hc method the node calls against `spike/hc/schema.json`.
 
 ## Hard rules
