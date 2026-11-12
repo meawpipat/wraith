@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest";
 import { z } from "zod";
 import {
-  SIZE_MARKER,
   base64DecodedLength,
   codePointLength,
   maxCodePoints,
   maxUtf8Bytes,
+  SIZE_MARKER,
   utf8ByteLength,
 } from "../src/text.ts";
 
@@ -34,7 +34,15 @@ describe("codePointLength", () => {
 
 describe("utf8ByteLength", () => {
   it("matches TextEncoder for well-formed strings without a limit", () => {
-    for (const s of ["", "abc", "é", "€", ASTRAL, `a é €${ASTRAL}z`, "\u007f\u0080\u07ff\u0800\uffff"]) {
+    for (const s of [
+      "",
+      "abc",
+      "é",
+      "€",
+      ASTRAL,
+      `a é €${ASTRAL}z`,
+      "\u007f\u0080\u07ff\u0800\uffff",
+    ]) {
       expect(utf8ByteLength(s)).toBe(enc.encode(s).length);
     }
   });

@@ -16,7 +16,7 @@ function stripComments(source: string): string {
 }
 
 /** Returns a list of violations found in one test source. */
-export function scanSource(source: string): string[] {
+function scanSource(source: string): string[] {
   const code = stripComments(source);
   const problems: string[] = [];
   if (/\bfc\s*\.\s*assert\s*\(/.test(code)) {

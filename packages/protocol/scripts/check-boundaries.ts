@@ -155,7 +155,11 @@ export function scan(src: string): Scanned {
       readTemplate();
       continue;
     }
-    if (ch === "}" && templateStack.length > 0 && templateStack[templateStack.length - 1] === braceDepth - 1) {
+    if (
+      ch === "}" &&
+      templateStack.length > 0 &&
+      templateStack[templateStack.length - 1] === braceDepth - 1
+    ) {
       templateStack.pop();
       braceDepth--;
       emitCode(ch);
@@ -166,7 +170,7 @@ export function scan(src: string): Scanned {
     if (ch === "/") {
       const isRegex =
         lastSignificant === "" ||
-        (!/[\w$)\]}'"`]/.test(lastSignificant)) ||
+        !/[\w$)\]}'"`]/.test(lastSignificant) ||
         (lastWord !== "" && REGEX_PRECEDING_KEYWORDS.has(lastWord));
       if (isRegex) {
         emitCode("/");
@@ -269,7 +273,11 @@ export function checkPackageJson(json: unknown, file = "package.json"): Violatio
   }
   return Object.keys(deps)
     .filter((name) => name !== "zod")
-    .map((name) => ({ file, line: 1, message: `dependency "${name}" is not allowed; only zod (R22.2)` }));
+    .map((name) => ({
+      file,
+      line: 1,
+      message: `dependency "${name}" is not allowed; only zod (R22.2)`,
+    }));
 }
 
 function listTs(dir: string): string[] {

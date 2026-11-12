@@ -47,7 +47,10 @@ describe("testing builders", () => {
 describe("testing arbitraries (samples)", () => {
   for (const type of MESSAGE_TYPES) {
     it(`${type}: sampled envelopes parse, explicit and raw variants`, () => {
-      for (const sample of fc.sample(ENVELOPE_ARBITRARIES[type], SAMPLES)) {
+      for (const sample of fc.sample(
+        ENVELOPE_ARBITRARIES[type] as fc.Arbitrary<unknown>,
+        SAMPLES,
+      )) {
         expect(parseEnvelopeValue(sample).ok, type).toBe(true);
       }
       for (const sample of fc.sample(validRawEnvelopeArb(type), SAMPLES)) {

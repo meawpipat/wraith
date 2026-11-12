@@ -2,9 +2,11 @@
  * Feature: s-protocol, Property 5: Signature scope ignores sig and relay and tracks meta and body
  * **Validates: Requirements 3.1, 3.2, 3.3, 3.4, 24.3**
  */
-import fc from "fast-check";
+
 import { isDeepStrictEqual } from "node:util";
+import fc from "fast-check";
 import { describe, expect, it } from "vitest";
+import type { Envelope } from "../src/envelope.ts";
 import { MESSAGE_TYPES, type MessageType } from "../src/message-types.ts";
 import { parseRaw } from "../src/parse.ts";
 import { signatureScope } from "../src/scope.ts";
@@ -15,6 +17,8 @@ type Json = Record<string, unknown>;
 type Path = (string | number)[];
 
 const typeArb = fc.constantFrom<MessageType>(...MESSAGE_TYPES);
+/** `signatureScope` cannot infer one `M` from the Envelope union; pin it. */
+const scopeOf = (e: Envelope) => signatureScope<Envelope["meta"]>(e);
 const envelopeArb = typeArb.chain((type) => validEnvelopeArb(type));
 const jsonArb = fc.jsonValue();
 
@@ -57,7 +61,7 @@ describe("Property 5: Signature scope ignores sig and relay and tracks meta and 
     pbt(
       fc.property(envelopeArb, (envelope) => {
         const before = clone(envelope);
-        const scope = signatureScope(envelope);
+        const scope = scopeOf(envelope);
         expect(scope).not.toBe(envelope);
         expect(Object.keys(scope).sort()).toEqual(["body", "meta", "v"]);
         expect(scope.v).toBe(1);
@@ -78,7 +82,7 @@ describe("Property 5: Signature scope ignores sig and relay and tracks meta and 
     });
     pbt(
       fc.property(envelopeArb, edit, (envelope, { field, mode, key, value }) => {
-        const original = signatureScope(envelope);
+        const original = scopeOf(envelope);
         const originalSnapshot = clone(original);
         const mutated = clone(envelope) as unknown as Json;
         const current = mutated[field];
@@ -97,7 +101,7 @@ describe("Property 5: Signature scope ignores sig and relay and tracks meta and 
             mutated[field] = rest;
           }
         }
-        const after = signatureScope(mutated as unknown as typeof envelope);
+        const after = scopeOf(mutated as unknown as typeof envelope);
         expect(eq(after, originalSnapshot)).toBe(true);
         expect(eq(after, original)).toBe(true);
       }),
@@ -118,8 +122,8 @@ describe("Property 5: Signature scope ignores sig and relay and tracks meta and 
           const mutated = clone(envelope) as unknown as Json;
           const leaf = getAt(mutated[section], path);
           setAt(mutated[section] as Json, path, changed(leaf));
-          const before = signatureScope(envelope);
-          const after = signatureScope(mutated as unknown as typeof envelope);
+          const before = scopeOf(envelope);
+          const after = scopeOf(mutated as unknown as typeof envelope);
           expect(eq(before, after)).toBe(false);
         },
       ),
@@ -155,7 +159,7 @@ describe("Property 5: Signature scope ignores sig and relay and tracks meta and 
               // Typed parse strips unknown body fields; `signed` is not the stripped envelope.
               expect(key in (result.envelope.body as Json)).toBe(false);
             }
-            expect(eq(result.signed, signatureScope(result.envelope))).toBe(false);
+            expect(eq(result.signed, scopeOf(result.envelope))).toBe(false);
           }
         },
       ),

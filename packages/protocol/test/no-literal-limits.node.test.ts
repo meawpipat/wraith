@@ -15,9 +15,9 @@ const LIMITS_FILE = "limits.ts";
  * file (relative to src/, forward slashes), the exact normalized call text, and why
  * the number is not a limit. Keep this list small; an unused entry fails the suite.
  */
-export const ALLOWLIST: readonly { file: string; call: string; reason: string }[] = [];
+const ALLOWLIST: readonly { file: string; call: string; reason: string }[] = [];
 
-export interface Finding {
+interface Finding {
   call: string;
   line: number;
 }
@@ -26,7 +26,7 @@ export interface Finding {
  * Replaces comments, string/template contents and regex literal bodies with spaces
  * (newlines kept), so the scan only sees code and line numbers stay correct.
  */
-export function blankNonCode(source: string): string {
+function blankNonCode(source: string): string {
   const out: string[] = [];
   const n = source.length;
   let i = 0;
@@ -55,7 +55,10 @@ export function blankNonCode(source: string): string {
       out.push(c + blank(source.slice(i + 1, Math.max(i + 1, j - 1))) + (j - 1 > i ? c : ""));
       i = j;
       lastSignificant = c;
-    } else if (c === "/" && (lastSignificant === "" || "(,=:[!&|?{};+-*%<>~^".includes(lastSignificant))) {
+    } else if (
+      c === "/" &&
+      (lastSignificant === "" || "(,=:[!&|?{};+-*%<>~^".includes(lastSignificant))
+    ) {
       // Regex literal: skip to the closing slash, honouring escapes and classes.
       let j = i + 1;
       let inClass = false;
@@ -90,7 +93,7 @@ function literalValue(text: string): number {
 }
 
 /** Returns the calls with a numeric literal other than 0 or 1 in one source. */
-export function scanSource(source: string): Finding[] {
+function scanSource(source: string): Finding[] {
   const code = blankNonCode(source);
   const findings: Finding[] = [];
   for (const m of code.matchAll(CALL)) {

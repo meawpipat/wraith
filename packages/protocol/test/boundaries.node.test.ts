@@ -60,6 +60,7 @@ describe("boundaries: sources that must be caught", () => {
   }
 
   it("flags an identifier used inside a template substitution", () => {
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: the sample source under test contains a template substitution
     const v = check("const s = `a ${window.name} b`;\n");
     expect(v).toHaveLength(1);
     expect(v[0]?.line).toBe(1);
@@ -84,16 +85,25 @@ describe("boundaries: sources that must be caught", () => {
 
 describe("boundaries: sources that must not be flagged", () => {
   const clean: readonly [string, string][] = [
-    ["line comment", '// import x from "node:fs"; Buffer window document localStorage require("x")\n'],
-    ["block comment", '/* import "node:fs";\n Buffer window document localStorage require("x") */\nconst a = 1;\n'],
+    [
+      "line comment",
+      '// import x from "node:fs"; Buffer window document localStorage require("x")\n',
+    ],
+    [
+      "block comment",
+      '/* import "node:fs";\n Buffer window document localStorage require("x") */\nconst a = 1;\n',
+    ],
     ["double-quoted string", 'const s = "Buffer window document localStorage";\n'],
     ["string with module text", "const s = 'import x from \"node:fs\"';\n"],
-    ["string with require", 'const s = "require(\'x\')";\n'],
+    ["string with require", "const s = \"require('x')\";\n"],
     ["template text", "const s = `Buffer window document localStorage node:fs require(`;\n"],
     ["regex literal", "const r = /Buffer|window|document|localStorage/;\n"],
     ["regex with class and slash", "const r = /[/]document\\//g;\nconst a = 1;\n"],
     ["regex after return", "function f(s: string) { return /window/.test(s); }\n"],
-    ["declared TextDecoder", "declare const TextDecoder: { new (): { decode(b: Uint8Array): string } };\n"],
+    [
+      "declared TextDecoder",
+      "declare const TextDecoder: { new (): { decode(b: Uint8Array): string } };\n",
+    ],
     ["property access", "const d = a.document;\nconst w = a.window;\nconst b = a.Buffer;\n"],
     ["longer identifier", "const windowSize = 1;\nconst Buffers = 2;\nconst documents = 3;\n"],
     ["allowed import", 'import { z } from "zod";\nimport { a } from "./a.ts";\n'],

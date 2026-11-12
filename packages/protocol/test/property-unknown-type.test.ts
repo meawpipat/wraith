@@ -30,14 +30,12 @@ const unknownTypeArb: fc.Arbitrary<string> = fc
   )
   .filter((s) => !REAL.has(s));
 
-const cases = fc
-  .tuple(realTypeArb, unknownTypeArb)
-  .chain(([type, bad]) =>
-    ENVELOPE_ARBITRARIES[type].map((envelope) => {
-      const e = envelope as unknown as { meta: Record<string, unknown> };
-      return { bad, value: { ...e, meta: { ...e.meta, type: bad } } };
-    }),
-  );
+const cases = fc.tuple(realTypeArb, unknownTypeArb).chain(([type, bad]) =>
+  ENVELOPE_ARBITRARIES[type].map((envelope) => {
+    const e = envelope as unknown as { meta: Record<string, unknown> };
+    return { bad, value: { ...e, meta: { ...e.meta, type: bad } } };
+  }),
+);
 
 function assertNoContent(result: object, bad: string): void {
   const keys = Object.keys(result);

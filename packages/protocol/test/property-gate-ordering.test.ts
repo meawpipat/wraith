@@ -10,9 +10,9 @@ import * as fc from "fast-check";
 import { describe, it } from "vitest";
 import { parseEnvelopeValue } from "../src/envelope.ts";
 import { ENVELOPE_MAX_BYTES } from "../src/limits.ts";
-import { parseRaw } from "../src/parse.ts";
-import type { ParseRawResult } from "../src/parse.ts";
 import { MESSAGE_TYPES } from "../src/message-types.ts";
+import type { ParseRawResult } from "../src/parse.ts";
+import { parseRaw } from "../src/parse.ts";
 import { validRawEnvelopeArb } from "../src/testing/arbitraries.ts";
 import { PBT_MIN_RUNS, pbt } from "./config.ts";
 
@@ -117,22 +117,16 @@ function applyPad(text: string, pad: Pad): string {
 }
 
 const rawArb: fc.Arbitrary<string | Uint8Array> = fc.oneof(
-  fc
-    .tuple(textArb, padArb)
-    .map(([t, p]) => applyPad(t, p)),
-  fc
-    .tuple(textArb, padArb)
-    .map(([t, p]) => encoder.encode(applyPad(t, p))),
+  fc.tuple(textArb, padArb).map(([t, p]) => applyPad(t, p)),
+  fc.tuple(textArb, padArb).map(([t, p]) => encoder.encode(applyPad(t, p))),
   fc.uint8Array({ maxLength: 200 }),
   // Oversize raw bytes of arbitrary content, plus invalid UTF-8 bytes at the boundary.
-  fc
-    .tuple(fc.uint8Array({ maxLength: 50 }), fc.integer({ min: -2, max: 2 }))
-    .map(([b, d]) => {
-      const out = new Uint8Array(Math.max(0, ENVELOPE_MAX_BYTES + d));
-      out.fill(0xff);
-      out.set(b.subarray(0, Math.min(b.length, out.length)));
-      return out;
-    }),
+  fc.tuple(fc.uint8Array({ maxLength: 50 }), fc.integer({ min: -2, max: 2 })).map(([b, d]) => {
+    const out = new Uint8Array(Math.max(0, ENVELOPE_MAX_BYTES + d));
+    out.fill(0xff);
+    out.set(b.subarray(0, Math.min(b.length, out.length)));
+    return out;
+  }),
 );
 
 describe("Property 6: Gate ordering", () => {
