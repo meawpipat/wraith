@@ -12,6 +12,7 @@
     "includes": [
       "**",
       "!**/dist",
+      "!**/generated",
       "!**/node_modules",
       "!fixtures",
       "!docs",
