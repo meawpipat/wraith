@@ -18,7 +18,8 @@
       "!docs",
       "!apps/desktop/src-tauri/target",
       "!**/*.md",
-      "!**/*.tsbuildinfo"
+      "!**/*.tsbuildinfo",
+      "!.kiro/specs/**/tasks.meta.json"
     ]
   }
 }

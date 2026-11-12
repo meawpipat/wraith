@@ -1,17 +1,18 @@
 /**
  * Base value schemas (R4, R9.3, R9.8, R15.2). Defined once and shared by every body.
  * Imports limits.ts and text.ts only. Numeric limits come from limits.ts; lengths that
- * limits.ts does not name are expressed in the regular expression itself.
+ * limits.ts does not name are part of the identifier languages and live in the regex.
  */
 import { z } from "zod";
-import { REQUIRES_MAX_COUNT } from "./limits.js";
+import { MEMBER_ID_MAX_CHARS, REQUIRES_MAX_COUNT } from "./limits.js";
+import { maxCodePoints } from "./text.js";
 
 /** 26-character Crockford base32 ULID. */
 export const Ulid = z.string().regex(/^[0-9A-HJKMNP-TV-Z]{26}$/);
 export type Ulid = z.infer<typeof Ulid>;
 
-/** Member identifier, 1 to 64 code points (the bound lives in the regex). */
-export const MemberId = z.string().regex(/^[\s\S]{1,64}$/u);
+/** Member identifier, 1 to MEMBER_ID_MAX_CHARS code points. */
+export const MemberId = z.string().min(1).superRefine(maxCodePoints(MEMBER_ID_MAX_CHARS));
 export type MemberId = z.infer<typeof MemberId>;
 
 /** `nodeId/paneId`. */

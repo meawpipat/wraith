@@ -4,8 +4,12 @@ import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 
 // Source scan (R5.7, R20.3): schemas call the constants from limits.ts and never
-// repeat a number. Flags `.min(`, `.max(` and `.length(` whose first argument is a
-// numeric literal other than 0 or 1, in src/** outside limits.ts.
+// repeat a number. Flags, in src/** outside limits.ts:
+//  - `.min(`, `.max(` and `.length(` whose first argument is a numeric literal other than 0 or 1;
+//  - bounded quantifiers `{n}`, `{n,}`, `{n,m}` inside regex literals when any number is
+//    greater than 1. Quantifiers made only of 0 and 1 ({1}, {0,1}, {1,}, {0,}, {1,1}) are
+//    structural (optional / at least one) and are not flagged, like `.min(0)` / `.min(1)`.
+// Regexes built with `new RegExp(...)` strings are not scanned; src/ does not use them.
 
 const SRC_DIR = join(dirname(fileURLToPath(import.meta.url)), "..", "src");
 const LIMITS_FILE = "limits.ts";
@@ -15,7 +19,16 @@ const LIMITS_FILE = "limits.ts";
  * file (relative to src/, forward slashes), the exact normalized call text, and why
  * the number is not a limit. Keep this list small; an unused entry fails the suite.
  */
-const ALLOWLIST: readonly { file: string; call: string; reason: string }[] = [];
+const IDENTIFIER_LANGUAGE =
+  "part of the identifier language specified in R9.3/R9.8/R15.2, not a separate limit";
+const ALLOWLIST: readonly { file: string; call: string; reason: string }[] = [
+  { file: "base.ts", call: "{26}", reason: "ULID is exactly 26 Crockford base32 characters (R4)" },
+  { file: "shapes.ts", call: "{64}", reason: "SHA-256 is exactly 64 hex characters" },
+  { file: "shapes.ts", call: "{0,2}", reason: "base64 has at most 2 '=' padding characters" },
+  { file: "base.ts", call: "{0,31}", reason: IDENTIFIER_LANGUAGE },
+  { file: "base.ts", call: "{0,63}", reason: IDENTIFIER_LANGUAGE },
+  { file: "base.ts", call: "{0,199}", reason: IDENTIFIER_LANGUAGE },
+];
 
 interface Finding {
   call: string;
@@ -26,7 +39,7 @@ interface Finding {
  * Replaces comments, string/template contents and regex literal bodies with spaces
  * (newlines kept), so the scan only sees code and line numbers stay correct.
  */
-function blankNonCode(source: string): string {
+function blankNonCode(source: string, regexes?: { body: string; index: number }[]): string {
   const out: string[] = [];
   const n = source.length;
   let i = 0;
@@ -71,6 +84,7 @@ function blankNonCode(source: string): string {
         j++;
       }
       j = Math.min(j + 1, n);
+      regexes?.push({ body: source.slice(i, j), index: i });
       out.push(blank(source.slice(i, j)));
       i = j;
       lastSignificant = "/";
@@ -88,14 +102,24 @@ const NUMBER =
   "(?:0[xX][0-9a-fA-F](?:_?[0-9a-fA-F])*|0[oO][0-7](?:_?[0-7])*|0[bB][01](?:_?[01])*|(?:\\d(?:_?\\d)*)?\\.?\\d(?:_?\\d)*(?:[eE][+-]?\\d(?:_?\\d)*)?)n?";
 const CALL = new RegExp(`\\.\\s*(min|max|length)\\s*\\(\\s*\\+?\\s*(${NUMBER})(?![\\w.])`, "g");
 
+const QUANTIFIER = /\{(\d+)(?:,(\d*))?\}/g;
+
 function literalValue(text: string): number {
   return Number(text.replace(/_/g, "").replace(/n$/, ""));
 }
 
 /** Returns the calls with a numeric literal other than 0 or 1 in one source. */
 function scanSource(source: string): Finding[] {
-  const code = blankNonCode(source);
+  const regexes: { body: string; index: number }[] = [];
+  const code = blankNonCode(source, regexes);
   const findings: Finding[] = [];
+  for (const { body, index } of regexes) {
+    for (const q of body.matchAll(QUANTIFIER)) {
+      const nums = [q[1], q[2]].filter((x) => x !== undefined && x !== "").map(Number);
+      if (nums.every((v) => v === 0 || v === 1)) continue;
+      findings.push({ call: q[0], line: source.slice(0, index).split("\n").length });
+    }
+  }
   for (const m of code.matchAll(CALL)) {
     const value = literalValue(m[2] as string);
     if (value === 0 || value === 1) continue;
@@ -134,6 +158,17 @@ describe("no literal limits", () => {
       expect(scanSource(sample), sample).not.toEqual([]);
     }
 
+    const quantifiers = [
+      "const r = /^[a-z]{0,31}$/;",
+      "const r = /^x{26}$/u;",
+      "const r = /x{3,}/;",
+      "const r2 = /[/]{2,64}/;",
+      "const r = /a{0,2}/;",
+    ];
+    for (const sample of quantifiers) {
+      expect(scanSource(sample), sample).not.toEqual([]);
+    }
+
     const passed = [
       "z.string().min(1)",
       "z.string().min(0).max(1)",
@@ -146,8 +181,11 @@ describe("no literal limits", () => {
       "/* z.string().max(4096) */ z.string()",
       'const s = "x.max(4096)";',
       "const t = `x.min(7)`;",
-      "const r = /^[a-z]{0,31}$/;",
-      "const r2 = /[/]{2,64}/; z.string().max(MAX)",
+      "const r = /^[a-z]{0,1}$/;",
+      "const r2 = /[/]{1}x{1,}y{0,}z{1,1}/; z.string().max(MAX)",
+      "const r3 = /a+b*c?/;",
+      "// const r = /a{5}/",
+      'const s = "/a{5}/";',
       "const ok = a.length * 3 <= 12;",
     ];
     for (const sample of passed) {
@@ -158,17 +196,19 @@ describe("no literal limits", () => {
   it("self-check: reports line numbers and the offending call", () => {
     const found = scanSource("a\n// c\nz.string().max(1_024)\n");
     expect(found).toEqual([{ call: ".max(1_024", line: 3 }]);
+    expect(scanSource("a\nb\nconst r = /x{26}/;")).toEqual([{ call: "{26}", line: 3 }]);
   });
 
   it("allowlist entries carry a reason and a file", () => {
     for (const entry of ALLOWLIST) {
+      expect(entry.call.trim()).not.toBe("");
       expect(entry.reason.trim()).not.toBe("");
       expect(entry.file.trim()).not.toBe("");
       expect(entry.file).not.toBe(LIMITS_FILE);
     }
   });
 
-  it("src/** outside limits.ts has no numeric literal other than 0 or 1 in .min/.max/.length", () => {
+  it("src/** outside limits.ts has no numeric literal other than 0 or 1 in .min/.max/.length or regex quantifiers", () => {
     const used = new Set<number>();
     const offenders = srcSources().flatMap(({ name, source }) =>
       scanSource(source).flatMap((f) => {

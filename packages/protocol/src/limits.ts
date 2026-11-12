@@ -37,6 +37,7 @@ export const ROSTER_QUICK_MESSAGE_MAX_CHARS = 140;
 export const INSTRUCTIONS_MAX_CHARS = 8000;
 export const ROOM_NAME_MIN_CHARS = 1;
 export const ROOM_NAME_MAX_CHARS = 48;
+export const MEMBER_ID_MAX_CHARS = 64;
 export const APPROVAL_SUMMARY_MAX_CHARS = 120;
 export const AUTOPILOT_ASK_ENTRY_MAX_CHARS = 200;
 

@@ -1,0 +1,378 @@
+{
+  "pbtResults": {
+    "5.4 Write property test for unknown message types": {
+      "status": "passed",
+      "lastRunTimestamp": 1794452902073
+    },
+    "5.7 Write property test for gate ordering": {
+      "status": "passed",
+      "lastRunTimestamp": 1794452941557
+    }
+  },
+  "executionHistory": {
+    "1.1 Configure `package.json`, tsconfig, vitest and the PBT constant": [
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794449155485
+      },
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794449338799
+      }
+    ],
+    "1.2 Ignore generated output in Biome (touches `biome.json` outside `packages/protocol`)": [
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794449349550
+      },
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794449613430
+      }
+    ],
+    "2.1 Create `limits.ts`": [
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794449349670
+      },
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794449613713
+      }
+    ],
+    "1. Package skeleton, scripts and test runner (P0)": [
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794449613479
+      }
+    ],
+    "1.3 Write a scan test that every `fc.assert` goes through `pbt(...)`": [
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794449622976
+      },
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794449709548
+      }
+    ],
+    "2.2 Create `text.ts` and export limits and text from `src/index.ts`": [
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794449623063
+      },
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794449710001
+      }
+    ],
+    "2. Limits and text helpers (P0)": [
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794449710037
+      }
+    ],
+    "2.3 Write unit tests for the text helpers": [
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794449804446
+      },
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794450207864
+      }
+    ],
+    "2.4 Write the no-literal-limits scan (`test/no-literal-limits.node.test.ts`)": [
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794449804635
+      },
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794450207985
+      }
+    ],
+    "3.1 Create `base.ts`": [
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794449804774
+      },
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794450208087
+      }
+    ],
+    "3.2 Create the first part of `shapes.ts`": [
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794450217705
+      },
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794450307610
+      }
+    ],
+    "3.4 Write example tests for the bot name rule": [
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794450217759
+      },
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794450307704
+      }
+    ],
+    "3.3 Create the seed of `errors.ts` and export base, shapes and errors from `src/index.ts`": [
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794450308567
+      },
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794450722530
+      }
+    ],
+    "3. Base schemas, first shapes and error seed (P0)": [
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794450722615
+      }
+    ],
+    "4.1 Write the first subset of body schemas": [
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794451992277
+      },
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794452114734
+      }
+    ],
+    "4.2 Create `registry.ts` and `message-types.ts` for the subset": [
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794452114853
+      },
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794452226523
+      }
+    ],
+    "4.3 Create `envelope.ts`": [
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794452226575
+      },
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794452364688
+      }
+    ],
+    "4.4 Write example tests for `approvalTimeoutMin`": [
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794452372828
+      },
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794452465048
+      }
+    ],
+    "5.1 Create `scope.ts`": [
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794452372883
+      },
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794452465127
+      }
+    ],
+    "4. Registry subset and envelope (P0)": [
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794452465087
+      }
+    ],
+    "5.2 Create `parse.ts` and export envelope, scope and parse from `src/index.ts`": [
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794452474550
+      },
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794452629423
+      }
+    ],
+    "5.3 Create `testing/builders.ts` and `testing/arbitraries.ts` for the subset": [
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794452629480
+      },
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794452827876
+      }
+    ],
+    "5.8 Write example tests for gate precedence": [
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794452629678
+      },
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794452827935
+      }
+    ],
+    "6.1 Create `scripts/check-boundaries.ts` and wire it into the build script": [
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794452639354
+      },
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794452827973
+      }
+    ],
+    "5.4 Write property test for unknown message types": [
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794452836573
+      },
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794452981273
+      }
+    ],
+    "5.5 Write property test for strict Meta": [
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794452836627
+      },
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794452981407
+      }
+    ],
+    "5.6 Write property test for signature scope": [
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794452837315
+      },
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794452981454
+      }
+    ],
+    "5.7 Write property test for gate ordering": [
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794452838199
+      },
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794452982237
+      }
+    ],
+    "6.2 Write `test/boundaries.node.test.ts`": [
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794452838876
+      },
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794452983098
+      }
+    ],
+    "5. Signature scope, gate and first property tests (P0)": [
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794452982331
+      }
+    ],
+    "6. Boundaries check (P0)": [
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794452983125
+      }
+    ],
+    "7. Checkpoint - P0 complete": [
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794452998045
+      },
+      {
+        "executionId": "44b6df9a-5773-48d1-9e05-e825493dbaa7",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794453227621
+      },
+      {
+        "executionId": "3e73bb21-76a7-4a68-8e69-ecf3facf80dd",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794455188509
+      },
+      {
+        "executionId": "3e73bb21-76a7-4a68-8e69-ecf3facf80dd",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794455665152
+      }
+    ]
+  }
+}
