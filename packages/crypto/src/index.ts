@@ -10,6 +10,7 @@ export type {
   ProgrammerReason,
 } from "./errors.js";
 export { ProgrammerError } from "./errors.js";
+export { canonicalize, canonicalizeBytes } from "./jcs.js";
 export { randomBytes } from "./random.js";
 export { sha256, sha256Base64Url } from "./sha256.js";
 export { utf8Encode } from "./utf8.js";

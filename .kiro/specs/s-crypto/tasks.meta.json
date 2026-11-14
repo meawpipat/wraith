@@ -248,6 +248,11 @@
         "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
         "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
         "timestamp": 1794628290748
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794629097081
       }
     ],
     "3.2 Create the independent JCS reference `test/support/jcs-reference.ts`": [
@@ -255,6 +260,11 @@
         "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
         "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
         "timestamp": 1794628290830
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794629097182
       }
     ],
     "3.3 Create the JSON value arbitrary `test/support/json-arbitrary.ts`": [
@@ -262,6 +272,11 @@
         "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
         "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
         "timestamp": 1794628290932
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794629097824
       }
     ],
     "3.4 Create the hostile-value generators `test/support/hostile.ts`": [
@@ -269,6 +284,128 @@
         "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
         "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
         "timestamp": 1794628291512
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794629098900
+      }
+    ],
+    "3.5 Add the `jcs` section to the vectors file and extend the vectors guard": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794628292244
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794629099948
+      }
+    ],
+    "3.6 Export `jcs` from `src/index.ts`": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794629100629
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794629194419
+      }
+    ],
+    "3.7 Write the JCS known-answer tests (P0-D2 evidence)": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794629194512
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794630320521
+      }
+    ],
+    "3.8 Write property test for JCS identical bytes": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794629195000
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794630320680
+      }
+    ],
+    "3.9 Write property test for JCS round trip and idempotence": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794629195744
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794630320794
+      }
+    ],
+    "3.10 Write property test for JCS rejection of Non_JSON_Values": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794629196543
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794630320862
+      }
+    ],
+    "3.11 Write example tests for the canonicalizer": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794629197287
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794630321445
+      }
+    ],
+    "3.12 Run the group verification (group 3)": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794630322257
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794632532256
+      }
+    ],
+    "3. JCS (RFC 8785) and the P0-D2 known-answer suite (P0)": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794632532368
+      }
+    ],
+    "4.1 Create `p256.ts`": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794632535950
+      }
+    ],
+    "4.4 Add the `keys` section to the vectors file and extend the vectors guard": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794632536061
       }
     ]
   }

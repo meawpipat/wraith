@@ -149,73 +149,73 @@ Not a checkbox task of this spec. Under spec `s-protocol`, before group 1 of thi
     - Design: "Build, resolution and ordering"
     - DoD: P0-D1 (supports)
 
-- [ ] 3. JCS (RFC 8785) and the P0-D2 known-answer suite (P0)
+- [x] 3. JCS (RFC 8785) and the P0-D2 known-answer suite (P0)
   - DoD: P0-D2 (JCS Known_Answer_Vectors and Properties 3 and 4; the Workers run is in group 8), PBT #14 JCS part (P1-D6 supports), P0-D1 (supports). Requirements: R6, R12.1, R12.9, R13.12. Design: "JCS (`jcs.ts`)", "JCS conformance (P0-D2, PBT #14) and what it proves", Properties 3 to 5.
   - Files owned: `packages/crypto/src/jcs.ts`, `packages/crypto/src/index.ts`, `fixtures/crypto/known-answers.json`, `packages/crypto/test/support/{vectors,jcs-reference,json-arbitrary,hostile}.ts`, `packages/crypto/test/{jcs-vectors,jcs-identical,jcs-roundtrip,jcs-rejects,jcs-examples}.test.ts`.
-  - [-] 3.1 Create `jcs.ts`
+  - [x] 3.1 Create `jcs.ts`
     - `canonicalize(value): string` and `canonicalizeBytes(value): Uint8Array`; iterative with an explicit stack (no recursion, no depth limit); cycle detection through the set of objects on the current path; own-keys traversal through `Reflect.ownKeys` and property descriptors (accessor, non-enumerable and symbol keys are `non_json_value`, getters never invoked, each property read once); arrays must have the array prototype, no holes and no extra own keys; objects must be plain (prototype `Object.prototype` or `null`); own `__proto__` is an ordinary member
     - Keys sorted on a copy with `<` and `>` (UTF-16 code units, no `localeCompare`); numbers via `String(n)` (`-0` gives `0`), `NaN` and infinities `non_finite_number`, `bigint` `bigint_value`; strings escaped in one pass (seven shorthand escapes, lower-case `\u00xx` below U+0020, everything else verbatim), lone surrogates in strings or names `lone_surrogate`; output converted with `utf8Encode`
     - Imports `utf8.ts` and `errors.ts` only; no WebCrypto, no dependency
     - _Requirements: R6.1 to R6.12, R6.16, R2.3_
     - Design: "JCS (`jcs.ts`)"
     - DoD: P0-D2, P0-D3 (supports)
-  - [-] 3.2 Create the independent JCS reference `test/support/jcs-reference.ts`
+  - [x] 3.2 Create the independent JCS reference `test/support/jcs-reference.ts`
     - Written with a different method on purpose: recursion over `Object.entries` with a sort, escaping by iterating code points with a lookup table, number text built by searching for the shortest `toPrecision(k)` that round-trips and applying the ECMAScript layout rules for exponent and decimal point; plus the `JSON.stringify` oracle for the equal subset (rebuild object members in UTF-16 sorted order, then `JSON.stringify`)
     - Test-side only; imports nothing from `src`; no `node:` import
     - _Requirements: R12.1, R13.12_
     - Design: "JCS conformance" (layers 2 and 3)
     - DoD: P0-D2 (supports), P1-D6 (supports)
-  - [-] 3.3 Create the JSON value arbitrary `test/support/json-arbitrary.ts`
+  - [x] 3.3 Create the JSON value arbitrary `test/support/json-arbitrary.ts`
     - Biased towards the edge cases of Property 3: key alphabet mixing U+0000 to U+001F, U+D7FF, U+E000, U+FF5E and astral characters; doubles from `fc.double` including `-0`, subnormals, values around `1e21` and `1e-7`, integers beyond 2^53; strings filtered to well-formed; a variant that permutes object insertion order
     - _Requirements: R13.12, R6.3, R6.4, R6.5_
     - Design: Testing Strategy (Generators, JSON values)
     - DoD: P0-D2 (supports), P1-D6 (supports)
-  - [-] 3.4 Create the hostile-value generators `test/support/hostile.ts`
+  - [x] 3.4 Create the hostile-value generators `test/support/hostile.ts`
     - Objects with throwing getters, proxies whose traps throw, cyclic structures, class instances, functions, symbols, sparse arrays, very deep nesting, plus the Non_JSON_Value substitution helper for Property 5; shared by Properties 5 and 12; portable (no `node:` import)
     - _Requirements: R3.8, R6.10, R13.10_
     - Design: Testing Strategy (Generators), Properties 5 and 12
     - DoD: P0-D3 (supports)
-  - [ ] 3.5 Add the `jcs` section to the vectors file and extend the vectors guard
+  - [x] 3.5 Add the `jcs` section to the vectors file and extend the vectors guard
     - RFC 8785 Appendix B number table keyed by IEEE-754 bit pattern with the published expected text, the section 3.2.3 sorting example, a nested object whose UTF-16 order differs from code point order (U+FF5E against an astral character), U+2028 and U+2029, control characters, `__proto__` as a member name given as JSON text, empty object, empty array, and a deep nested array given as a depth parameter that the test builds; expected output is hex; read the RFC text at task time and cite the section in each `source`
     - This task owns the edits of the vectors file and `test/support/vectors.ts` for group 3
     - _Requirements: R6.14, R6.15, R12.1_
     - Design: "Known_Answer_Vectors" (`jcs`)
     - DoD: P0-D2
-  - [ ] 3.6 Export `jcs` from `src/index.ts`
+  - [x] 3.6 Export `jcs` from `src/index.ts`
     - Add `canonicalize` and `canonicalizeBytes` to the public exports
     - This task owns the `index.ts` edit for group 3
     - _Requirements: R1.5, R6.1_
     - Design: "Module layout" (`index.ts`)
     - DoD: P0-D1 (supports)
-  - [ ] 3.7 Write the JCS known-answer tests (P0-D2 evidence)
+  - [x] 3.7 Write the JCS known-answer tests (P0-D2 evidence)
     - `test/jcs-vectors.test.ts`: every `jcs` vector must produce the expected hex bytes through `canonicalizeBytes`; portable, so it runs in `node` and, after group 8, in `workers`; must not be a `.node.test.ts` file
     - Required: this is the direct P0-D2 evidence
     - _Requirements: R6.14, R12.1, R12.2, R12.9_
     - Design: "JCS conformance" (layer 1)
     - DoD: P0-D2
-  - [ ] 3.8 Write property test for JCS identical bytes
+  - [x] 3.8 Write property test for JCS identical bytes
     - **Property 3: JCS output is identical to the independent reference**
     - **Validates: Requirements 6.1, 6.2, 6.3, 6.4, 6.5, 6.8, 6.11, 6.12, 12.1, 13.12**
     - Compares with the `JSON.stringify` oracle and with `jcs-reference.ts`, checks no whitespace, order independence, and that a deep-frozen copy gives the same output
     - Tag `Feature: s-crypto, Property 3: JCS output is identical to the independent reference`; runs with `CRYPTO_PBT_RUNS`
     - DoD: P0-D2, P1-D6 (supports; PBT #14)
-  - [ ] 3.9 Write property test for JCS round trip and idempotence
+  - [x] 3.9 Write property test for JCS round trip and idempotence
     - **Property 4: JCS parse round trip and idempotence**
     - **Validates: Requirements 6.1, 6.13, 13.12**
     - Tag `Feature: s-crypto, Property 4: JCS parse round trip and idempotence`; runs with `CRYPTO_PBT_RUNS`
     - DoD: P0-D2, P1-D6 (supports; PBT #14)
-  - [ ] 3.10 Write property test for JCS rejection of Non_JSON_Values
+  - [x] 3.10 Write property test for JCS rejection of Non_JSON_Values
     - **Property 5: JCS rejects every Non_JSON_Value at any depth**
     - **Validates: Requirements 3.5, 6.6, 6.7, 6.9, 6.10, 7.6, 9.7**
     - This task covers the canonicalizer clauses; the `sign` and `requestHash` clauses (7.6, 9.7) are added in 5.20
     - Tag `Feature: s-crypto, Property 5: JCS rejects every Non_JSON_Value at any depth`; runs with `CRYPTO_PBT_RUNS`
     - DoD: P0-D2 (supports), P0-D3 (supports), P1-D6 (supports)
-  - [ ]* 3.11 Write example tests for the canonicalizer
+  - [x]* 3.11 Write example tests for the canonicalizer
     - Escapes (`\b \t \n \f \r \" \\`, `\u001f`, U+007F verbatim, `/` unescaped), `__proto__` as an own member, a shared acyclic object (DAG) versus a cycle, 100,000 levels of nested arrays without a stack error, input not mutated, accessor and symbol keys rejected, `1e21`, `1.0`, `0.000001`, `1e-7`
     - _Requirements: R6.3 to R6.12, R6.14_
     - Design: "JCS (`jcs.ts`)"
     - DoD: P0-D2 (supports)
-  - [ ] 3.12 Run the group verification (group 3)
+  - [x] 3.12 Run the group verification (group 3)
     - Run `pnpm -r test`, `pnpm -r build`, `pnpm typecheck`, `pnpm --filter @wraith/crypto check` and the Biome check for `packages/crypto`; all clean; list the files for the commit
     - _Requirements: R12.10_
     - Design: "Build, resolution and ordering"
@@ -224,7 +224,7 @@ Not a checkbox task of this spec. Under spec `s-protocol`, before group 1 of thi
 - [ ] 4. P-256 helpers and key handling (P0)
   - DoD: P0-D3 (supports: sign and verify need generation, import and export), P1-D6 (supports). Requirements: R5, R3.4. Design: "P-256 point helpers (`p256.ts`) and keys (`keys.ts`)", Properties 15 to 17.
   - Files owned: `packages/crypto/src/{p256,keys,index}.ts`, `fixtures/crypto/known-answers.json`, `packages/crypto/test/support/{vectors,keys}.ts`, `packages/crypto/test/{keys-flags,keys-vectors,keys-roundtrip,keys-import,keys-compressed}.test.ts`.
-  - [ ] 4.1 Create `p256.ts`
+  - [-] 4.1 Create `p256.ts`
     - `isOnCurve` and `decompress` with `BigInt`, public data only (coordinates below the field prime, curve equation, square root by one modular exponentiation, parity from the prefix byte); curve constants from FIPS 186-4 / SEC 2 read at task time and verified by task 4.7, not copied from memory
     - Imports `bytes.ts` only; no private scalar, secret or signature input ever enters this module
     - _Requirements: R5.7, R5.13_
@@ -241,7 +241,7 @@ Not a checkbox task of this spec. Under spec `s-protocol`, before group 1 of thi
     - _Requirements: R5.7, R5.8, R13.4_
     - Design: Testing Strategy (Generators, Keys)
     - DoD: P0-D3 (supports)
-  - [ ] 4.4 Add the `keys` section to the vectors file and extend the vectors guard
+  - [-] 4.4 Add the `keys` section to the vectors file and extend the vectors guard
     - A Public_JWK, its 33-byte compressed point (hex) and its fingerprint (hex), plus a point with a wrong prefix and an off-curve compressed point as rejected inputs; values computed outside the package (a throwaway script using `node:crypto` ECDH compressed output and SHA-256, deleted after use, with the method recorded in `source`); no private key in the file
     - This task owns the edits of the vectors file and `test/support/vectors.ts` for group 4
     - _Requirements: R5.12, R5.13_
