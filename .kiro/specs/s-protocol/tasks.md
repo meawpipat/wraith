@@ -190,6 +190,7 @@ Conventions:
 - [ ] 8. Supporting shapes and connection, chat, bot, approval and room bodies (P1)
   - DoD: P1-D10 (supports; shapes for builders), P1-D13, P1-D15 (supports). Requirements: R7, R8, R9, R10, R11, R17. Design: "Supporting shapes", "Handoff packet and prompt helpers", Properties 15 and 16.
   - [ ] 8.1 Finish `shapes.ts`
+    - Note: JWK done early in P0 for S-crypto (commit 9919fc2); Tier/BotId and the rest stay here.
     - `Option`, `BotState` and `BOT_STATE_URGENCY` (as data), `NodeCaps`, `MemberView`, `SessionRef`, `CryptEntry`, `Cap`, `RosterEntry`, `JWK` (explicit public members only; a private member is rejected), `Tier`, `BotId`, `Room`, `Bot`, `ApprovalView`, `LeaseView`, `BotSummary`
     - `Diff` and `Location` follow the ACP tool-call types; `Room`, `Bot`, `ApprovalView`, `LeaseView`, `BotSummary` follow §10; fields §10 names but §6.2 does not use are optional
     - _Requirements: R17.1 to R17.7, R8.14, R8.15, R7.2, R16.2, R16.3, R16.11_
