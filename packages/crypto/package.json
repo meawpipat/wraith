@@ -3,5 +3,24 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "JCS canonical JSON, ECDSA P-256 sign/verify, HMAC, hashing; byte-identical across Node, Workers, browsers (§6.1)."
+  "description": "JCS canonical JSON, ECDSA P-256 sign/verify, HMAC, hashing; byte-identical across Node, Workers, browsers (§6.1).",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "check": "tsc -p tsconfig.scripts.json --noEmit"
+  },
+  "dependencies": {
+    "@wraith/protocol": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.5",
+    "fast-check": "4.10.2",
+    "vitest": "5.0.5"
+  }
 }
