@@ -1,0 +1,275 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1.1 Verify the S-protocol prerequisite (precondition step, no file changes)": [
+      {
+        "executionId": "024a5f18-a6e0-45a8-97dc-669801a41ac1",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794622147772
+      },
+      {
+        "executionId": "024a5f18-a6e0-45a8-97dc-669801a41ac1",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794622521508
+      }
+    ],
+    "1.2 Configure `package.json`, `tsconfig.json` and the README; install pinned dev dependencies": [
+      {
+        "executionId": "024a5f18-a6e0-45a8-97dc-669801a41ac1",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794622522234
+      },
+      {
+        "executionId": "024a5f18-a6e0-45a8-97dc-669801a41ac1",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794622728491
+      }
+    ],
+    "1.3 Create `tsconfig.scripts.json` (the project behind `check`)": [
+      {
+        "executionId": "024a5f18-a6e0-45a8-97dc-669801a41ac1",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794622728900
+      },
+      {
+        "executionId": "024a5f18-a6e0-45a8-97dc-669801a41ac1",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794622964982
+      }
+    ],
+    "1.4 Create the `node` Vitest project, `test/config.ts` and its test": [
+      {
+        "executionId": "024a5f18-a6e0-45a8-97dc-669801a41ac1",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794622729648
+      },
+      {
+        "executionId": "024a5f18-a6e0-45a8-97dc-669801a41ac1",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794622965097
+      }
+    ],
+    "1.5 Write the scan test that every `fc.assert` goes through `pbt(...)` and that no run count is a literal": [
+      {
+        "executionId": "024a5f18-a6e0-45a8-97dc-669801a41ac1",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794622965323
+      },
+      {
+        "executionId": "024a5f18-a6e0-45a8-97dc-669801a41ac1",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794623118740
+      }
+    ],
+    "1.6 Run the group verification (group 1)": [
+      {
+        "executionId": "024a5f18-a6e0-45a8-97dc-669801a41ac1",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794623119463
+      },
+      {
+        "executionId": "024a5f18-a6e0-45a8-97dc-669801a41ac1",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794623613408
+      }
+    ],
+    "1. Package skeleton, prerequisite check and test runner (P0)": [
+      {
+        "executionId": "024a5f18-a6e0-45a8-97dc-669801a41ac1",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794623613456
+      }
+    ],
+    "2.1 Create `errors.ts` and `guard.ts`": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794624083421
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794626442322
+      }
+    ],
+    "2.2 Verify `@wraith/source` resolution for `tsc` and Vitest and apply the design fallback if needed": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794626442505
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794626853163
+      }
+    ],
+    "2.3 Create `webcrypto.ts` and `bytes.ts`": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794626853249
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794627044248
+      }
+    ],
+    "2.4 Create `base64url.ts` and `utf8.ts`": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794626853942
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794627044357
+      }
+    ],
+    "2.5 Create `sha256.ts` and `random.ts`": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794627044450
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794627549163
+      }
+    ],
+    "2.6 Create the vectors file with the `base64url` and `sha256` sections and the vectors support modules": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794627044944
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794627549283
+      }
+    ],
+    "2.7 Export the foundations from `src/index.ts`": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794627549952
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794627664548
+      }
+    ],
+    "2.12 Write unit tests for `failClosed` and `ProgrammerError`": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794627550595
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794627665259
+      }
+    ],
+    "2.8 Write known-answer tests for Base64url and SHA-256": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794627666369
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794627866765
+      }
+    ],
+    "2.9 Write property test for Base64url": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794627667152
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794627866899
+      }
+    ],
+    "2.10 Write property test for the UTF-8 encoder": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794627667968
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794627867521
+      }
+    ],
+    "2.11 Write example tests for SHA-256, `randomBytes` and WebCrypto access": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794627668831
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794627868588
+      }
+    ],
+    "2.13 Run the group verification (group 2)": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794627869405
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794628287183
+      }
+    ],
+    "2. Errors, guard, WebCrypto access and encoding helpers (P0)": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794628287252
+      }
+    ],
+    "3.1 Create `jcs.ts`": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794628290748
+      }
+    ],
+    "3.2 Create the independent JCS reference `test/support/jcs-reference.ts`": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794628290830
+      }
+    ],
+    "3.3 Create the JSON value arbitrary `test/support/json-arbitrary.ts`": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794628290932
+      }
+    ],
+    "3.4 Create the hostile-value generators `test/support/hostile.ts`": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794628291512
+      }
+    ]
+  }
+}

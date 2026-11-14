@@ -27,16 +27,16 @@ Conventions:
 
 Not a checkbox task of this spec. Under spec `s-protocol`, before group 1 of this plan starts: (a) the exact-four-member `JWK` schema (`kty`, `crv`, `x`, `y`; a private member is rejected), exported from `@wraith/protocol`; the prerequisite is the JWK schema only, and `Tier` and `BotId` stay in S-protocol task 8.1 (P1); (b) the `"@wraith/source"` condition on the exports `"."` (to `./src/index.ts`), `"./testing"` (to `./src/testing/builders.ts`) and `"./testing/arbitraries"` (to `./src/testing/arbitraries.ts`), listed before the `types` and `default` dist targets. The rest of S-protocol task 8.1 stays P1. This plan does not edit S-protocol files or tasks.
 
-- [ ] 1. Package skeleton, prerequisite check and test runner (P0)
+- [x] 1. Package skeleton, prerequisite check and test runner (P0)
   - DoD: P0-D1 (supports: S-ops-packaging owns the CI workflow; this group makes the `crypto` suite exist and run), P0-D3 (supports: defines `CRYPTO_PBT_RUNS`), P1-D6 (supports). Requirements: R1.1, R1.4, R1.5, R1.6, R1.7, R13.1, R13.2, R13.3. Design: "What exists today", "Module layout", "Build, resolution and ordering", "Test configuration".
   - Files owned: `packages/crypto/package.json`, `packages/crypto/tsconfig.json`, `packages/crypto/tsconfig.scripts.json`, `packages/crypto/vitest.config.ts`, `packages/crypto/README.md`, `packages/crypto/test/config.ts`, `packages/crypto/test/config.test.ts`, `packages/crypto/test/pbt-helper-use.node.test.ts`, `pnpm-lock.yaml`.
-  - [ ] 1.1 Verify the S-protocol prerequisite (precondition step, no file changes)
+  - [x] 1.1 Verify the S-protocol prerequisite (precondition step, no file changes)
     - Grep `packages/protocol/package.json` for `"@wraith/source"` on the `.`, `./testing` and `./testing/arbitraries` exports, check that each is listed before the `types` and `default` targets, and check that `packages/protocol/src` exports a `JWK` schema of exactly `kty`, `crv`, `x`, `y`; run `pnpm typecheck` and `pnpm -r test` to confirm the S-protocol commit is clean
     - If any item is missing, STOP and report to the owner. Do not add the condition or a JWK schema from S-crypto, and do not declare a local substitute (R1.7)
     - _Requirements: R1.7_
     - Design: "What exists today" (JWK not exported), "Build, resolution and ordering"
     - DoD: P0-D1 (supports)
-  - [ ] 1.2 Configure `package.json`, `tsconfig.json` and the README; install pinned dev dependencies
+  - [x] 1.2 Configure `package.json`, `tsconfig.json` and the README; install pinned dev dependencies
     - `package.json`: `exports` with one `"."` entry (`types` and `default` into `dist`, no `@wraith/source` condition), scripts `build` (`tsc -p tsconfig.json`; the boundary script is added in 7.1), `test` (`vitest run`), `check` (`tsc -p tsconfig.scripts.json --noEmit`; the boundary script is added in 7.1); `dependencies`: `"@wraith/protocol": "workspace:*"` only; `devDependencies`: `fast-check`, `vitest`, `@types/node` at the exact versions the root and protocol use
     - `tsconfig.json`: extends the base, `lib: ["ES2022"]`, `types: []`, `rootDir: "src"`, `outDir: "dist"`, `include: ["src"]`, `references: [{ "path": "../protocol" }]`
     - `README.md`: keep the paragraph and add the rule that the package depends on `@wraith/protocol` and never stores keys; the export list is finished in 12.3
@@ -44,42 +44,42 @@ Not a checkbox task of this spec. Under spec `s-protocol`, before group 1 of thi
     - _Requirements: R1.1, R1.4, R1.5, R1.6, R2.3_
     - Design: "Module layout", "Build, resolution and ordering" (dependencies), Data Models
     - DoD: P0-D1 (supports)
-  - [ ] 1.3 Create `tsconfig.scripts.json` (the project behind `check`)
+  - [x] 1.3 Create `tsconfig.scripts.json` (the project behind `check`)
     - Node types; covers `src`, `scripts`, `test`, `vitest.config.ts` and the vectors JSON file (`../../fixtures/crypto/known-answers.json`) in `include`; `noEmit`, no `rootDir`; `customConditions: ["@wraith/source"]` with `module` set to `NodeNext`; JSON import attributes allowed
     - The verification of this setup against real protocol imports is task 2.2
     - _Requirements: R1.1_
     - Design: "Module layout" (tsconfig.scripts.json), "Build, resolution and ordering"
     - DoD: P0-D1 (supports)
-  - [ ] 1.4 Create the `node` Vitest project, `test/config.ts` and its test
+  - [x] 1.4 Create the `node` Vitest project, `test/config.ts` and its test
     - `vitest.config.ts` with one `node` project that runs every `test/**/*.test.ts`, sets `resolve.conditions` to include `"@wraith/source"` and follows the shape of `packages/protocol/vitest.config.ts`; the `workers` project is added in 8.2
     - `test/config.ts` exports `CRYPTO_PBT_RUNS = 1000` and `pbt(...)`, which wraps `fc.assert`, defaults `numRuns` to the constant and refuses a lower value; it does not import `PBT_MIN_RUNS` or anything from the protocol test folder
     - `test/config.test.ts`: asserts the constant is 1000, that `pbt` refuses 999 and runs at least 1000 by default (makes the suite non-empty from the start)
     - _Requirements: R13.1, R13.2, R13.3, R12.2_
     - Design: "Test configuration (`test/config.ts`)", Testing Strategy (conventions)
     - DoD: P0-D3 (supports: defines the 1,000-run constant), P0-D1 (supports), P1-D6 (supports)
-  - [ ] 1.5 Write the scan test that every `fc.assert` goes through `pbt(...)` and that no run count is a literal
+  - [x] 1.5 Write the scan test that every `fc.assert` goes through `pbt(...)` and that no run count is a literal
     - `test/pbt-helper-use.node.test.ts`: strips comments, then fails on a direct `fc.assert(`, a named `assert` import from `fast-check`, and any `numRuns:` followed by a numeric literal (a literal is not allowed at all; only the identifier `CRYPTO_PBT_RUNS`); scans `test/**` except `test/config.ts`; has a self-check on sample sources that each offending form is reported
     - Required: it enforces a design rule (R13.3); the aliased-call blind spot is stated in a comment
     - _Requirements: R13.3_
     - Design: Testing Strategy (conventions)
     - DoD: P0-D3 (supports), P1-D6 (supports)
-  - [ ] 1.6 Run the group verification (group 1)
+  - [x] 1.6 Run the group verification (group 1)
     - Run `pnpm -r test`, `pnpm -r build`, `pnpm typecheck`, `pnpm --filter @wraith/crypto check` and the Biome check for `packages/crypto`; all clean
     - List the files this group changed for the commit
     - _Requirements: R1.5_
     - Design: "Build, resolution and ordering"
     - DoD: P0-D1 (supports)
 
-- [ ] 2. Errors, guard, WebCrypto access and encoding helpers (P0)
+- [x] 2. Errors, guard, WebCrypto access and encoding helpers (P0)
   - DoD: P0-D1 (supports), P0-D3 (supports: the failure model and helpers that sign and verify build on), P1-D6 (supports). Requirements: R2, R3.4 to R3.6, R4, R13.11 (Base64url part). Design: "Types shared by the package", "WebCrypto access", "Failure guard", "Encoding helpers", Properties 1 and 2.
   - Files owned: `packages/crypto/src/{errors,guard,webcrypto,bytes,base64url,utf8,sha256,random,index}.ts`, `packages/crypto/tsconfig.scripts.json` and `packages/crypto/vitest.config.ts` (only if 2.2 needs the fallback), `fixtures/crypto/known-answers.json`, `packages/crypto/test/support/{hex,vectors}.ts`, `packages/crypto/test/{base64url,utf8,vectors-encoding,sha256-random,guard-errors}.test.ts`.
-  - [ ] 2.1 Create `errors.ts` and `guard.ts`
+  - [x] 2.1 Create `errors.ts` and `guard.ts`
     - `ProgrammerError` (message is exactly `"wraith-crypto: " + reason`, no `cause`), `ProgrammerReason`, `FailReason`, `CryptoFailure` and `CryptoResult` typed through the protocol `ErrorCode` (`Extract<ErrorCode, "E_SCHEMA_INVALID">`); `failClosed(run)` (`try { return (await run()) === true } catch { return false }`, binding nothing and logging nothing), `isRecord`, `isPlainRecord`
     - `errors.ts` imports types from `@wraith/protocol` only; `guard.ts` imports nothing
     - _Requirements: R1.2, R3.1, R3.2, R3.3, R3.4, R3.5, R3.6, R2.9_
     - Design: "Types shared by the package", "Failure guard", "Data Models" (Failure and error data)
     - DoD: P0-D3 (supports)
-  - [ ] 2.2 Verify `@wraith/source` resolution for `tsc` and Vitest and apply the design fallback if needed
+  - [x] 2.2 Verify `@wraith/source` resolution for `tsc` and Vitest and apply the design fallback if needed
     - Using a temporary probe (a test file and a type import of `@wraith/protocol`, `@wraith/protocol/testing` and `@wraith/protocol/testing/arbitraries`, deleted afterwards), verify on a fresh state with protocol `dist` removed or renamed: (1) `check` type-checks crypto with `customConditions` and `noEmit` (protocol sources under crypto's program, `.js` specifiers inside protocol sources, JSON imports with `resolveJsonModule`); (2) Vitest resolves the three entries from source in the `node` project; (3) `build` (`tsc -p tsconfig.json`, no condition) still produces the same output from protocol's declarations after `pnpm -r build`
     - If (1) fails, apply the design's fallback inside the same decision: only `tsconfig.scripts.json` keeps the condition with `composite: false`, `noEmit: true`, no `rootDir` and, if `tsc` asks for it, `allowImportingTsExtensions`, leaving `tsconfig.json` unchanged; if even that fails, `check` resolves protocol through `dist` and the README states that `pnpm -r build` comes first. Record which case applied (the PHASE-STATUS or DECISIONS-PENDING note is written by 8.5 and 8.6)
     - If Vitest does not resolve from source, STOP and report; do not switch to `dist` on your own initiative
@@ -87,63 +87,63 @@ Not a checkbox task of this spec. Under spec `s-protocol`, before group 1 of thi
     - _Requirements: R1.1, R13.13_
     - Design: "Build, resolution and ordering" (Constraint to verify at task time), Design choice 13
     - DoD: P0-D1 (supports), P0-D3 (supports: tests reach the protocol arbitraries through source)
-  - [ ] 2.3 Create `webcrypto.ts` and `bytes.ts`
+  - [x] 2.3 Create `webcrypto.ts` and `bytes.ts`
     - `webcrypto.ts`: local structural types (`CryptoKeyHandle`, `KeyPair`, the `SubtleCrypto` subset, a `TextEncoder` declaration); `getSubtle()` and `getRandomValuesFn()` read `globalThis.crypto` on each call and throw `ProgrammerError("webcrypto_unavailable")` when missing; names no Node, Workers or browser API
     - `bytes.ts`: `concatBytes`, `equalBytesFixed` (fixed-length XOR accumulation, no early exit), `u64be` (safe non-negative integer split into two 32-bit halves; `ProgrammerError("invalid_argument")` otherwise); imports nothing from the package
     - _Requirements: R2.1, R2.2, R2.3, R2.8, R3.3, R9.8, R11.8_
     - Design: "WebCrypto access", Module layout (`bytes.ts`)
     - DoD: P0-D1 (supports)
-  - [ ] 2.4 Create `base64url.ts` and `utf8.ts`
+  - [x] 2.4 Create `base64url.ts` and `utf8.ts`
     - Hand-written strict Base64url: 64-entry alphabet and 128-entry reverse table; `encodeBase64Url` writes no padding; `decodeBase64Url(input: unknown)` returns `CryptoResult<Uint8Array>` and rejects non-strings, any character outside the alphabet (including `=`, `+`, `/`, whitespace, code units above 127), a length with remainder 1 modulo 4, and non-zero unused trailing bits; never echoes the input
     - `utf8Encode` rejects a lone surrogate with `ProgrammerError("lone_surrogate")` before calling the platform `TextEncoder`; `tryUtf8Encode` returns `null` instead of throwing (internal use by verification paths)
     - _Requirements: R4.1, R4.2, R4.3, R4.4, R4.6, R2.3_
     - Design: "Encoding helpers (`base64url.ts`, `utf8.ts`, `sha256.ts`, `random.ts`)"
     - DoD: P0-D3 (supports)
-  - [ ] 2.5 Create `sha256.ts` and `random.ts`
+  - [x] 2.5 Create `sha256.ts` and `random.ts`
     - `sha256(bytes)` (32 bytes) and `sha256Base64Url(bytes)` through `crypto.subtle.digest`; a WebCrypto rejection becomes `ProgrammerError("webcrypto_failed")` with a fixed message
     - `randomBytes(n)` through `getRandomValues`, integer 0 to 65536 else `ProgrammerError("invalid_argument")`; no `Math.random`
     - _Requirements: R4.5, R4.7, R2.1_
     - Design: "Encoding helpers"
     - DoD: P0-D3 (supports)
-  - [ ] 2.6 Create the vectors file with the `base64url` and `sha256` sections and the vectors support modules
+  - [x] 2.6 Create the vectors file with the `base64url` and `sha256` sections and the vectors support modules
     - `fixtures/crypto/known-answers.json`: `base64url` (empty, 1, 2, 3 byte inputs, bytes that map to `-` and `_`, and invalid strings that must be rejected) and `sha256` (empty input and `abc`); every byte string is lower-case hex text; each vector has a `source` field (published value or "independent computation, see task notes")
     - `test/support/hex.ts` (hex text to bytes and back) and `test/support/vectors.ts` (loads the file with `import vectors from "../../../../fixtures/crypto/known-answers.json" with { type: "json" }` adjusted to the real relative path; hand-written shape guard, no zod; no `node:` import)
     - Expected values are published or computed outside the package under test, never pasted from its output
     - _Requirements: R4.8, R6.15, R13.15_
     - Design: "Known_Answer_Vectors", "Sharing the Known_Answer_Vectors between projects"
     - DoD: P0-D2 (supports: the vectors file is the portable contract), P0-D1 (supports)
-  - [ ] 2.7 Export the foundations from `src/index.ts`
+  - [x] 2.7 Export the foundations from `src/index.ts`
     - Re-export `errors`, `guard` (`failClosed` is internal unless the design lists it; export only what design.md names public), `base64url`, `utf8`, `sha256`, `random` and the shared types; re-exports only, nothing from `@wraith/protocol`
     - This task owns the `index.ts` edit for group 2
     - _Requirements: R1.5, R1.2, R1.3_
     - Design: "Module layout" (`index.ts`)
     - DoD: P0-D1 (supports)
-  - [ ] 2.8 Write known-answer tests for Base64url and SHA-256
+  - [x] 2.8 Write known-answer tests for Base64url and SHA-256
     - `test/vectors-encoding.test.ts`: every `base64url` and `sha256` vector, including the rejected spellings; runs in both projects
     - _Requirements: R4.8_
     - Design: "Unit and example tests" (known-answer tests)
     - DoD: P0-D3 (supports), P0-D2 (supports)
-  - [ ] 2.9 Write property test for Base64url
+  - [x] 2.9 Write property test for Base64url
     - **Property 1: Base64url round trip and canonical form**
     - **Validates: Requirements 4.1, 4.2, 4.3, 4.4, 13.11**
     - Tag `Feature: s-crypto, Property 1: Base64url round trip and canonical form`; runs with `CRYPTO_PBT_RUNS` through `pbt(...)`
     - DoD: P0-D3 (supports), P1-D6 (supports)
-  - [ ] 2.10 Write property test for the UTF-8 encoder
+  - [x] 2.10 Write property test for the UTF-8 encoder
     - **Property 2: UTF-8 encoder rejects what has no UTF-8 form**
     - **Validates: Requirements 4.6**
     - Tag `Feature: s-crypto, Property 2: UTF-8 encoder rejects what has no UTF-8 form`; runs with `CRYPTO_PBT_RUNS`
     - DoD: P0-D3 (supports), P1-D6 (supports)
-  - [ ]* 2.11 Write example tests for SHA-256, `randomBytes` and WebCrypto access
+  - [x]* 2.11 Write example tests for SHA-256, `randomBytes` and WebCrypto access
     - Digest length and Base64url form, `randomBytes` length and argument errors, two calls differ, missing `crypto.subtle` gives `ProgrammerError("webcrypto_unavailable")` (the global-removing case in a `.node.test.ts` file, restored in `afterEach`)
     - _Requirements: R4.5, R4.7, R3.3_
     - Design: "WebCrypto access", Testing Strategy (unit tests)
     - DoD: P0-D3 (supports)
-  - [ ]* 2.12 Write unit tests for `failClosed` and `ProgrammerError`
+  - [x]* 2.12 Write unit tests for `failClosed` and `ProgrammerError`
     - `failClosed` turns a sync throw, a rejection and a non-`true` result into `false`; `ProgrammerError` message is the fixed prefix plus the reason and carries no `cause`
     - _Requirements: R3.1, R3.2, R3.3, R3.6_
     - Design: "Failure guard"
     - DoD: P0-D3 (supports)
-  - [ ] 2.13 Run the group verification (group 2)
+  - [x] 2.13 Run the group verification (group 2)
     - Run `pnpm -r test`, `pnpm -r build`, `pnpm typecheck`, `pnpm --filter @wraith/crypto check` and the Biome check for `packages/crypto`; all clean; list the files for the commit
     - _Requirements: R2.2_
     - Design: "Build, resolution and ordering"
@@ -152,25 +152,25 @@ Not a checkbox task of this spec. Under spec `s-protocol`, before group 1 of thi
 - [ ] 3. JCS (RFC 8785) and the P0-D2 known-answer suite (P0)
   - DoD: P0-D2 (JCS Known_Answer_Vectors and Properties 3 and 4; the Workers run is in group 8), PBT #14 JCS part (P1-D6 supports), P0-D1 (supports). Requirements: R6, R12.1, R12.9, R13.12. Design: "JCS (`jcs.ts`)", "JCS conformance (P0-D2, PBT #14) and what it proves", Properties 3 to 5.
   - Files owned: `packages/crypto/src/jcs.ts`, `packages/crypto/src/index.ts`, `fixtures/crypto/known-answers.json`, `packages/crypto/test/support/{vectors,jcs-reference,json-arbitrary,hostile}.ts`, `packages/crypto/test/{jcs-vectors,jcs-identical,jcs-roundtrip,jcs-rejects,jcs-examples}.test.ts`.
-  - [ ] 3.1 Create `jcs.ts`
+  - [-] 3.1 Create `jcs.ts`
     - `canonicalize(value): string` and `canonicalizeBytes(value): Uint8Array`; iterative with an explicit stack (no recursion, no depth limit); cycle detection through the set of objects on the current path; own-keys traversal through `Reflect.ownKeys` and property descriptors (accessor, non-enumerable and symbol keys are `non_json_value`, getters never invoked, each property read once); arrays must have the array prototype, no holes and no extra own keys; objects must be plain (prototype `Object.prototype` or `null`); own `__proto__` is an ordinary member
     - Keys sorted on a copy with `<` and `>` (UTF-16 code units, no `localeCompare`); numbers via `String(n)` (`-0` gives `0`), `NaN` and infinities `non_finite_number`, `bigint` `bigint_value`; strings escaped in one pass (seven shorthand escapes, lower-case `\u00xx` below U+0020, everything else verbatim), lone surrogates in strings or names `lone_surrogate`; output converted with `utf8Encode`
     - Imports `utf8.ts` and `errors.ts` only; no WebCrypto, no dependency
     - _Requirements: R6.1 to R6.12, R6.16, R2.3_
     - Design: "JCS (`jcs.ts`)"
     - DoD: P0-D2, P0-D3 (supports)
-  - [ ] 3.2 Create the independent JCS reference `test/support/jcs-reference.ts`
+  - [-] 3.2 Create the independent JCS reference `test/support/jcs-reference.ts`
     - Written with a different method on purpose: recursion over `Object.entries` with a sort, escaping by iterating code points with a lookup table, number text built by searching for the shortest `toPrecision(k)` that round-trips and applying the ECMAScript layout rules for exponent and decimal point; plus the `JSON.stringify` oracle for the equal subset (rebuild object members in UTF-16 sorted order, then `JSON.stringify`)
     - Test-side only; imports nothing from `src`; no `node:` import
     - _Requirements: R12.1, R13.12_
     - Design: "JCS conformance" (layers 2 and 3)
     - DoD: P0-D2 (supports), P1-D6 (supports)
-  - [ ] 3.3 Create the JSON value arbitrary `test/support/json-arbitrary.ts`
+  - [-] 3.3 Create the JSON value arbitrary `test/support/json-arbitrary.ts`
     - Biased towards the edge cases of Property 3: key alphabet mixing U+0000 to U+001F, U+D7FF, U+E000, U+FF5E and astral characters; doubles from `fc.double` including `-0`, subnormals, values around `1e21` and `1e-7`, integers beyond 2^53; strings filtered to well-formed; a variant that permutes object insertion order
     - _Requirements: R13.12, R6.3, R6.4, R6.5_
     - Design: Testing Strategy (Generators, JSON values)
     - DoD: P0-D2 (supports), P1-D6 (supports)
-  - [ ] 3.4 Create the hostile-value generators `test/support/hostile.ts`
+  - [-] 3.4 Create the hostile-value generators `test/support/hostile.ts`
     - Objects with throwing getters, proxies whose traps throw, cyclic structures, class instances, functions, symbols, sparse arrays, very deep nesting, plus the Non_JSON_Value substitution helper for Property 5; shared by Properties 5 and 12; portable (no `node:` import)
     - _Requirements: R3.8, R6.10, R13.10_
     - Design: Testing Strategy (Generators), Properties 5 and 12

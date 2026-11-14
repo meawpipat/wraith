@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "base64url": {
+    "valid": [
+      { "id": "empty", "bytesHex": "", "text": "", "source": "RFC 4648 section 10: BASE64(\"\") = \"\"; same in base64url" },
+      { "id": "one-byte", "bytesHex": "66", "text": "Zg", "source": "RFC 4648 section 10: BASE64(\"f\") = \"Zg==\"; padding removed by hand" },
+      { "id": "two-bytes", "bytesHex": "666f", "text": "Zm8", "source": "RFC 4648 section 10: BASE64(\"fo\") = \"Zm8=\"; padding removed by hand" },
+      { "id": "three-bytes", "bytesHex": "666f6f", "text": "Zm9v", "source": "RFC 4648 section 10: BASE64(\"foo\") = \"Zm9v\"" },
+      { "id": "four-bytes", "bytesHex": "666f6f62", "text": "Zm9vYg", "source": "RFC 4648 section 10: BASE64(\"foob\") = \"Zm9vYg==\"; padding removed by hand" },
+      { "id": "five-bytes", "bytesHex": "666f6f6261", "text": "Zm9vYmE", "source": "RFC 4648 section 10: BASE64(\"fooba\") = \"Zm9vYmE=\"; padding removed by hand" },
+      { "id": "six-bytes", "bytesHex": "666f6f626172", "text": "Zm9vYmFy", "source": "RFC 4648 section 10: BASE64(\"foobar\") = \"Zm9vYmFy\"" },
+      { "id": "dash-one-byte", "bytesHex": "fb", "text": "-w", "source": "independent computation: Node Buffer.toString('base64url') in a throwaway script that does not import @wraith/crypto; RFC 4648 section 5 alphabet (62 is '-')" },
+      { "id": "underscore-one-byte", "bytesHex": "ff", "text": "_w", "source": "independent computation: Node Buffer.toString('base64url') in a throwaway script that does not import @wraith/crypto; RFC 4648 section 5 alphabet (63 is '_')" },
+      { "id": "dash-two-bytes", "bytesHex": "fbef", "text": "--8", "source": "independent computation: Node Buffer.toString('base64url') in a throwaway script that does not import @wraith/crypto" },
+      { "id": "dash-underscore-two-bytes", "bytesHex": "fbff", "text": "-_8", "source": "independent computation: Node Buffer.toString('base64url') in a throwaway script that does not import @wraith/crypto" },
+      { "id": "dash-three-bytes", "bytesHex": "fbefbe", "text": "----", "source": "independent computation: Node Buffer.toString('base64url') in a throwaway script that does not import @wraith/crypto" },
+      { "id": "underscore-three-bytes", "bytesHex": "ffffff", "text": "____", "source": "independent computation: Node Buffer.toString('base64url') in a throwaway script that does not import @wraith/crypto" },
+      { "id": "dash-underscore-three-bytes", "bytesHex": "fbffbf", "text": "-_-_", "source": "independent computation: Node Buffer.toString('base64url') in a throwaway script that does not import @wraith/crypto" }
+    ],
+    "invalid": [
+      { "id": "padding-one", "text": "Zg==", "reason": "padding", "source": "RFC 4648 section 10 padded form of \"f\"; the Wraith form has no padding (architecture 3.4)" },
+      { "id": "padding-two", "text": "Zm8=", "reason": "padding", "source": "RFC 4648 section 10 padded form of \"fo\"; the Wraith form has no padding (architecture 3.4)" },
+      { "id": "plus", "text": "Zm+v", "reason": "plus", "source": "hand-written: '+' belongs to the standard alphabet, not base64url (RFC 4648 section 5)" },
+      { "id": "slash", "text": "Zm/v", "reason": "slash", "source": "hand-written: '/' belongs to the standard alphabet, not base64url (RFC 4648 section 5)" },
+      { "id": "space", "text": "Zm 9v", "reason": "whitespace", "source": "hand-written: whitespace is not in the alphabet" },
+      { "id": "newline", "text": "Zm9v\n", "reason": "whitespace", "source": "hand-written: whitespace is not in the alphabet" },
+      { "id": "length-mod-4-is-1-short", "text": "Z", "reason": "length", "source": "hand-written: a length of 1 modulo 4 carries 6 bits and no whole byte" },
+      { "id": "length-mod-4-is-1-long", "text": "Zm9vY", "reason": "length", "source": "hand-written: a length of 1 modulo 4 carries 6 bits and no whole byte" },
+      { "id": "trailing-bits-one-byte", "text": "Zh", "reason": "trailing_bits", "source": "hand-written: 'h' is 33 = 100001, the last 4 bits must be zero; the canonical spelling of \"f\" is \"Zg\"" },
+      { "id": "trailing-bits-two-bytes", "text": "Zm9", "reason": "trailing_bits", "source": "hand-written: '9' is 61 = 111101, the last 2 bits must be zero; the canonical spelling of \"fo\" is \"Zm8\"" }
+    ]
+  },
+  "sha256": [
+    { "id": "empty", "inputHex": "", "digestHex": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "source": "FIPS 180-4 / NIST published SHA-256 of the empty message; cross-checked with node:crypto in a throwaway script" },
+    { "id": "abc", "inputHex": "616263", "digestHex": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad", "source": "FIPS 180-4 / NIST SHA-256 example for \"abc\"; cross-checked with node:crypto in a throwaway script" }
+  ]
+}
