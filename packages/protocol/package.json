@@ -6,14 +6,17 @@
   "description": "Zod schemas and message catalogue; the only place schemas are declared (§6.1, §6.2, §6.9).",
   "exports": {
     ".": {
+      "@wraith/source": "./src/index.ts",
       "types": "./dist/src/index.d.ts",
       "default": "./dist/src/index.js"
     },
     "./testing": {
+      "@wraith/source": "./src/testing/builders.ts",
       "types": "./dist/src/testing/builders.d.ts",
       "default": "./dist/src/testing/builders.js"
     },
     "./testing/arbitraries": {
+      "@wraith/source": "./src/testing/arbitraries.ts",
       "types": "./dist/src/testing/arbitraries.d.ts",
       "default": "./dist/src/testing/arbitraries.js"
     }

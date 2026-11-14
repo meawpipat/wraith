@@ -86,3 +86,21 @@ export const Diff = z.object({
   newText: z.string(),
 });
 export type Diff = z.infer<typeof Diff>;
+
+/** Unpadded base64url of 32 bytes (a P-256 coordinate). Defined once so the pattern appears once. */
+const P256_COORDINATE = /^[A-Za-z0-9_-]{43}$/;
+
+/**
+ * Public EC P-256 key (RFC 7517), the roster `signPub`. `x` and `y` are 43 characters each
+ * (32 bytes as unpadded base64url). Never carries private material: `d` and any other member
+ * is rejected.
+ */
+export const JWK = z
+  .object({
+    kty: z.literal("EC"),
+    crv: z.literal("P-256"),
+    x: z.string().regex(P256_COORDINATE),
+    y: z.string().regex(P256_COORDINATE),
+  })
+  .strict();
+export type JWK = z.infer<typeof JWK>;

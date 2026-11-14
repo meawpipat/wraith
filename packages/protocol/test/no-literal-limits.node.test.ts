@@ -25,6 +25,12 @@ const ALLOWLIST: readonly { file: string; call: string; reason: string }[] = [
   { file: "base.ts", call: "{26}", reason: "ULID is exactly 26 Crockford base32 characters (R4)" },
   { file: "shapes.ts", call: "{64}", reason: "SHA-256 is exactly 64 hex characters" },
   { file: "shapes.ts", call: "{0,2}", reason: "base64 has at most 2 '=' padding characters" },
+  {
+    file: "shapes.ts",
+    call: "{43}",
+    reason:
+      "a P-256 coordinate is exactly 32 bytes = 43 base64url characters (RFC 7518 section 6.2.1.2), part of the JWK value language, not a separate limit",
+  },
   { file: "base.ts", call: "{0,31}", reason: IDENTIFIER_LANGUAGE },
   { file: "base.ts", call: "{0,63}", reason: IDENTIFIER_LANGUAGE },
   { file: "base.ts", call: "{0,199}", reason: IDENTIFIER_LANGUAGE },
