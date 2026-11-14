@@ -50,11 +50,53 @@ export interface JcsDepthVector extends JcsVectorBase {
   depth: number;
 }
 export type JcsVector = JcsNumberVector | JcsJsonVector | JcsDepthVector;
+/** Public JWK members only; the vectors file never holds a private value. */
+export interface KeyJwk {
+  kty: string;
+  crv: string;
+  x: string;
+  y: string;
+}
+export interface KeyValidVector {
+  id: string;
+  jwk: KeyJwk;
+  /** 33-byte compressed SEC1 point, lower-case hex. */
+  compressedHex: string;
+  /** SHA-256 of the 33 compressed bytes, lower-case hex. */
+  fingerprintHex: string;
+  source: string;
+}
+export interface KeyInvalidCompressedVector {
+  id: string;
+  compressedHex: string;
+  reason: string;
+  source: string;
+}
+export interface KeyInvalidJwkVector {
+  id: string;
+  /** Arbitrary JSON object (may carry members such as kid or a wrong kty). */
+  jwk: Record<string, unknown>;
+  /** When true the test adds a private member `d` itself; the file stores none. */
+  withD: boolean;
+  reason: string;
+  source: string;
+}
+/** Valid public key spelled with ignored members (use, key_ops, ext, alg). */
+export interface KeyIgnoredMembersVector extends KeyValidVector {
+  jwk: KeyJwk & Record<string, unknown>;
+}
+export interface KeyVectors {
+  valid: KeyValidVector[];
+  invalidCompressed: KeyInvalidCompressedVector[];
+  invalidJwk: KeyInvalidJwkVector[];
+  validIgnoredMembers: KeyIgnoredMembersVector[];
+}
 export interface KnownAnswers {
   version: number;
   base64url: Base64urlVectors;
   sha256: Sha256Vector[];
   jcs: JcsVector[];
+  keys: KeyVectors;
 }
 
 const HEX = /^(?:[0-9a-f]{2})*$/;
@@ -109,6 +151,65 @@ function parseJcsVector(e: Record<string, unknown>): JcsVector {
       throw new Error('known-answers.json: jcs "kind" must be "number", "json" or "depth"');
   }
 }
+function parseKeyJwk(v: unknown): KeyJwk & Record<string, unknown> {
+  if (!isRecord(v)) {
+    throw new Error('known-answers.json: "jwk" must be an object');
+  }
+  if ("d" in v) {
+    throw new Error('known-answers.json: "jwk" must not contain a private member');
+  }
+  return { ...v, kty: str(v, "kty"), crv: str(v, "crv"), x: str(v, "x"), y: str(v, "y") };
+}
+
+function parseKeyValid(e: Record<string, unknown>): KeyIgnoredMembersVector {
+  const compressedHex = hex(e, "compressedHex");
+  const fingerprintHex = hex(e, "fingerprintHex");
+  if (compressedHex.length !== 66 || fingerprintHex.length !== 64) {
+    throw new Error(
+      'known-answers.json: "compressedHex" must be 33 bytes and "fingerprintHex" 32 bytes',
+    );
+  }
+  return {
+    id: str(e, "id"),
+    jwk: parseKeyJwk(e.jwk),
+    compressedHex,
+    fingerprintHex,
+    source: str(e, "source"),
+  };
+}
+
+function parseKeys(raw: unknown): KeyVectors {
+  if (!isRecord(raw)) {
+    throw new Error('known-answers.json: "keys" must be an object');
+  }
+  const valid = list(raw.valid, "keys.valid").map(parseKeyValid);
+  const invalidCompressed = list(raw.invalidCompressed, "keys.invalidCompressed").map((e) => ({
+    id: str(e, "id"),
+    compressedHex: hex(e, "compressedHex"),
+    reason: str(e, "reason"),
+    source: str(e, "source"),
+  }));
+  const invalidJwk = list(raw.invalidJwk, "keys.invalidJwk").map((e) => {
+    if (!isRecord(e.jwk)) {
+      throw new Error('known-answers.json: "jwk" must be an object');
+    }
+    if ("d" in e.jwk) {
+      throw new Error('known-answers.json: "jwk" must not contain a private member');
+    }
+    return {
+      id: str(e, "id"),
+      jwk: e.jwk,
+      withD: e.withD === true,
+      reason: str(e, "reason"),
+      source: str(e, "source"),
+    };
+  });
+  const validIgnoredMembers = list(raw.validIgnoredMembers, "keys.validIgnoredMembers").map(
+    parseKeyValid,
+  );
+  return { valid, invalidCompressed, invalidJwk, validIgnoredMembers };
+}
+
 /** Hand-written shape guard (no zod). Throws with the offending field on a bad file. */
 export function parseKnownAnswers(raw: unknown): KnownAnswers {
   if (!isRecord(raw) || typeof raw.version !== "number") {
@@ -136,7 +237,8 @@ export function parseKnownAnswers(raw: unknown): KnownAnswers {
     source: str(e, "source"),
   }));
   const jcs = list(raw.jcs, "jcs").map(parseJcsVector);
-  return { version: raw.version, base64url: { valid, invalid }, sha256, jcs };
+  const keys = parseKeys(raw.keys);
+  return { version: raw.version, base64url: { valid, invalid }, sha256, jcs, keys };
 }
 
 const knownAnswers: KnownAnswers = parseKnownAnswers(vectors);
@@ -150,4 +252,8 @@ export function getSha256Vectors(): Sha256Vector[] {
 }
 export function getJcsVectors(): JcsVector[] {
   return knownAnswers.jcs;
+}
+
+export function getKeyVectors(): KeyVectors {
+  return knownAnswers.keys;
 }

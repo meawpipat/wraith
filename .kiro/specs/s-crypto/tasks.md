@@ -221,64 +221,64 @@ Not a checkbox task of this spec. Under spec `s-protocol`, before group 1 of thi
     - Design: "Build, resolution and ordering"
     - DoD: P0-D1 (supports)
 
-- [ ] 4. P-256 helpers and key handling (P0)
+- [x] 4. P-256 helpers and key handling (P0)
   - DoD: P0-D3 (supports: sign and verify need generation, import and export), P1-D6 (supports). Requirements: R5, R3.4. Design: "P-256 point helpers (`p256.ts`) and keys (`keys.ts`)", Properties 15 to 17.
   - Files owned: `packages/crypto/src/{p256,keys,index}.ts`, `fixtures/crypto/known-answers.json`, `packages/crypto/test/support/{vectors,keys}.ts`, `packages/crypto/test/{keys-flags,keys-vectors,keys-roundtrip,keys-import,keys-compressed}.test.ts`.
-  - [-] 4.1 Create `p256.ts`
+  - [x] 4.1 Create `p256.ts`
     - `isOnCurve` and `decompress` with `BigInt`, public data only (coordinates below the field prime, curve equation, square root by one modular exponentiation, parity from the prefix byte); curve constants from FIPS 186-4 / SEC 2 read at task time and verified by task 4.7, not copied from memory
     - Imports `bytes.ts` only; no private scalar, secret or signature input ever enters this module
     - _Requirements: R5.7, R5.13_
     - Design: "P-256 point helpers (`p256.ts`) and keys (`keys.ts`)" (On-curve check)
     - DoD: P0-D3 (supports)
-  - [ ] 4.2 Create `keys.ts`
+  - [x] 4.2 Create `keys.ts`
     - `generateKeyPair({extractablePrivate})` (default false; usages `sign` and `verify`), `exportPublicJwk` (exactly `kty`, `crv`, `x`, `y`; `wrong_key_type` for a non-public key), `exportPrivateJwk` (adds `d`; `key_not_extractable` before calling WebCrypto), `importPublicKey` and `importPrivateKey` (normalize, validate, import: plain record, `d` rules, only `kty`, `crv`, `x`, `y` plus ignored `use`, `key_ops`, `ext`, `alg`, any other member rejected, run the protocol `JWK` schema on the normalized four-member object, strict 32-byte coordinates, on-curve check, `importKey("jwk")` with only normalized members), `publicJwkOf` (drops `d`), `publicKeyToCompressed`, `publicKeyFromCompressed`, `keyFingerprint` (SHA-256 of the 33-byte compressed point), all failures `E_SCHEMA_INVALID` with a `FailReason`
     - `PrivateJwk` is a local type with a hand-written structural check, no zod; nothing is written to storage or logged
     - _Requirements: R5.1 to R5.14, R3.4, R1.2, R1.3_
     - Design: "P-256 point helpers (`p256.ts`) and keys (`keys.ts`)"
     - DoD: P0-D3 (supports)
-  - [ ] 4.3 Create the key pool support `test/support/keys.ts`
+  - [x] 4.3 Create the key pool support `test/support/keys.ts`
     - A pool of key pairs generated once per file, a fresh-pair helper, and the defect injectors for Property 16 (a `d` member, wrong `kty`, wrong `crv`, wrong-length coordinates, off-curve point, missing or non-string member, unsupported extra member); portable
     - _Requirements: R5.7, R5.8, R13.4_
     - Design: Testing Strategy (Generators, Keys)
     - DoD: P0-D3 (supports)
-  - [-] 4.4 Add the `keys` section to the vectors file and extend the vectors guard
+  - [x] 4.4 Add the `keys` section to the vectors file and extend the vectors guard
     - A Public_JWK, its 33-byte compressed point (hex) and its fingerprint (hex), plus a point with a wrong prefix and an off-curve compressed point as rejected inputs; values computed outside the package (a throwaway script using `node:crypto` ECDH compressed output and SHA-256, deleted after use, with the method recorded in `source`); no private key in the file
     - This task owns the edits of the vectors file and `test/support/vectors.ts` for group 4
     - _Requirements: R5.12, R5.13_
     - Design: "Known_Answer_Vectors", "P-256 point helpers" (constants verified by vectors)
     - DoD: P0-D3 (supports)
-  - [ ] 4.5 Export `keys` from `src/index.ts`
+  - [x] 4.5 Export `keys` from `src/index.ts`
     - Add key functions and types (`PrivateJwk`, `KeyPair`, `CryptoKeyHandle`) to the public exports; `p256` stays internal
     - This task owns the `index.ts` edit for group 4
     - _Requirements: R1.5_
     - Design: "Module layout" (`index.ts`)
     - DoD: P0-D1 (supports)
-  - [ ] 4.6 Write the key flag and export-shape tests
+  - [x] 4.6 Write the key flag and export-shape tests
     - `test/keys-flags.test.ts` in both projects: default private key non-extractable, the flag works, the public key is exportable in both cases, exporting a non-extractable private key throws `ProgrammerError`, the exported member sets are exact, `use`/`key_ops`/`ext`/`alg` do not change usages. These check the runtime behaviour assumed in the design on Node and Workers; if a runtime disagrees, record it and STOP for the owner (design reading R5.2)
     - _Requirements: R5.1, R5.2, R5.3, R5.4, R5.5, R5.6, R5.9_
     - Design: Testing Strategy (Key flags), "Readings of requirements that are hard as written" (R5.2)
     - DoD: P0-D3 (supports)
-  - [ ] 4.7 Write the key known-answer and curve-constant tests
+  - [x] 4.7 Write the key known-answer and curve-constant tests
     - `test/keys-vectors.test.ts`: the `keys` vectors (compressed form, fingerprint, rejected inputs); every generated public key passes `isOnCurve`; decompress then compress reproduces the vector
     - _Requirements: R5.12, R5.13, R5.7_
     - Design: "P-256 point helpers" (constants checked at task time)
     - DoD: P0-D3 (supports)
-  - [ ] 4.8 Write property test for key export and import
+  - [x] 4.8 Write property test for key export and import
     - **Property 15: Key export and import round trip**
     - **Validates: Requirements 5.3, 5.4, 5.10, 5.11**
     - Tag `Feature: s-crypto, Property 15: Key export and import round trip`; runs with `CRYPTO_PBT_RUNS`; a fresh key pair per run
     - DoD: P0-D3 (supports), P1-D6 (supports)
-  - [ ] 4.9 Write property test for import failure and ignored members
+  - [x] 4.9 Write property test for import failure and ignored members
     - **Property 16: Import fails closed and ignores optional members**
     - **Validates: Requirements 3.4, 5.7, 5.8, 5.9**
     - Tag `Feature: s-crypto, Property 16: Import fails closed and ignores optional members`; runs with `CRYPTO_PBT_RUNS`
     - DoD: P0-D3 (supports), P1-D6 (supports)
-  - [ ] 4.10 Write property test for compressed points and the fingerprint
+  - [x] 4.10 Write property test for compressed points and the fingerprint
     - **Property 17: Compressed point conversions and fingerprint**
     - **Validates: Requirements 5.12, 5.13**
     - Tag `Feature: s-crypto, Property 17: Compressed point conversions and fingerprint`; runs with `CRYPTO_PBT_RUNS`
     - DoD: P0-D3 (supports), P1-D6 (supports)
-  - [ ] 4.11 Run the group verification (group 4)
+  - [x] 4.11 Run the group verification (group 4)
     - Run `pnpm -r test`, `pnpm -r build`, `pnpm typecheck`, `pnpm --filter @wraith/crypto check` and the Biome check for `packages/crypto`; all clean; list the files for the commit
     - _Requirements: R5.14_
     - Design: "Build, resolution and ordering"
@@ -287,7 +287,7 @@ Not a checkbox task of this spec. Under spec `s-protocol`, before group 1 of thi
 - [ ] 5. Scope bytes, sign, verify, requestHash and the P0-D3 properties (P0)
   - DoD: P0-D3 (sign then verify, mutate any value, byte and signature at 1,000 runs), PBT #6 crypto part (P1-D6 supports), P0-D1 (supports). Requirements: R3, R7, R8, R9, R13.4 to R13.11, R13.13, R13.15. Design: "Signing and verification", "`requestHash`", "`scopeBytes`", Properties 5 to 14.
   - Files owned: `packages/crypto/src/{scope-bytes,sign,request-hash,index}.ts`, `fixtures/crypto/known-answers.json`, `packages/crypto/test/support/{vectors,envelopes}.ts`, `packages/crypto/test/{vectors-signature,arbitraries-complete,failure-model,sign-verify,mutate-value,mutate-bytes,mutate-signature,outside-scope,wrong-key,verify-never-throws,failures-content-free,request-hash,jcs-rejects}.test.ts`, `packages/crypto/test/{verify-order,verify-no-webcrypto}.node.test.ts`, `docs/PHASE-STATUS.md` (P0-D3 row only).
-  - [ ] 5.1 Create `scope-bytes.ts`
+  - [-] 5.1 Create `scope-bytes.ts`
     - `scopeBytes(input)` calls `signatureScope(input)` of the protocol package and canonicalizes the result; `ProgrammerError("missing_body")` when `body` is `undefined`; the only place a scope is canonicalized
     - _Requirements: R7.1, R7.2, R7.3, R7.6, R9.2, R8.3_
     - Design: "`scopeBytes` (`scope-bytes.ts`)", "Sign, verify and requestHash data flow"
@@ -309,7 +309,7 @@ Not a checkbox task of this spec. Under spec `s-protocol`, before group 1 of thi
     - _Requirements: R1.5_
     - Design: "Module layout" (`index.ts`)
     - DoD: P0-D1 (supports)
-  - [ ] 5.5 Add the `requestHash` and `signature` sections to the vectors file and extend the vectors guard
+  - [-] 5.5 Add the `requestHash` and `signature` sections to the vectors file and extend the vectors guard
     - `requestHash`: a hand-written `approval.request` envelope (it need not pass `parseRaw` until S-protocol adds the type), its Canonical_Bytes (hex), digest (hex) and Request_Hash, computed outside the package with a throwaway script that must NOT import `@wraith/crypto` (the package under test); the canonical bytes come from `test/support/jcs-reference.ts` (task 3.2) or from hand-written JSON text; the script is deleted after use and not committed; the method is recorded in the vector's `source` field
     - `signature`: a Public_JWK, an envelope, a `sig.value` and `expected: true`, plus two negative variants (one changed byte of the envelope, one changed signature bit) with `expected: false`; produced once by a throwaway script that must NOT import `@wraith/crypto`: it signs with `node:crypto` (ECDSA P-256, SHA-256, `dsaEncoding: "ieee-p1363"` so the signature is the raw 64-byte r||s) over canonical bytes taken from `test/support/jcs-reference.ts` (task 3.2) or from hand-written JSON text, using an ephemeral key that is discarded; the script is deleted after use and not committed; the method is recorded in the vector's `source` field; so the file contains no private key and passes the future `secret-scan` hook
     - This task owns the edits of the vectors file and `test/support/vectors.ts` for group 5

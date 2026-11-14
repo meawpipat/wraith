@@ -399,6 +399,11 @@
         "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
         "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
         "timestamp": 1794632535950
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794633062846
       }
     ],
     "4.4 Add the `keys` section to the vectors file and extend the vectors guard": [
@@ -406,6 +411,140 @@
         "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
         "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
         "timestamp": 1794632536061
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794633062959
+      }
+    ],
+    "4.2 Create `keys.ts`": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794633063322
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794633222562
+      }
+    ],
+    "4.3 Create the key pool support `test/support/keys.ts`": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794633222711
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794633329224
+      }
+    ],
+    "4.5 Export `keys` from `src/index.ts`": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794633222761
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794633330526
+      }
+    ],
+    "4.6 Write the key flag and export-shape tests": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794633331155
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794634178881
+      }
+    ],
+    "4.7 Write the key known-answer and curve-constant tests": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794633331810
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794634179003
+      }
+    ],
+    "4.8 Write property test for key export and import": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794633332860
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794634179289
+      }
+    ],
+    "4.9 Write property test for import failure and ignored members": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794633333505
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794634180282
+      }
+    ],
+    "4.10 Write property test for compressed points and the fingerprint": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794633334069
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794634181284
+      }
+    ],
+    "4.11 Run the group verification (group 4)": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794634181722
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794635478167
+      }
+    ],
+    "4. P-256 helpers and key handling (P0)": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794635478205
+      }
+    ],
+    "5.1 Create `scope-bytes.ts`": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794635479134
+      }
+    ],
+    "5.5 Add the `requestHash` and `signature` sections to the vectors file and extend the vectors guard": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794635512728
       }
     ]
   }
