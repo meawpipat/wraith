@@ -284,139 +284,139 @@ Not a checkbox task of this spec. Under spec `s-protocol`, before group 1 of thi
     - Design: "Build, resolution and ordering"
     - DoD: P0-D1 (supports)
 
-- [ ] 5. Scope bytes, sign, verify, requestHash and the P0-D3 properties (P0)
+- [x] 5. Scope bytes, sign, verify, requestHash and the P0-D3 properties (P0)
   - DoD: P0-D3 (sign then verify, mutate any value, byte and signature at 1,000 runs), PBT #6 crypto part (P1-D6 supports), P0-D1 (supports). Requirements: R3, R7, R8, R9, R13.4 to R13.11, R13.13, R13.15. Design: "Signing and verification", "`requestHash`", "`scopeBytes`", Properties 5 to 14.
   - Files owned: `packages/crypto/src/{scope-bytes,sign,request-hash,index}.ts`, `fixtures/crypto/known-answers.json`, `packages/crypto/test/support/{vectors,envelopes}.ts`, `packages/crypto/test/{vectors-signature,arbitraries-complete,failure-model,sign-verify,mutate-value,mutate-bytes,mutate-signature,outside-scope,wrong-key,verify-never-throws,failures-content-free,request-hash,jcs-rejects}.test.ts`, `packages/crypto/test/{verify-order,verify-no-webcrypto}.node.test.ts`, `docs/PHASE-STATUS.md` (P0-D3 row only).
-  - [-] 5.1 Create `scope-bytes.ts`
+  - [x] 5.1 Create `scope-bytes.ts`
     - `scopeBytes(input)` calls `signatureScope(input)` of the protocol package and canonicalizes the result; `ProgrammerError("missing_body")` when `body` is `undefined`; the only place a scope is canonicalized
     - _Requirements: R7.1, R7.2, R7.3, R7.6, R9.2, R8.3_
     - Design: "`scopeBytes` (`scope-bytes.ts`)", "Sign, verify and requestHash data flow"
     - DoD: P0-D3
-  - [ ] 5.2 Create `sign.ts`
+  - [x] 5.2 Create `sign.ts`
     - `signBytes` (ECDSA P-256 SHA-256, requires 64 bytes, `webcrypto_failed` with fixed message), `sign` (returns `{by, alg: "ES256", value}`; `by` is only copied; no schema validation; no mutation of the envelope), `verifyBytes` and `verify` as one `return failClosed(...)` expression each: shape guards read `sig.alg` and `sig.value` only, `alg !== "ES256"` and `v !== 1` return `false` before any WebCrypto call, signature decodes to exactly 64 bytes, key resolved by shape (a plain record is a Public_JWK imported via `importPublicKey`; anything else must be a `public` ECDSA P-256 handle with the `verify` usage), then `scopeBytes` and `verifyBytes`
     - The doc comment of `verify` states the Signed_Member rule (frames parsed with `parseRaw` are verified with `parsed.signed`) and that `true` means nothing about freshness, roster or authorization; no caching of keys; no roster, replay or `sig.by` decision
     - _Requirements: R7.1 to R7.5, R7.7 to R7.9, R8.1 to R8.14, R3.1 to R3.3_
     - Design: "Signing and verification (`sign.ts`)"
     - DoD: P0-D3
-  - [ ] 5.3 Create `request-hash.ts`
+  - [x] 5.3 Create `request-hash.ts`
     - `requestHash(input)` is `sha256Base64Url(scopeBytes(input))` (no `meta.type` check); `requestHashEquals(a, b)` decodes both with the strict decoder, requires 32 bytes each, compares with `equalBytesFixed`, returns `false` for anything malformed and never throws (own try/catch)
     - _Requirements: R9.1 to R9.8_
     - Design: "`requestHash` (`request-hash.ts`)"
     - DoD: P0-D3 (supports), P1-D6 (supports; PBT #6)
-  - [ ] 5.4 Export sign, verify and requestHash from `src/index.ts`
+  - [x] 5.4 Export sign, verify and requestHash from `src/index.ts`
     - Add `scopeBytes` only if design.md lists it as public; export `sign`, `verify`, `signBytes`, `verifyBytes`, `requestHash`, `requestHashEquals`
     - This task owns the `index.ts` edit for group 5
     - _Requirements: R1.5_
     - Design: "Module layout" (`index.ts`)
     - DoD: P0-D1 (supports)
-  - [-] 5.5 Add the `requestHash` and `signature` sections to the vectors file and extend the vectors guard
+  - [x] 5.5 Add the `requestHash` and `signature` sections to the vectors file and extend the vectors guard
     - `requestHash`: a hand-written `approval.request` envelope (it need not pass `parseRaw` until S-protocol adds the type), its Canonical_Bytes (hex), digest (hex) and Request_Hash, computed outside the package with a throwaway script that must NOT import `@wraith/crypto` (the package under test); the canonical bytes come from `test/support/jcs-reference.ts` (task 3.2) or from hand-written JSON text; the script is deleted after use and not committed; the method is recorded in the vector's `source` field
     - `signature`: a Public_JWK, an envelope, a `sig.value` and `expected: true`, plus two negative variants (one changed byte of the envelope, one changed signature bit) with `expected: false`; produced once by a throwaway script that must NOT import `@wraith/crypto`: it signs with `node:crypto` (ECDSA P-256, SHA-256, `dsaEncoding: "ieee-p1363"` so the signature is the raw 64-byte r||s) over canonical bytes taken from `test/support/jcs-reference.ts` (task 3.2) or from hand-written JSON text, using an ephemeral key that is discarded; the script is deleted after use and not committed; the method is recorded in the vector's `source` field; so the file contains no private key and passes the future `secret-scan` hook
     - This task owns the edits of the vectors file and `test/support/vectors.ts` for group 5
     - _Requirements: R9.9, R13.15_
     - Design: "Known_Answer_Vectors" (`requestHash`, `signature`)
     - DoD: P0-D3, P0-D6 (supports: the file must pass the `secret-scan` hook owned by the other P0 hook specs)
-  - [ ] 5.6 Create the signed-envelope test support `test/support/envelopes.ts`
+  - [x] 5.6 Create the signed-envelope test support `test/support/envelopes.ts`
     - Builds, per `MESSAGE_TYPES` entry, a signed envelope from `ENVELOPE_ARBITRARIES` and `validRawEnvelopeArb` of `@wraith/protocol/testing/arbitraries` with the placeholder `sig` replaced by a real signature; the mutation generator (choose a node of the `{meta, body}` tree by an index arbitrary, then a mutation kind: changed leaf, added, removed or renamed member, changed, added or removed array element, type change) with the precondition that the canonical bytes of the mutated value differ; a recording proxy that logs which top-level members are read; the type list is read from `MESSAGE_TYPES`, never hard-coded
     - Declares no message shape
     - _Requirements: R13.4, R13.5, R13.13_
     - Design: Testing Strategy (Generators)
     - DoD: P0-D3
-  - [ ] 5.7 Write the known-answer tests for `requestHash` and the signature vector
+  - [x] 5.7 Write the known-answer tests for `requestHash` and the signature vector
     - `test/vectors-signature.test.ts`: the `requestHash` vector (bytes, digest and hash), and the `signature` vector verifies `true` and both negative variants verify `false`; portable
     - _Requirements: R9.9, R13.15_
     - Design: "Unit and example tests"
     - DoD: P0-D3
-  - [ ] 5.8 Write the arbitrary completeness test
+  - [x] 5.8 Write the arbitrary completeness test
     - `test/arbitraries-complete.test.ts`: fails if `ENVELOPE_ARBITRARIES` lacks a key of `MESSAGE_TYPES`, so a new protocol type cannot be silently skipped (coverage is the 8 registry types today and grows as S-protocol P1 lands)
     - _Requirements: R13.4, R13.13_
     - Design: Testing Strategy (Generators)
     - DoD: P0-D3
-  - [ ] 5.9 Write the failure-model table test
+  - [x] 5.9 Write the failure-model table test
     - `test/failure-model.test.ts`: feeds `verify`, `verifyBytes` and `requestHashEquals` each input of R3.8 (`undefined`, `null`, a number, a string, an empty object, an array, a cyclic object, a scope with `meta` missing, a scope with a `bigint`, a non-string signature, signatures of 63 and 65 decoded bytes, a padded signature, a public key with `d`, a key on another curve, a key with a missing `x`) and asserts `false` and no exception; the HMAC and payload verifiers are added in 12.1
     - Required: direct evidence for R3.8 (hostile inputs return false)
     - _Requirements: R3.1, R3.2, R3.8, R8.13_
     - Design: Testing Strategy (Failure-model table)
     - DoD: P0-D3
-  - [ ] 5.10 Write property test for sign then verify
+  - [x] 5.10 Write property test for sign then verify
     - **Property 6: Sign then verify holds for every message type**
     - **Validates: Requirements 7.1, 7.4, 7.8, 7.9, 7.10, 8.1, 8.2, 13.4**
     - One property per `MESSAGE_TYPES` entry (fallback decided after measuring: one property over `fc.constantFrom(...MESSAGE_TYPES)` plus a per-type coverage assertion); fresh key pair per run; public key as a JWK and as an imported handle; after `JSON.stringify` and `parseRaw` with `parsed.signed`; an extra stripped body member verifies with `parsed.signed` and not with `parsed.envelope`
     - Tag `Feature: s-crypto, Property 6: Sign then verify holds for every message type`; runs with `CRYPTO_PBT_RUNS`
     - DoD: P0-D3, P1-D6 (supports; PBT #6)
-  - [ ] 5.11 Write property test for mutating any value
+  - [x] 5.11 Write property test for mutating any value
     - **Property 7: Mutating any value of meta or body is rejected**
     - **Validates: Requirements 8.4, 13.5**
     - Tag `Feature: s-crypto, Property 7: Mutating any value of meta or body is rejected`; runs with `CRYPTO_PBT_RUNS`
     - DoD: P0-D3, P1-D6 (supports; PBT #6)
-  - [ ] 5.12 Write property test for mutating any byte
+  - [x] 5.12 Write property test for mutating any byte
     - **Property 8: Mutating any byte is rejected**
     - **Validates: Requirements 7.7, 8.10, 13.6**
     - Tag `Feature: s-crypto, Property 8: Mutating any byte is rejected`; runs with `CRYPTO_PBT_RUNS`; a fresh key pair per run
     - DoD: P0-D3, P1-D6 (supports; PBT #6)
-  - [ ] 5.13 Write property test for mutating the signature
+  - [x] 5.13 Write property test for mutating the signature
     - **Property 9: Mutating the signature is rejected**
     - **Validates: Requirements 8.5, 13.7**
     - Tag `Feature: s-crypto, Property 9: Mutating the signature is rejected`; runs with `CRYPTO_PBT_RUNS`
     - DoD: P0-D3, P1-D6 (supports; PBT #6)
-  - [ ] 5.14 Write property test for fields outside the signature scope
+  - [x] 5.14 Write property test for fields outside the signature scope
     - **Property 10: Fields outside the signature scope have no effect**
     - **Validates: Requirements 7.2, 7.3, 8.3, 8.8, 9.4, 13.8**
     - Includes the recording-proxy clause: only `v`, `meta` and `body` are read by `sign`, `verify` and `requestHash`
     - Tag `Feature: s-crypto, Property 10: Fields outside the signature scope have no effect`; runs with `CRYPTO_PBT_RUNS`
     - DoD: P0-D3, P1-D6 (supports; PBT #6, SI-4)
-  - [ ] 5.15 Write property test for wrong key, wrong version and wrong algorithm
+  - [x] 5.15 Write property test for wrong key, wrong version and wrong algorithm
     - **Property 11: Wrong key, wrong version and wrong algorithm are rejected**
     - **Validates: Requirements 8.6, 8.7, 8.9, 13.9**
     - Tag `Feature: s-crypto, Property 11: Wrong key, wrong version and wrong algorithm are rejected`; runs with `CRYPTO_PBT_RUNS`
     - DoD: P0-D3
-  - [ ] 5.16 Write property test that verification never throws
+  - [x] 5.16 Write property test that verification never throws
     - **Property 12: Verification never throws**
     - **Validates: Requirements 3.1, 3.2, 3.3, 3.8, 8.13, 13.10**
     - Covers `verify`, `verifyBytes` and `requestHashEquals` with `fc.anything` (bigint, date, map, set, typed array, sparse array, null-prototype and boxed values enabled) plus the hostile generators; the HMAC, pairing and payload verifiers are added in 12.1
     - Tag `Feature: s-crypto, Property 12: Verification never throws`; runs with `CRYPTO_PBT_RUNS`
     - DoD: P0-D3
-  - [ ] 5.17 Write the Property 12 variant without WebCrypto (node-only)
+  - [x] 5.17 Write the Property 12 variant without WebCrypto (node-only)
     - **Property 12: Verification never throws**
     - **Validates: Requirements 3.3, 13.10**
     - `test/verify-no-webcrypto.node.test.ts`: removes `globalThis.crypto`, asserts every verifier resolves to `false`, restores it in `afterEach`; same tag as 5.16 plus `(no WebCrypto)`; runs with `CRYPTO_PBT_RUNS`
     - DoD: P0-D3
-  - [ ] 5.18 Write property test that failures never contain content
+  - [x] 5.18 Write property test that failures never contain content
     - **Property 13: Failures never contain content**
     - **Validates: Requirements 2.9, 3.6, 11.12**
     - Places marker strings in keys, signatures, payload fields and Non_JSON_Values and asserts neither the thrown `ProgrammerError`, the returned `CryptoFailure` nor their serialization contains the marker; this task covers the P0 functions, the secret clause (11.12) is added in 12.1
     - Tag `Feature: s-crypto, Property 13: Failures never contain content`; runs with `CRYPTO_PBT_RUNS`
     - DoD: P0-D3 (supports), P1-D6 (supports)
-  - [ ] 5.19 Write property test for requestHash
+  - [x] 5.19 Write property test for requestHash
     - **Property 14: requestHash binds the signed bytes**
     - **Validates: Requirements 9.1, 9.2, 9.3, 9.5, 9.6, 9.8, 13.11**
     - Loops over `MESSAGE_TYPES`; typed envelope and Signed_Member give the same 43-character value; `requestHashEquals` is `true` exactly for equal valid encodings
     - Tag `Feature: s-crypto, Property 14: requestHash binds the signed bytes`; runs with `CRYPTO_PBT_RUNS`
     - DoD: P0-D3 (supports), P1-D6 (supports; PBT #6)
-  - [ ] 5.20 Extend the Property 5 test to scope bytes, sign and requestHash
+  - [x] 5.20 Extend the Property 5 test to scope bytes, sign and requestHash
     - **Property 5: JCS rejects every Non_JSON_Value at any depth**
     - **Validates: Requirements 3.5, 7.6, 9.7**
     - Edit `test/jcs-rejects.test.ts` (owned by 3.10): a scope with a Non_JSON_Value or without `body` makes `sign` and `requestHash` throw `ProgrammerError`
     - Tag unchanged; runs with `CRYPTO_PBT_RUNS`
     - DoD: P0-D3 (supports)
-  - [ ] 5.21 Write the order-of-checks test (node-only)
+  - [x] 5.21 Write the order-of-checks test (node-only)
     - `test/verify-order.node.test.ts`: with `crypto.subtle.verify` replaced by a counting stub, `verify` with a wrong `alg` or `v !== 1` returns `false` with zero calls; the stub is restored in `afterEach`
     - _Requirements: R8.6, R8.7_
     - Design: Testing Strategy (Order-of-checks)
     - DoD: P0-D3 (supports)
-  - [ ] 5.22 Update `docs/PHASE-STATUS.md` for P0-D3
+  - [x] 5.22 Update `docs/PHASE-STATUS.md` for P0-D3
     - Set the P0-D3 row to `pass` only if every property of group 5 and the round trip passed at 1,000 runs in the `node` project in the group-5 verification; evidence text: the command (`pnpm --filter @wraith/crypto test`), `CRYPTO_PBT_RUNS = 1000` in `packages/crypto/test/config.ts`, the property numbers 6 to 9 and the registry types covered (count read from `MESSAGE_TYPES`), vitest and fast-check versions, and the date; otherwise leave `todo` and write the reason
     - Edit only the P0-D3 row; the P0-D2 row is 8.5
     - _Requirements: R13.17, R14.7_
     - Design: "Mapping to Definition of Done items"
     - DoD: P0-D3
-  - [ ] 5.23 Run the group verification (group 5)
+  - [x] 5.23 Run the group verification (group 5)
     - Run `pnpm -r test`, `pnpm -r build`, `pnpm typecheck`, `pnpm --filter @wraith/crypto check` and the Biome check for `packages/crypto`; all clean; record the slowest property and the key generation cost; list the files for the commit
     - _Requirements: R13.17_
     - Design: "Build, resolution and ordering", Testing Strategy (Generators)
     - DoD: P0-D1 (supports), P0-D3
 
-- [ ] 6. Checkpoint - P0-D3 properties pass
+- [-] 6. Checkpoint - P0-D3 properties pass
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 7. Boundary check and source-rule scans (P0)

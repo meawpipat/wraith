@@ -1,5 +1,14 @@
 {
-  "pbtResults": {},
+  "pbtResults": {
+    "5.12 Write property test for mutating any byte": {
+      "status": "passed",
+      "lastRunTimestamp": 1794708744927
+    },
+    "5.19 Write property test for requestHash": {
+      "status": "passed",
+      "lastRunTimestamp": 1794712398871
+    }
+  },
   "executionHistory": {
     "1.1 Verify the S-protocol prerequisite (precondition step, no file changes)": [
       {
@@ -538,6 +547,11 @@
         "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
         "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
         "timestamp": 1794635479134
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794651420750
       }
     ],
     "5.5 Add the `requestHash` and `signature` sections to the vectors file and extend the vectors guard": [
@@ -545,6 +559,277 @@
         "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
         "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
         "timestamp": 1794635512728
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794651420912
+      }
+    ],
+    "5.2 Create `sign.ts`": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794651421671
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794653250744
+      }
+    ],
+    "5.3 Create `request-hash.ts`": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794651422000
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794653250867
+      }
+    ],
+    "5.4 Export sign, verify and requestHash from `src/index.ts`": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794653250949
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794665070313
+      }
+    ],
+    "5.6 Create the signed-envelope test support `test/support/envelopes.ts`": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794653251738
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794665070439
+      }
+    ],
+    "5.7 Write the known-answer tests for `requestHash` and the signature vector": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794665070561
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794708485266
+      }
+    ],
+    "5.8 Write the arbitrary completeness test": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794665071355
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794708485953
+      }
+    ],
+    "5.9 Write the failure-model table test": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794665072330
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794708486513
+      }
+    ],
+    "5.10 Write property test for sign then verify": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794665073338
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794708487293
+      }
+    ],
+    "5.11 Write property test for mutating any value": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794665074041
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794708487841
+      }
+    ],
+    "5.12 Write property test for mutating any byte": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794708492807
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794709759759
+      }
+    ],
+    "5.13 Write property test for mutating the signature": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794708493582
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794709759853
+      }
+    ],
+    "5.14 Write property test for fields outside the signature scope": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794708494117
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794709760136
+      }
+    ],
+    "5.15 Write property test for wrong key, wrong version and wrong algorithm": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794708494978
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794709760917
+      }
+    ],
+    "5.16 Write property test that verification never throws": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794708495352
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794709761340
+      }
+    ],
+    "5.17 Write the Property 12 variant without WebCrypto (node-only)": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794709765774
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794712989581
+      }
+    ],
+    "5.18 Write property test that failures never contain content": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794709766515
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794712989801
+      }
+    ],
+    "5.19 Write property test for requestHash": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794709767073
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794712990365
+      }
+    ],
+    "5.20 Extend the Property 5 test to scope bytes, sign and requestHash": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794709767871
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794712991408
+      }
+    ],
+    "5.21 Write the order-of-checks test (node-only)": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794709768336
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794712991969
+      }
+    ],
+    "5.22 Update `docs/PHASE-STATUS.md` for P0-D3": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794712997509
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794732269843
+      }
+    ],
+    "5.23 Run the group verification (group 5)": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794732274476
+      },
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794735467124
+      }
+    ],
+    "5. Scope bytes, sign, verify, requestHash and the P0-D3 properties (P0)": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794735467287
+      }
+    ],
+    "6. Checkpoint - P0-D3 properties pass": [
+      {
+        "executionId": "2c94aed2-5af7-43a8-a3e3-2e661be4aeb0",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794735485712
       }
     ]
   }

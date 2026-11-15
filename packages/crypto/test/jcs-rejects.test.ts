@@ -1,9 +1,12 @@
 // Feature: s-crypto, Property 5: JCS rejects every Non_JSON_Value at any depth
-// **Validates: Requirements 3.5, 6.6, 6.7, 6.9, 6.10** (7.6 and 9.7 are covered later by task 5.20)
+// **Validates: Requirements 3.5, 6.6, 6.7, 6.9, 6.10, 7.6, 9.7**
 import fc from "fast-check";
 import { describe, expect, it } from "vitest";
 import { ProgrammerError } from "../src/errors.js";
 import { canonicalize, canonicalizeBytes } from "../src/jcs.js";
+import { requestHash } from "../src/request-hash.js";
+import { scopeBytes } from "../src/scope-bytes.js";
+import { sign } from "../src/sign.js";
 import { pbt } from "./config.js";
 import {
   dagNotCycle,
@@ -16,6 +19,7 @@ import {
   substitutionArb,
 } from "./support/hostile.js";
 import { jsonValueArb } from "./support/json-arbitrary.js";
+import { getKeyPool, type PoolKey } from "./support/keys.js";
 
 const STABLE_REASONS: readonly string[] = [
   "non_json_value",
@@ -185,6 +189,77 @@ describe("Property 5: JCS rejects every Non_JSON_Value at any depth", () => {
         for (const run of [() => canonicalize(value), () => canonicalizeBytes(value)]) {
           const e = thrownBy(run);
           expect(e).not.toBeInstanceOf(RangeError);
+        }
+      }),
+    );
+  });
+});
+
+/** Run `fn`; return what it rejected with (undefined when it resolved). */
+async function rejectedBy(fn: () => Promise<unknown>): Promise<unknown> {
+  try {
+    await fn();
+  } catch (e) {
+    return e;
+  }
+  return undefined;
+}
+describe("Property 5 (scope clauses): scopeBytes, sign and requestHash reject Non_JSON_Value and missing body", () => {
+  it("a Non_JSON_Value in meta or body makes all three throw ProgrammerError; a clean scope does not", {
+    timeout: 120_000,
+  }, async () => {
+    const [{ pair }] = (await getKeyPool(1)) as [PoolKey];
+    await pbt(
+      fc.asyncProperty(
+        jsonValueArb(),
+        fc.nat(),
+        substitutionArb,
+        fc.boolean(),
+        async (json, choice, hostile, inMeta) => {
+          const { value, hostile: isHostile } = substituteNonJson(json, choice, hostile);
+          const scope = (
+            inMeta
+              ? { v: 1, meta: { type: "t", extra: value }, body: {} }
+              : { v: 1, meta: { type: "t" }, body: value }
+          ) as never;
+          const before = fingerprint(scope);
+          const e1 = thrownBy(() => scopeBytes(scope));
+          const e2 = await rejectedBy(() => sign(pair.privateKey, "m", scope));
+          const e3 = await rejectedBy(() => requestHash(scope));
+          if (isHostile && !inMeta && value === undefined) {
+            // a top-level undefined body is the missing-body case
+            for (const e of [e1, e2, e3]) {
+              expect(e).toBeInstanceOf(ProgrammerError);
+              expect((e as ProgrammerError).reason).toBe("missing_body");
+            }
+          } else if (isHostile) {
+            for (const e of [e1, e2, e3]) expectStableProgrammerError(e);
+          } else {
+            for (const e of [e1, e2, e3]) expect(e).toBeUndefined();
+          }
+          expect(fingerprint(scope)).toBe(before);
+        },
+      ),
+    );
+  });
+  it("a scope without body (absent or undefined) makes all three throw ProgrammerError missing_body", {
+    timeout: 120_000,
+  }, async () => {
+    const [{ pair }] = (await getKeyPool(1)) as [PoolKey];
+    await pbt(
+      fc.asyncProperty(jsonValueArb(), fc.boolean(), async (meta, explicitUndefined) => {
+        const scope = (
+          explicitUndefined ? { v: 1, meta, body: undefined } : { v: 1, meta }
+        ) as never;
+        const errors = [
+          thrownBy(() => scopeBytes(scope)),
+          await rejectedBy(() => sign(pair.privateKey, "m", scope)),
+          await rejectedBy(() => requestHash(scope)),
+        ];
+        for (const e of errors) {
+          expect(e).toBeInstanceOf(ProgrammerError);
+          expect((e as ProgrammerError).reason).toBe("missing_body");
+          expect((e as ProgrammerError).message).toMatch(MESSAGE_SHAPE);
         }
       }),
     );

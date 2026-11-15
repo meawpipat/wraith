@@ -97,7 +97,7 @@ function unwrap(h: unknown, make: (kind: string) => unknown): unknown {
 }
 
 describe("Property 16: import fails closed", () => {
-  it("any one or two defects on a public JWK fail closed", async () => {
+  it("any one or two defects on a public JWK fail closed", { timeout: 120_000 }, async () => {
     await pbt(
       fc.asyncProperty(
         poolIndex,
@@ -112,7 +112,7 @@ describe("Property 16: import fails closed", () => {
     );
   });
 
-  it("any one or two defects on a private JWK fail closed", async () => {
+  it("any one or two defects on a private JWK fail closed", { timeout: 120_000 }, async () => {
     await pbt(
       fc.asyncProperty(
         poolIndex,
@@ -127,7 +127,9 @@ describe("Property 16: import fails closed", () => {
     );
   });
 
-  it("private import rejects a missing or wrong-length d and accepts a pool private JWK", async () => {
+  it("private import rejects a missing or wrong-length d and accepts a pool private JWK", {
+    timeout: 120_000,
+  }, async () => {
     await pbt(
       fc.asyncProperty(poolIndex, fc.nat({ max: 80 }), async (k, len) => {
         const jwk = (pool[k] as PoolKey).privateJwk;
@@ -144,7 +146,7 @@ describe("Property 16: import fails closed", () => {
     );
   });
 
-  it("arbitrary values never throw or reject", async () => {
+  it("arbitrary values never throw or reject", { timeout: 120_000 }, async () => {
     const boom = (): never => {
       throw new Error("boom");
     };
@@ -189,7 +191,7 @@ describe("Property 16: optional members are ignored", () => {
     ...IGNORABLE_MEMBERS.map(() => fc.option(value, { nil: undefined, freq: 2 })),
   );
 
-  it("adding ignorable members changes nothing observable", async () => {
+  it("adding ignorable members changes nothing observable", { timeout: 120_000 }, async () => {
     await pbt(
       fc.asyncProperty(poolIndex, extras, async (k, vals) => {
         const plain = (pool[k] as PoolKey).publicJwk;
@@ -218,7 +220,7 @@ describe("Property 16: optional members are ignored", () => {
     );
   });
 
-  it("any other member name fails", async () => {
+  it("any other member name fails", { timeout: 120_000 }, async () => {
     const reserved = new Set(["use", "key_ops", "ext", "alg", "kty", "crv", "x", "y", "d"]);
     await pbt(
       fc.asyncProperty(

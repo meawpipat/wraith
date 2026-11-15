@@ -112,5 +112,423 @@
       {"id":"ignored-alg","jwk":{"kty":"EC","crv":"P-256","x":"OsKs58oW_wO-TJuyAorgQEniH_Es_ViRetnNC6_0skA","y":"H61P4oA7w4G0Tq6jHyXplTez0bTTevzE62KaxuPCy8o","alg":"ES256"},"compressedHex":"023ac2ace7ca16ff03be4c9bb2028ae04049e21ff12cfd58917ad9cd0baff4b240","fingerprintHex":"3863699c021185c8c9f6dbd4d7b73c35694164dc4fea5098fcb56c2fbbb8fa2a","source":"valid key (ephemeral-1) with ignored member(s); same compressed point and fingerprint as ephemeral-1; alg"},
       {"id":"ignored-all","jwk":{"kty":"EC","crv":"P-256","x":"OsKs58oW_wO-TJuyAorgQEniH_Es_ViRetnNC6_0skA","y":"H61P4oA7w4G0Tq6jHyXplTez0bTTevzE62KaxuPCy8o","use":"sig","key_ops":["verify"],"ext":true,"alg":"ES256"},"compressedHex":"023ac2ace7ca16ff03be4c9bb2028ae04049e21ff12cfd58917ad9cd0baff4b240","fingerprintHex":"3863699c021185c8c9f6dbd4d7b73c35694164dc4fea5098fcb56c2fbbb8fa2a","source":"valid key (ephemeral-1) with ignored member(s); same compressed point and fingerprint as ephemeral-1; all four"}
     ]
-  }
+  },
+  "requestHash": [
+    {
+      "id": "approval-request-1",
+      "envelope": {
+        "v": 1,
+        "meta": {
+          "id": "01HZZZZZZZZZZZZZZZZZZZZZZA",
+          "ts": 1767225600000,
+          "space": "space-placeholder",
+          "type": "approval.request",
+          "to": "devices",
+          "persist": true,
+          "bot": "01HZZZZZZZZZZZZZZZZZZZZZZB",
+          "epoch": 3
+        },
+        "body": {
+          "approvalId": "01HZZZZZZZZZZZZZZZZZZZZZZC",
+          "bot": "01HZZZZZZZZZZZZZZZZZZZZZZB",
+          "sessionId": "01HZZZZZZZZZZZZZZZZZZZZZZD",
+          "epoch": 3,
+          "turnOrigin": "user",
+          "requestKind": "tool",
+          "title": "Run tests",
+          "kind": "execute",
+          "detail": {
+            "command": "pnpm test"
+          },
+          "summary": "Run the test suite in the workspace",
+          "options": [
+            {
+              "optionId": "allow",
+              "name": "Allow once",
+              "kind": "allow_once"
+            },
+            {
+              "optionId": "reject",
+              "name": "Reject",
+              "kind": "reject_once"
+            }
+          ],
+          "expiresAt": 1767225900000
+        }
+      },
+      "canonicalHex": "7b22626f6479223a7b22617070726f76616c4964223a223031485a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a43222c22626f74223a223031485a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a42222c2264657461696c223a7b22636f6d6d616e64223a22706e706d2074657374227d2c2265706f6368223a332c22657870697265734174223a313736373232353930303030302c226b696e64223a2265786563757465222c226f7074696f6e73223a5b7b226b696e64223a22616c6c6f775f6f6e6365222c226e616d65223a22416c6c6f77206f6e6365222c226f7074696f6e4964223a22616c6c6f77227d2c7b226b696e64223a2272656a6563745f6f6e6365222c226e616d65223a2252656a656374222c226f7074696f6e4964223a2272656a656374227d5d2c22726571756573744b696e64223a22746f6f6c222c2273657373696f6e4964223a223031485a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a44222c2273756d6d617279223a2252756e20746865207465737420737569746520696e2074686520776f726b7370616365222c227469746c65223a2252756e207465737473222c227475726e4f726967696e223a2275736572227d2c226d657461223a7b22626f74223a223031485a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a42222c2265706f6368223a332c226964223a223031485a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a41222c2270657273697374223a747275652c227370616365223a2273706163652d706c616365686f6c646572222c22746f223a2264657669636573222c227473223a313736373232353630303030302c2274797065223a22617070726f76616c2e72657175657374227d2c2276223a317d",
+      "digestHex": "538909c4c6e1e512670e2f7c61e9e1d3bae99057c16166e707b7be3f5bc1053e",
+      "requestHash": "U4kJxMbh5RJnDi98Yenh07rpkFfBYWbnB7e-P1vBBT4",
+      "source": "hand-written approval.request envelope with placeholder ULIDs; canonical bytes = UTF-8 of test/support/jcs-reference.ts referenceCanonicalizeBytes({v,meta,body}) run in a throwaway script (no @wraith/crypto); digest = node:crypto createHash('sha256'); requestHash = base64url without padding of the digest"
+    }
+  ],
+  "signature": [
+    {
+      "id": "valid",
+      "jwk": {
+        "kty": "EC",
+        "crv": "P-256",
+        "x": "h-AbEA3J-ByUEThnqhv_-2Ywhll8iHZNMKfNRq0OdYY",
+        "y": "QzWr_eMzjnkfcvPEecShrsRNOKv0nIRGWt17lAr6hnc"
+      },
+      "envelope": {
+        "v": 1,
+        "meta": {
+          "id": "01HZZZZZZZZZZZZZZZZZZZZZZE",
+          "ts": 1767225600000,
+          "space": "space-placeholder",
+          "type": "approval.request",
+          "to": "devices",
+          "persist": true,
+          "bot": "01HZZZZZZZZZZZZZZZZZZZZZZB",
+          "epoch": 3
+        },
+        "body": {
+          "approvalId": "01HZZZZZZZZZZZZZZZZZZZZZZC",
+          "bot": "01HZZZZZZZZZZZZZZZZZZZZZZB",
+          "sessionId": "01HZZZZZZZZZZZZZZZZZZZZZZD",
+          "epoch": 3,
+          "turnOrigin": "user",
+          "requestKind": "tool",
+          "title": "Run tests",
+          "kind": "execute",
+          "detail": {
+            "command": "pnpm test"
+          },
+          "summary": "Run the test suite in the workspace",
+          "options": [
+            {
+              "optionId": "allow",
+              "name": "Allow once",
+              "kind": "allow_once"
+            },
+            {
+              "optionId": "reject",
+              "name": "Reject",
+              "kind": "reject_once"
+            }
+          ],
+          "expiresAt": 1767225900000
+        },
+        "sig": {
+          "by": "owner-placeholder",
+          "alg": "ES256",
+          "value": "CVJUxGKd78l8IKv6cGQ8ib4XY0e0TShz5vn7X6-0lTYqTbC9lAIZ600qTJKve0uN8OAgsxclhYfhsoZly7uhlw"
+        },
+        "relay": {
+          "seq": 7,
+          "recvTs": 1767225601000,
+          "from": "device-placeholder"
+        }
+      },
+      "expected": true,
+      "source": "ephemeral ECDSA P-256 key from node:crypto generateKeyPairSync, discarded after use (no private key stored); signed with node:crypto sign('sha256', ..., dsaEncoding 'ieee-p1363') over UTF-8 of test/support/jcs-reference.ts referenceCanonicalizeBytes({v,meta,body}) in a throwaway script (no @wraith/crypto), checked with crypto.verify before writing; unchanged envelope, carries relay and sig members that are outside the scope"
+    },
+    {
+      "id": "tampered-meta",
+      "jwk": {
+        "kty": "EC",
+        "crv": "P-256",
+        "x": "h-AbEA3J-ByUEThnqhv_-2Ywhll8iHZNMKfNRq0OdYY",
+        "y": "QzWr_eMzjnkfcvPEecShrsRNOKv0nIRGWt17lAr6hnc"
+      },
+      "envelope": {
+        "v": 1,
+        "meta": {
+          "id": "01HZZZZZZZZZZZZZZZZZZZZZZE",
+          "ts": 1767225600001,
+          "space": "space-placeholder",
+          "type": "approval.request",
+          "to": "devices",
+          "persist": true,
+          "bot": "01HZZZZZZZZZZZZZZZZZZZZZZB",
+          "epoch": 3
+        },
+        "body": {
+          "approvalId": "01HZZZZZZZZZZZZZZZZZZZZZZC",
+          "bot": "01HZZZZZZZZZZZZZZZZZZZZZZB",
+          "sessionId": "01HZZZZZZZZZZZZZZZZZZZZZZD",
+          "epoch": 3,
+          "turnOrigin": "user",
+          "requestKind": "tool",
+          "title": "Run tests",
+          "kind": "execute",
+          "detail": {
+            "command": "pnpm test"
+          },
+          "summary": "Run the test suite in the workspace",
+          "options": [
+            {
+              "optionId": "allow",
+              "name": "Allow once",
+              "kind": "allow_once"
+            },
+            {
+              "optionId": "reject",
+              "name": "Reject",
+              "kind": "reject_once"
+            }
+          ],
+          "expiresAt": 1767225900000
+        },
+        "sig": {
+          "by": "owner-placeholder",
+          "alg": "ES256",
+          "value": "CVJUxGKd78l8IKv6cGQ8ib4XY0e0TShz5vn7X6-0lTYqTbC9lAIZ600qTJKve0uN8OAgsxclhYfhsoZly7uhlw"
+        },
+        "relay": {
+          "seq": 7,
+          "recvTs": 1767225601000,
+          "from": "device-placeholder"
+        }
+      },
+      "expected": false,
+      "source": "ephemeral ECDSA P-256 key from node:crypto generateKeyPairSync, discarded after use (no private key stored); signed with node:crypto sign('sha256', ..., dsaEncoding 'ieee-p1363') over UTF-8 of test/support/jcs-reference.ts referenceCanonicalizeBytes({v,meta,body}) in a throwaway script (no @wraith/crypto), checked with crypto.verify before writing; meta.ts changed by one"
+    },
+    {
+      "id": "tampered-body",
+      "jwk": {
+        "kty": "EC",
+        "crv": "P-256",
+        "x": "h-AbEA3J-ByUEThnqhv_-2Ywhll8iHZNMKfNRq0OdYY",
+        "y": "QzWr_eMzjnkfcvPEecShrsRNOKv0nIRGWt17lAr6hnc"
+      },
+      "envelope": {
+        "v": 1,
+        "meta": {
+          "id": "01HZZZZZZZZZZZZZZZZZZZZZZE",
+          "ts": 1767225600000,
+          "space": "space-placeholder",
+          "type": "approval.request",
+          "to": "devices",
+          "persist": true,
+          "bot": "01HZZZZZZZZZZZZZZZZZZZZZZB",
+          "epoch": 3
+        },
+        "body": {
+          "approvalId": "01HZZZZZZZZZZZZZZZZZZZZZZC",
+          "bot": "01HZZZZZZZZZZZZZZZZZZZZZZB",
+          "sessionId": "01HZZZZZZZZZZZZZZZZZZZZZZD",
+          "epoch": 3,
+          "turnOrigin": "user",
+          "requestKind": "tool",
+          "title": "Run testz",
+          "kind": "execute",
+          "detail": {
+            "command": "pnpm test"
+          },
+          "summary": "Run the test suite in the workspace",
+          "options": [
+            {
+              "optionId": "allow",
+              "name": "Allow once",
+              "kind": "allow_once"
+            },
+            {
+              "optionId": "reject",
+              "name": "Reject",
+              "kind": "reject_once"
+            }
+          ],
+          "expiresAt": 1767225900000
+        },
+        "sig": {
+          "by": "owner-placeholder",
+          "alg": "ES256",
+          "value": "CVJUxGKd78l8IKv6cGQ8ib4XY0e0TShz5vn7X6-0lTYqTbC9lAIZ600qTJKve0uN8OAgsxclhYfhsoZly7uhlw"
+        },
+        "relay": {
+          "seq": 7,
+          "recvTs": 1767225601000,
+          "from": "device-placeholder"
+        }
+      },
+      "expected": false,
+      "source": "ephemeral ECDSA P-256 key from node:crypto generateKeyPairSync, discarded after use (no private key stored); signed with node:crypto sign('sha256', ..., dsaEncoding 'ieee-p1363') over UTF-8 of test/support/jcs-reference.ts referenceCanonicalizeBytes({v,meta,body}) in a throwaway script (no @wraith/crypto), checked with crypto.verify before writing; last character of body.title changed (s to z)"
+    },
+    {
+      "id": "tampered-signature",
+      "jwk": {
+        "kty": "EC",
+        "crv": "P-256",
+        "x": "h-AbEA3J-ByUEThnqhv_-2Ywhll8iHZNMKfNRq0OdYY",
+        "y": "QzWr_eMzjnkfcvPEecShrsRNOKv0nIRGWt17lAr6hnc"
+      },
+      "envelope": {
+        "v": 1,
+        "meta": {
+          "id": "01HZZZZZZZZZZZZZZZZZZZZZZE",
+          "ts": 1767225600000,
+          "space": "space-placeholder",
+          "type": "approval.request",
+          "to": "devices",
+          "persist": true,
+          "bot": "01HZZZZZZZZZZZZZZZZZZZZZZB",
+          "epoch": 3
+        },
+        "body": {
+          "approvalId": "01HZZZZZZZZZZZZZZZZZZZZZZC",
+          "bot": "01HZZZZZZZZZZZZZZZZZZZZZZB",
+          "sessionId": "01HZZZZZZZZZZZZZZZZZZZZZZD",
+          "epoch": 3,
+          "turnOrigin": "user",
+          "requestKind": "tool",
+          "title": "Run tests",
+          "kind": "execute",
+          "detail": {
+            "command": "pnpm test"
+          },
+          "summary": "Run the test suite in the workspace",
+          "options": [
+            {
+              "optionId": "allow",
+              "name": "Allow once",
+              "kind": "allow_once"
+            },
+            {
+              "optionId": "reject",
+              "name": "Reject",
+              "kind": "reject_once"
+            }
+          ],
+          "expiresAt": 1767225900000
+        },
+        "sig": {
+          "by": "owner-placeholder",
+          "alg": "ES256",
+          "value": "CVJUxGKd78l8IKr6cGQ8ib4XY0e0TShz5vn7X6-0lTYqTbC9lAIZ600qTJKve0uN8OAgsxclhYfhsoZly7uhlw"
+        },
+        "relay": {
+          "seq": 7,
+          "recvTs": 1767225601000,
+          "from": "device-placeholder"
+        }
+      },
+      "expected": false,
+      "source": "ephemeral ECDSA P-256 key from node:crypto generateKeyPairSync, discarded after use (no private key stored); signed with node:crypto sign('sha256', ..., dsaEncoding 'ieee-p1363') over UTF-8 of test/support/jcs-reference.ts referenceCanonicalizeBytes({v,meta,body}) in a throwaway script (no @wraith/crypto), checked with crypto.verify before writing; one bit flipped (byte 10, mask 0x01) in the 64-byte signature"
+    },
+    {
+      "id": "relay-changed",
+      "jwk": {
+        "kty": "EC",
+        "crv": "P-256",
+        "x": "h-AbEA3J-ByUEThnqhv_-2Ywhll8iHZNMKfNRq0OdYY",
+        "y": "QzWr_eMzjnkfcvPEecShrsRNOKv0nIRGWt17lAr6hnc"
+      },
+      "envelope": {
+        "v": 1,
+        "meta": {
+          "id": "01HZZZZZZZZZZZZZZZZZZZZZZE",
+          "ts": 1767225600000,
+          "space": "space-placeholder",
+          "type": "approval.request",
+          "to": "devices",
+          "persist": true,
+          "bot": "01HZZZZZZZZZZZZZZZZZZZZZZB",
+          "epoch": 3
+        },
+        "body": {
+          "approvalId": "01HZZZZZZZZZZZZZZZZZZZZZZC",
+          "bot": "01HZZZZZZZZZZZZZZZZZZZZZZB",
+          "sessionId": "01HZZZZZZZZZZZZZZZZZZZZZZD",
+          "epoch": 3,
+          "turnOrigin": "user",
+          "requestKind": "tool",
+          "title": "Run tests",
+          "kind": "execute",
+          "detail": {
+            "command": "pnpm test"
+          },
+          "summary": "Run the test suite in the workspace",
+          "options": [
+            {
+              "optionId": "allow",
+              "name": "Allow once",
+              "kind": "allow_once"
+            },
+            {
+              "optionId": "reject",
+              "name": "Reject",
+              "kind": "reject_once"
+            }
+          ],
+          "expiresAt": 1767225900000
+        },
+        "sig": {
+          "by": "owner-placeholder",
+          "alg": "ES256",
+          "value": "CVJUxGKd78l8IKv6cGQ8ib4XY0e0TShz5vn7X6-0lTYqTbC9lAIZ600qTJKve0uN8OAgsxclhYfhsoZly7uhlw"
+        },
+        "relay": {
+          "seq": 99,
+          "recvTs": 1767225609999,
+          "from": "other-placeholder",
+          "forwardDepth": 2
+        }
+      },
+      "expected": true,
+      "source": "ephemeral ECDSA P-256 key from node:crypto generateKeyPairSync, discarded after use (no private key stored); signed with node:crypto sign('sha256', ..., dsaEncoding 'ieee-p1363') over UTF-8 of test/support/jcs-reference.ts referenceCanonicalizeBytes({v,meta,body}) in a throwaway script (no @wraith/crypto), checked with crypto.verify before writing; only relay changed; relay is outside the signature scope"
+    },
+    {
+      "id": "sig-by-changed",
+      "jwk": {
+        "kty": "EC",
+        "crv": "P-256",
+        "x": "h-AbEA3J-ByUEThnqhv_-2Ywhll8iHZNMKfNRq0OdYY",
+        "y": "QzWr_eMzjnkfcvPEecShrsRNOKv0nIRGWt17lAr6hnc"
+      },
+      "envelope": {
+        "v": 1,
+        "meta": {
+          "id": "01HZZZZZZZZZZZZZZZZZZZZZZE",
+          "ts": 1767225600000,
+          "space": "space-placeholder",
+          "type": "approval.request",
+          "to": "devices",
+          "persist": true,
+          "bot": "01HZZZZZZZZZZZZZZZZZZZZZZB",
+          "epoch": 3
+        },
+        "body": {
+          "approvalId": "01HZZZZZZZZZZZZZZZZZZZZZZC",
+          "bot": "01HZZZZZZZZZZZZZZZZZZZZZZB",
+          "sessionId": "01HZZZZZZZZZZZZZZZZZZZZZZD",
+          "epoch": 3,
+          "turnOrigin": "user",
+          "requestKind": "tool",
+          "title": "Run tests",
+          "kind": "execute",
+          "detail": {
+            "command": "pnpm test"
+          },
+          "summary": "Run the test suite in the workspace",
+          "options": [
+            {
+              "optionId": "allow",
+              "name": "Allow once",
+              "kind": "allow_once"
+            },
+            {
+              "optionId": "reject",
+              "name": "Reject",
+              "kind": "reject_once"
+            }
+          ],
+          "expiresAt": 1767225900000
+        },
+        "sig": {
+          "by": "someone-else-placeholder",
+          "alg": "ES256",
+          "value": "CVJUxGKd78l8IKv6cGQ8ib4XY0e0TShz5vn7X6-0lTYqTbC9lAIZ600qTJKve0uN8OAgsxclhYfhsoZly7uhlw"
+        },
+        "relay": {
+          "seq": 7,
+          "recvTs": 1767225601000,
+          "from": "device-placeholder"
+        }
+      },
+      "expected": true,
+      "source": "ephemeral ECDSA P-256 key from node:crypto generateKeyPairSync, discarded after use (no private key stored); signed with node:crypto sign('sha256', ..., dsaEncoding 'ieee-p1363') over UTF-8 of test/support/jcs-reference.ts referenceCanonicalizeBytes({v,meta,body}) in a throwaway script (no @wraith/crypto), checked with crypto.verify before writing; only sig.by changed; sig.by is outside the signature scope"
+    }
+  ]
 }

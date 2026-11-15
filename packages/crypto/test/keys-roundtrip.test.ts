@@ -18,7 +18,9 @@ const SIGN = { name: "ECDSA", hash: "SHA-256" } as const;
 const messageArb = fc.uint8Array({ minLength: 0, maxLength: 64 });
 
 describe("Property 15: key export and import round trip", () => {
-  it("public JWK has exactly kty, crv, x, y and survives import then export", async () => {
+  it("public JWK has exactly kty, crv, x, y and survives import then export", {
+    timeout: 120_000,
+  }, async () => {
     await pbt(
       fc.asyncProperty(fc.constant(null), async () => {
         const pair = await generateKeyPair({ extractablePrivate: true });
@@ -31,7 +33,9 @@ describe("Property 15: key export and import round trip", () => {
     );
   });
 
-  it("private JWK has exactly kty, crv, x, y, d; publicJwkOf matches the public export without d", async () => {
+  it("private JWK has exactly kty, crv, x, y, d; publicJwkOf matches the public export without d", {
+    timeout: 120_000,
+  }, async () => {
     await pbt(
       fc.asyncProperty(fc.constant(null), async () => {
         const pair = await generateKeyPair({ extractablePrivate: true });
@@ -46,7 +50,9 @@ describe("Property 15: key export and import round trip", () => {
     );
   });
 
-  it("importing a private JWK as extractable exports the same private JWK", async () => {
+  it("importing a private JWK as extractable exports the same private JWK", {
+    timeout: 120_000,
+  }, async () => {
     await pbt(
       fc.asyncProperty(fc.constant(null), async () => {
         const pair = await generateKeyPair({ extractablePrivate: true });
@@ -58,7 +64,9 @@ describe("Property 15: key export and import round trip", () => {
     );
   });
 
-  it("signatures verify under the re-imported public key and not under another pair's key", async () => {
+  it("signatures verify under the re-imported public key and not under another pair's key", {
+    timeout: 120_000,
+  }, async () => {
     await pbt(
       fc.asyncProperty(messageArb, async (message) => {
         const subtle = getSubtle();

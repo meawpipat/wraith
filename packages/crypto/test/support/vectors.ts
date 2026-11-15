@@ -91,12 +91,35 @@ export interface KeyVectors {
   invalidJwk: KeyInvalidJwkVector[];
   validIgnoredMembers: KeyIgnoredMembersVector[];
 }
+/** Hand-written approval.request-shaped envelope; it need not pass parseRaw. */
+export interface RequestHashVector {
+  id: string;
+  envelope: Record<string, unknown>;
+  /** UTF-8 bytes of the JCS of {v, meta, body}, lower-case hex. */
+  canonicalHex: string;
+  /** SHA-256 of the canonical bytes, 32 bytes, lower-case hex. */
+  digestHex: string;
+  /** Base64url (no padding, 43 characters) of the digest. */
+  requestHash: string;
+  source: string;
+}
+export interface SignatureVector {
+  id: string;
+  /** Public JWK members only. */
+  jwk: KeyJwk;
+  /** Envelope with `sig` and `relay` members; the test reads `sig` from it. */
+  envelope: Record<string, unknown>;
+  expected: boolean;
+  source: string;
+}
 export interface KnownAnswers {
   version: number;
   base64url: Base64urlVectors;
   sha256: Sha256Vector[];
   jcs: JcsVector[];
   keys: KeyVectors;
+  requestHash: RequestHashVector[];
+  signature: SignatureVector[];
 }
 
 const HEX = /^(?:[0-9a-f]{2})*$/;
@@ -210,6 +233,49 @@ function parseKeys(raw: unknown): KeyVectors {
   return { valid, invalidCompressed, invalidJwk, validIgnoredMembers };
 }
 
+function parseEnvelope(v: unknown): Record<string, unknown> {
+  if (!isRecord(v)) {
+    throw new Error('known-answers.json: "envelope" must be an object');
+  }
+  if ("d" in v) {
+    throw new Error('known-answers.json: "envelope" must not contain a private member');
+  }
+  return v;
+}
+
+function parseRequestHash(e: Record<string, unknown>): RequestHashVector {
+  const digestHex = hex(e, "digestHex");
+  const requestHash = str(e, "requestHash");
+  if (digestHex.length !== 64) {
+    throw new Error('known-answers.json: "digestHex" must be 32 bytes');
+  }
+  if (!/^[A-Za-z0-9_-]{43}$/.test(requestHash)) {
+    throw new Error('known-answers.json: "requestHash" must be 43 base64url characters');
+  }
+  return {
+    id: str(e, "id"),
+    envelope: parseEnvelope(e.envelope),
+    canonicalHex: hex(e, "canonicalHex"),
+    digestHex,
+    requestHash,
+    source: str(e, "source"),
+  };
+}
+
+function parseSignature(e: Record<string, unknown>): SignatureVector {
+  if (typeof e.expected !== "boolean") {
+    throw new Error('known-answers.json: "expected" must be a boolean');
+  }
+  const { kty, crv, x, y } = parseKeyJwk(e.jwk);
+  return {
+    id: str(e, "id"),
+    jwk: { kty, crv, x, y },
+    envelope: parseEnvelope(e.envelope),
+    expected: e.expected,
+    source: str(e, "source"),
+  };
+}
+
 /** Hand-written shape guard (no zod). Throws with the offending field on a bad file. */
 export function parseKnownAnswers(raw: unknown): KnownAnswers {
   if (!isRecord(raw) || typeof raw.version !== "number") {
@@ -238,7 +304,17 @@ export function parseKnownAnswers(raw: unknown): KnownAnswers {
   }));
   const jcs = list(raw.jcs, "jcs").map(parseJcsVector);
   const keys = parseKeys(raw.keys);
-  return { version: raw.version, base64url: { valid, invalid }, sha256, jcs, keys };
+  const requestHash = list(raw.requestHash, "requestHash").map(parseRequestHash);
+  const signature = list(raw.signature, "signature").map(parseSignature);
+  return {
+    version: raw.version,
+    base64url: { valid, invalid },
+    sha256,
+    jcs,
+    keys,
+    requestHash,
+    signature,
+  };
 }
 
 const knownAnswers: KnownAnswers = parseKnownAnswers(vectors);
@@ -256,4 +332,12 @@ export function getJcsVectors(): JcsVector[] {
 
 export function getKeyVectors(): KeyVectors {
   return knownAnswers.keys;
+}
+
+export function getRequestHashVectors(): RequestHashVector[] {
+  return knownAnswers.requestHash;
+}
+
+export function getSignatureVectors(): SignatureVector[] {
+  return knownAnswers.signature;
 }
