@@ -422,31 +422,31 @@ Not a checkbox task of this spec. Under spec `s-protocol`, before group 1 of thi
 - [ ] 7. Boundary check and source-rule scans (P0)
   - DoD: P0-D1 (supports: the boundary check runs in `build`; CI is S-ops-packaging). Requirements: R2.2 to R2.7, R1.1, R1.3, R1.4, R3.1, R3.2, R4.7, R6.16. Design: "Boundary_Check", "Module dependency rules and diagram".
   - Files owned: `packages/crypto/scripts/check-boundaries.ts`, `packages/crypto/package.json` (scripts), `packages/crypto/test/{boundaries,source-rules,export-list}.node.test.ts`.
-  - [-] 7.1 Create `scripts/check-boundaries.ts` and wire it into `build` and `check`
+  - [x] 7.1 Create `scripts/check-boundaries.ts` and wire it into `build` and `check`
     - Thin wrapper that imports `checkSources` from `../../protocol/scripts/check-boundaries.ts` by relative path (import-safe), lists `src/**/*.ts` itself, applies its own dependency rule (`dependencies` may contain only `@wraith/protocol`), prefixes violations with the package name, and maps or hides the protocol requirement ids in messages; add it to the `build` and `check` scripts before `tsc`
     - Verify the two caveats at task time: `tsconfig.scripts.json` accepts the file outside the package directory, and the message wording. If either blocks, use the design fallback inside the same decision: a copy of the scanner with a test that fails when the copied functions differ from the protocol script; record the choice (8.6)
     - The script is Node-only tooling outside `src` and is imported by nothing in `src`
     - _Requirements: R2.4, R2.5, R2.6, R1.4_
     - Design: "Boundary_Check (R2.4 to R2.7)"
     - DoD: P0-D1 (supports)
-  - [ ] 7.2 Write `test/boundaries.node.test.ts`
+  - [x] 7.2 Write `test/boundaries.node.test.ts`
     - Runs the wrapper functions on a sample file containing each forbidden construct (`node:*`, `cloudflare:*`, `bun:*`, `require`, `Buffer`, `window`, `document`, `localStorage`) and asserts each is reported, and on the real `src` tree and asserts it passes; also asserts a dependency other than `@wraith/protocol` is reported
     - _Requirements: R2.4, R2.7, R1.4_
     - Design: "Boundary_Check"
     - DoD: P0-D1 (supports)
-  - [ ] 7.3 Write `test/source-rules.node.test.ts`
+  - [x] 7.3 Write `test/source-rules.node.test.ts`
     - Reuses the comment-masking scanner of the protocol script. Rules: `errors.ts`, `guard.ts`, `webcrypto.ts`, `bytes.ts` and `p256.ts` import nothing from the rest of the package (`errors.ts` imports protocol types only); `jcs.ts` imports only `utf8.ts` and `errors.ts`; `p256.ts` imports only `bytes.ts` and `keys.ts` calls it only with coordinates and the parity bit; only `keys.ts`, `scope-bytes.ts`, `sign.ts`, `request-hash.ts` and `errors.ts` import `@wraith/protocol`, through the bare specifier, with no deep path; `src` never imports `scripts/` or `test/`; no `zod`, `@noble/*`, `Math.random`, `JSON.stringify` or `console.` in `src`; `index.ts` contains re-exports only; every exported function whose name starts with `verify` is in the verifier list and its body is a single `return failClosed(...)` expression (the list is checked against the exports so a new verifier cannot be missed); a self-check on sample sources proves each rule reports a violation
     - Required: these rules are stated in the design
     - _Requirements: R1.1, R1.3, R1.4, R1.5, R3.1, R3.2, R4.7, R6.16, R2.9_
     - Design: "Module dependency rules and diagram", "Failure guard"
     - DoD: P0-D1 (supports), P0-D3 (supports)
-  - [ ] 7.4 Write the export-list test
+  - [x] 7.4 Write the export-list test
     - Required: it is a design-rule scan and the only test for R3.7, R10.11, R11.11 and R14.1
     - Asserts the public exports include no function that parses or formats the `Authorization: WraithSig` header, maps a result to an `ErrorCode`, stores a key, or checks a roster, replay or clock
     - _Requirements: R3.7, R10.11, R11.11, R14.1_
     - Design: Testing Strategy (Scans)
     - DoD: P0-D1 (supports)
-  - [ ] 7.5 Run the group verification (group 7)
+  - [-] 7.5 Run the group verification (group 7)
     - Run `pnpm -r test`, `pnpm -r build` (now including the boundary script), `pnpm typecheck`, `pnpm --filter @wraith/crypto check` and the Biome check for `packages/crypto`; all clean; list the files for the commit
     - _Requirements: R2.4_
     - Design: "Build, resolution and ordering"

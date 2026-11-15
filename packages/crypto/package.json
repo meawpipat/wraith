@@ -11,9 +11,9 @@
     }
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "node --experimental-strip-types scripts/check-boundaries.ts && tsc -p tsconfig.json",
     "test": "vitest run",
-    "check": "tsc -p tsconfig.scripts.json --noEmit"
+    "check": "node --experimental-strip-types scripts/check-boundaries.ts && tsc -p tsconfig.scripts.json --noEmit"
   },
   "dependencies": {
     "@wraith/protocol": "workspace:*"
