@@ -45,6 +45,8 @@ async function signAndCheck(envelope: Rec, memberId: string) {
 describe("Property 6: sign then verify holds for every message type", () => {
   it("covers every entry of MESSAGE_TYPES", () => {
     expect(MESSAGE_TYPES.length).toBeGreaterThan(0);
+    const generated = new Set(fc.sample(signedEnvelopeArb(), 2000).map((c) => c.type));
+    for (const type of MESSAGE_TYPES) expect(generated.has(type)).toBe(true);
   });
 
   it("sign returns {by, alg, value} with a 64-byte unpadded base64url value", {
@@ -63,20 +65,22 @@ describe("Property 6: sign then verify holds for every message type", () => {
     );
   });
 
-  it("verifies with a fresh key as Public_JWK and as a key handle", {
-    timeout: 120_000,
-  }, async () => {
-    await pbt(
-      fc.asyncProperty(rawOrTypedArb, async (c) => {
-        const { pair, publicJwk, sig } = await signAndCheck(c.envelope, MEMBER_ID);
-        expect(await verify(c.envelope, sig, publicJwk)).toBe(true);
-        expect(await verify(c.envelope, sig, pair.publicKey)).toBe(true);
-        const imported = await importPublicKey(publicJwk);
-        if (!imported.ok) throw new Error("import failed");
-        expect(await verify(c.envelope, sig, imported.value)).toBe(true);
-      }),
-    );
-  });
+  for (const type of MESSAGE_TYPES) {
+    it(`${type}: verifies with a fresh key as Public_JWK and as a key handle`, {
+      timeout: 120_000,
+    }, async () => {
+      await pbt(
+        fc.asyncProperty(signedEnvelopeArb(type), async (c) => {
+          const { pair, publicJwk, sig } = await signAndCheck(c.envelope, MEMBER_ID);
+          expect(await verify(c.envelope, sig, publicJwk)).toBe(true);
+          expect(await verify(c.envelope, sig, pair.publicKey)).toBe(true);
+          const imported = await importPublicKey(publicJwk);
+          if (!imported.ok) throw new Error("import failed");
+          expect(await verify(c.envelope, sig, imported.value)).toBe(true);
+        }),
+      );
+    });
+  }
 
   it("typed and raw envelopes of any type verify", { timeout: 120_000 }, async () => {
     const anyArb = fc

@@ -94,11 +94,11 @@ const UNREACHABLE_TRAP_CASES: ReadonlyMap<number, string> = new Map([
   [9, "[]"],
   [10, "[]"],
 ]);
-// FINDING: for these values a trap that src DOES reach (ownKeys, getPrototypeOf, and the array `length` read
-// through `get`) throws a raw Error out of canonicalize, not a ProgrammerError. The test states that as is.
+// A trap that src DOES reach (ownKeys, getPrototypeOf, and the array `length` read through `get`) throws a
+// raw Error inside canonicalize; canonicalize converts it to ProgrammerError("non_json_value").
 const RAW_ERROR_TRAP_CASES: readonly number[] = [2, 3, 6, 7, 8, 11];
 
-const EXCLUDED = new Set<number>([...UNREACHABLE_TRAP_CASES.keys(), ...RAW_ERROR_TRAP_CASES]);
+const EXCLUDED = new Set<number>(UNREACHABLE_TRAP_CASES.keys());
 const CHECKED_CONTAINER_INDEXES: readonly number[] = hostileContainers()
   .map((_, i) => i)
   .filter((i) => !EXCLUDED.has(i));
@@ -161,13 +161,14 @@ describe("Property 5: JCS rejects every Non_JSON_Value at any depth", () => {
     }
   });
 
-  it("proxies whose ownKeys/getPrototypeOf/get trap src reaches: the raw trap Error escapes (finding), never a ProgrammerError", () => {
+  it("proxies whose ownKeys/getPrototypeOf/get trap src reaches: ProgrammerError non_json_value, no cause, no trap text", () => {
     for (const index of RAW_ERROR_TRAP_CASES) {
       for (const run of [canonicalize, (v: unknown) => canonicalizeBytes(v)]) {
         const e = thrownBy(() => run(hostileContainers()[index]));
-        expect(e).toBeInstanceOf(Error);
-        expect(e).not.toBeInstanceOf(ProgrammerError);
-        expect((e as Error).message).toMatch(/^hostile (ownKeys|getPrototypeOf|get) trap$/u);
+        expect(e).toBeInstanceOf(ProgrammerError);
+        expect((e as ProgrammerError).reason).toBe("non_json_value");
+        expect(Object.hasOwn(e as object, "cause")).toBe(false);
+        expect((e as Error).message).toBe("wraith-crypto: non_json_value");
       }
     }
   });

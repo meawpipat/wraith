@@ -119,8 +119,16 @@ export function canonicalize(value: unknown): string {
           return;
         }
         if (path.has(v)) throw new ProgrammerError("cyclic_value");
-        const isArray = Array.isArray(v);
-        const frame = isArray ? arrayFrame(v) : objectFrame(v);
+        let isArray: boolean;
+        let frame: Frame;
+        try {
+          isArray = Array.isArray(v);
+          frame = isArray ? arrayFrame(v as unknown[]) : objectFrame(v);
+        } catch (e) {
+          // Any error from a hostile proxy trap becomes a stable error without cause or trap text.
+          if (e instanceof ProgrammerError) throw e;
+          throw new ProgrammerError("non_json_value");
+        }
         path.add(v);
         stack.push(frame);
         parts.push(isArray ? "[" : "{");

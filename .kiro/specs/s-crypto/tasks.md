@@ -416,13 +416,13 @@ Not a checkbox task of this spec. Under spec `s-protocol`, before group 1 of thi
     - Design: "Build, resolution and ordering", Testing Strategy (Generators)
     - DoD: P0-D1 (supports), P0-D3
 
-- [-] 6. Checkpoint - P0-D3 properties pass
+- [x] 6. Checkpoint - P0-D3 properties pass
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 7. Boundary check and source-rule scans (P0)
   - DoD: P0-D1 (supports: the boundary check runs in `build`; CI is S-ops-packaging). Requirements: R2.2 to R2.7, R1.1, R1.3, R1.4, R3.1, R3.2, R4.7, R6.16. Design: "Boundary_Check", "Module dependency rules and diagram".
   - Files owned: `packages/crypto/scripts/check-boundaries.ts`, `packages/crypto/package.json` (scripts), `packages/crypto/test/{boundaries,source-rules,export-list}.node.test.ts`.
-  - [ ] 7.1 Create `scripts/check-boundaries.ts` and wire it into `build` and `check`
+  - [-] 7.1 Create `scripts/check-boundaries.ts` and wire it into `build` and `check`
     - Thin wrapper that imports `checkSources` from `../../protocol/scripts/check-boundaries.ts` by relative path (import-safe), lists `src/**/*.ts` itself, applies its own dependency rule (`dependencies` may contain only `@wraith/protocol`), prefixes violations with the package name, and maps or hides the protocol requirement ids in messages; add it to the `build` and `check` scripts before `tsc`
     - Verify the two caveats at task time: `tsconfig.scripts.json` accepts the file outside the package directory, and the message wording. If either blocks, use the design fallback inside the same decision: a copy of the scanner with a test that fails when the copied functions differ from the protocol script; record the choice (8.6)
     - The script is Node-only tooling outside `src` and is imported by nothing in `src`
