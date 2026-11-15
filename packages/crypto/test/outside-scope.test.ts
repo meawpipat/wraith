@@ -36,9 +36,7 @@ describe("Property 10: fields outside the signature scope have no effect", () =>
     expect(MESSAGE_TYPES.length).toBeGreaterThan(0);
   });
 
-  it("relay and sig.by change neither scopeBytes, requestHash nor verify", {
-    timeout: 120_000,
-  }, async () => {
+  it("relay and sig.by change neither scopeBytes, requestHash nor verify", async () => {
     await pbt(
       fc.asyncProperty(signedEnvelopeArb(), relayArb, byArb, async (unsigned, relay, by) => {
         const s = await signCase(unsigned);
@@ -59,9 +57,7 @@ describe("Property 10: fields outside the signature scope have no effect", () =>
     );
   });
 
-  it("sign, verify, requestHash and scopeBytes read only v, meta and body", {
-    timeout: 120_000,
-  }, async () => {
+  it("sign, verify, requestHash and scopeBytes read only v, meta and body", async () => {
     await pbt(
       fc.asyncProperty(signedEnvelopeArb(), relayArb, async (unsigned, relay) => {
         const s = await signCase(unsigned);

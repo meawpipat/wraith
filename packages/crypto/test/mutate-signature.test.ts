@@ -44,9 +44,7 @@ describe("Property 9: mutating the signature is rejected", () => {
 
   for (const type of MESSAGE_TYPES) {
     describe(type, () => {
-      it("rejects every single-bit change of the 64 signature bytes", {
-        timeout: 120_000,
-      }, async () => {
+      it("rejects every single-bit change of the 64 signature bytes", async () => {
         await pbt(
           fc.asyncProperty(signedEnvelopeArb(type), bitIndexArb(SIG_BYTES), async (c, bit) => {
             const s = await signCase(c);
@@ -62,9 +60,7 @@ describe("Property 9: mutating the signature is rejected", () => {
         );
       });
 
-      it("rejects every replacement of sig.value by a different string", {
-        timeout: 120_000,
-      }, async () => {
+      it("rejects every replacement of sig.value by a different string", async () => {
         await pbt(
           fc.asyncProperty(signedEnvelopeArb(type), replacerArb, async (c, replace) => {
             const s = await signCase(c);

@@ -112,9 +112,7 @@ const rejectedThunkArb: fc.Arbitrary<() => unknown> = fc.oneof(
 );
 
 describe("Property 5: JCS rejects every Non_JSON_Value at any depth", () => {
-  it("substituted values: oracle-hostile throws a stable ProgrammerError, clean does not", {
-    timeout: 120_000,
-  }, () => {
+  it("substituted values: oracle-hostile throws a stable ProgrammerError, clean does not", () => {
     pbt(
       fc.property(jsonValueArb(), fc.nat(), substitutionArb, (json, choice, hostile) => {
         const { value, hostile: isHostile } = substituteNonJson(json, choice, hostile);
@@ -134,9 +132,7 @@ describe("Property 5: JCS rejects every Non_JSON_Value at any depth", () => {
     );
   });
 
-  it("every hostile thunk value throws ProgrammerError (no hang, no overflow)", {
-    timeout: 120_000,
-  }, () => {
+  it("every hostile thunk value throws ProgrammerError (no hang, no overflow)", () => {
     pbt(
       fc.property(rejectedThunkArb, (thunk) => {
         const value = thunk();
@@ -183,7 +179,7 @@ describe("Property 5: JCS rejects every Non_JSON_Value at any depth", () => {
     );
   });
 
-  it("very deep valid nesting never overflows the stack", { timeout: 120_000 }, () => {
+  it("very deep valid nesting never overflows the stack", () => {
     pbt(
       fc.property(deepValidThunkArb, (thunk) => {
         const value = thunk();
@@ -206,9 +202,7 @@ async function rejectedBy(fn: () => Promise<unknown>): Promise<unknown> {
   return undefined;
 }
 describe("Property 5 (scope clauses): scopeBytes, sign and requestHash reject Non_JSON_Value and missing body", () => {
-  it("a Non_JSON_Value in meta or body makes all three throw ProgrammerError; a clean scope does not", {
-    timeout: 120_000,
-  }, async () => {
+  it("a Non_JSON_Value in meta or body makes all three throw ProgrammerError; a clean scope does not", async () => {
     const [{ pair }] = (await getKeyPool(1)) as [PoolKey];
     await pbt(
       fc.asyncProperty(
@@ -243,9 +237,7 @@ describe("Property 5 (scope clauses): scopeBytes, sign and requestHash reject No
       ),
     );
   });
-  it("a scope without body (absent or undefined) makes all three throw ProgrammerError missing_body", {
-    timeout: 120_000,
-  }, async () => {
+  it("a scope without body (absent or undefined) makes all three throw ProgrammerError missing_body", async () => {
     const [{ pair }] = (await getKeyPool(1)) as [PoolKey];
     await pbt(
       fc.asyncProperty(jsonValueArb(), fc.boolean(), async (meta, explicitUndefined) => {

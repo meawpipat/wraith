@@ -900,6 +900,116 @@
         "executionId": "ea93f242-e5cc-44d2-a729-8de3b03b638b",
         "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
         "timestamp": 1794738090690
+      },
+      {
+        "executionId": "ea93f242-e5cc-44d2-a729-8de3b03b638b",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794738186211
+      }
+    ],
+    "7. Boundary check and source-rule scans (P0)": [
+      {
+        "executionId": "ea93f242-e5cc-44d2-a729-8de3b03b638b",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794738186255
+      }
+    ],
+    "8.1 Pin and install `@cloudflare/vitest-plugin` and its required peers": [
+      {
+        "executionId": "ea93f242-e5cc-44d2-a729-8de3b03b638b",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794738186942
+      },
+      {
+        "executionId": "ea93f242-e5cc-44d2-a729-8de3b03b638b",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794738546540
+      }
+    ],
+    "8.2 Add the `workers` project to `vitest.config.ts`": [
+      {
+        "executionId": "ea93f242-e5cc-44d2-a729-8de3b03b638b",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794738551720
+      },
+      {
+        "executionId": "a43fc214-7945-4461-b1d9-e22127b6ae1a",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794743766023
+      }
+    ],
+    "8.3 Run the suite once in both projects and tune the timeout": [
+      {
+        "executionId": "a43fc214-7945-4461-b1d9-e22127b6ae1a",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794743770578
+      },
+      {
+        "executionId": "a43fc214-7945-4461-b1d9-e22127b6ae1a",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794744565945
+      }
+    ],
+    "8.4 Write the project config test and the no-`node:` scan": [
+      {
+        "executionId": "a43fc214-7945-4461-b1d9-e22127b6ae1a",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794744570889
+      },
+      {
+        "executionId": "a43fc214-7945-4461-b1d9-e22127b6ae1a",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794744650773
+      }
+    ],
+    "8.5 Update `docs/PHASE-STATUS.md` for P0-D2 and record the reuse note": [
+      {
+        "executionId": "a43fc214-7945-4461-b1d9-e22127b6ae1a",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794744571669
+      },
+      {
+        "executionId": "a43fc214-7945-4461-b1d9-e22127b6ae1a",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794744650829
+      }
+    ],
+    "8.6 Record agent-made decisions in `docs/DECISIONS-PENDING.md` (conditional)": [
+      {
+        "executionId": "a43fc214-7945-4461-b1d9-e22127b6ae1a",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794744572305
+      },
+      {
+        "executionId": "a43fc214-7945-4461-b1d9-e22127b6ae1a",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794744651457
+      }
+    ],
+    "8.7 Run the group verification (group 8)": [
+      {
+        "executionId": "a43fc214-7945-4461-b1d9-e22127b6ae1a",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794744656009
+      },
+      {
+        "executionId": "a43fc214-7945-4461-b1d9-e22127b6ae1a",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794744721013
+      }
+    ],
+    "8. Workers project with `@cloudflare/vitest-plugin` and the P0-D2 evidence (P0)": [
+      {
+        "executionId": "a43fc214-7945-4461-b1d9-e22127b6ae1a",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794744721070
+      }
+    ],
+    "9. Checkpoint - P0 complete": [
+      {
+        "executionId": "a43fc214-7945-4461-b1d9-e22127b6ae1a",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794744727378
       }
     ]
   }

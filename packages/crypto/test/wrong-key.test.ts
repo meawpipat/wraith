@@ -64,9 +64,7 @@ describe("Property 11: wrong key, wrong version and wrong algorithm are rejected
   });
   for (const type of MESSAGE_TYPES) {
     describe(type, () => {
-      it("rejects verification under a second independent public key", {
-        timeout: 120_000,
-      }, async () => {
+      it("rejects verification under a second independent public key", async () => {
         await pbt(
           fc.asyncProperty(signedEnvelopeArb(type), fc.nat(), async (c, n) => {
             const s = await signCase(c);
@@ -80,7 +78,7 @@ describe("Property 11: wrong key, wrong version and wrong algorithm are rejected
           }),
         );
       });
-      it("rejects every v other than the number 1", { timeout: 120_000 }, async () => {
+      it("rejects every v other than the number 1", async () => {
         await pbt(
           fc.asyncProperty(signedEnvelopeArb(type), wrongVersionArb, async (c, v) => {
             const s = await signCase(c);
@@ -88,9 +86,7 @@ describe("Property 11: wrong key, wrong version and wrong algorithm are rejected
           }),
         );
       });
-      it("rejects every sig.alg other than the exact string ES256", {
-        timeout: 120_000,
-      }, async () => {
+      it("rejects every sig.alg other than the exact string ES256", async () => {
         await pbt(
           fc.asyncProperty(signedEnvelopeArb(type), wrongAlgArb, async (c, alg) => {
             const s = await signCase(c);

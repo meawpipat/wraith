@@ -30,9 +30,7 @@ describe("Property 14: requestHash binds the signed bytes", () => {
 
   for (const type of MESSAGE_TYPES) {
     describe(type, () => {
-      it("equals the digest of the signed bytes, for envelope and Signed_Member alike", {
-        timeout: 120_000,
-      }, async () => {
+      it("equals the digest of the signed bytes, for envelope and Signed_Member alike", async () => {
         await pbt(
           fc.asyncProperty(signedEnvelopeArb(type), async (c) => {
             const s = await signCase(c);
@@ -46,7 +44,7 @@ describe("Property 14: requestHash binds the signed bytes", () => {
         );
       });
 
-      it("ignores sig and relay", { timeout: 120_000 }, async () => {
+      it("ignores sig and relay", async () => {
         await pbt(
           fc.asyncProperty(signedEnvelopeArb(type), async (c) => {
             const s = await signCase(c);
@@ -57,9 +55,7 @@ describe("Property 14: requestHash binds the signed bytes", () => {
         );
       });
 
-      it("changes under any single mutation that changes the canonical bytes", {
-        timeout: 120_000,
-      }, async () => {
+      it("changes under any single mutation that changes the canonical bytes", async () => {
         await pbt(
           fc.asyncProperty(
             signedEnvelopeArb(type).chain((c) => mutationArb(c.envelope).map((m) => ({ c, m }))),
@@ -77,7 +73,7 @@ describe("Property 14: requestHash binds the signed bytes", () => {
   }
 
   describe("requestHashEquals", () => {
-    it("is true exactly when two valid digests are equal", { timeout: 120_000 }, async () => {
+    it("is true exactly when two valid digests are equal", async () => {
       await pbt(
         fc.asyncProperty(digestArb, digestArb, async (a, b) => {
           expect(requestHashEquals(a, a)).toBe(true);
@@ -86,9 +82,7 @@ describe("Property 14: requestHash binds the signed bytes", () => {
       );
     });
 
-    it("is true for hashes of equal envelopes and false for different ones", {
-      timeout: 120_000,
-    }, async () => {
+    it("is true for hashes of equal envelopes and false for different ones", async () => {
       await pbt(
         fc.asyncProperty(signedEnvelopeArb(), signedEnvelopeArb(), async (x, y) => {
           const a = await requestHash(x.envelope as never);
@@ -98,7 +92,7 @@ describe("Property 14: requestHash binds the signed bytes", () => {
       );
     });
 
-    it("is false when either side is malformed", { timeout: 120_000 }, async () => {
+    it("is false when either side is malformed", async () => {
       const malformed = fc.oneof(
         fc.string({ maxLength: 60 }).filter((s) => !/^[A-Za-z0-9_-]{43}$/.test(s)),
         digestArb.map((d) => `${d}=`),
@@ -117,9 +111,7 @@ describe("Property 14: requestHash binds the signed bytes", () => {
       );
     });
 
-    it("is false for a non-canonical encoding of the same digest", {
-      timeout: 120_000,
-    }, async () => {
+    it("is false for a non-canonical encoding of the same digest", async () => {
       const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
       await pbt(
         fc.asyncProperty(digestArb, fc.integer({ min: 1, max: 15 }), async (d, delta) => {

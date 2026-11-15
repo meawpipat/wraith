@@ -39,9 +39,7 @@ describe("Property 7: mutating any value of meta or body is rejected", () => {
 
   for (const type of MESSAGE_TYPES) {
     describe(type, () => {
-      it("rejects every single-value mutation and accepts the unmutated envelope", {
-        timeout: 120_000,
-      }, async () => {
+      it("rejects every single-value mutation and accepts the unmutated envelope", async () => {
         await pbt(
           fc.asyncProperty(
             signedEnvelopeArb(type).chain((c) => mutationArb(c.envelope).map((m) => ({ c, m }))),
@@ -56,9 +54,7 @@ describe("Property 7: mutating any value of meta or body is rejected", () => {
         );
       });
 
-      it("accepts spellings that leave the canonical bytes identical", {
-        timeout: 120_000,
-      }, async () => {
+      it("accepts spellings that leave the canonical bytes identical", async () => {
         await pbt(
           fc.asyncProperty(signedEnvelopeArb(type), async (c) => {
             const s = await signCase(c);

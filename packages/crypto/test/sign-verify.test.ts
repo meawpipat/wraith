@@ -49,9 +49,7 @@ describe("Property 6: sign then verify holds for every message type", () => {
     for (const type of MESSAGE_TYPES) expect(generated.has(type)).toBe(true);
   });
 
-  it("sign returns {by, alg, value} with a 64-byte unpadded base64url value", {
-    timeout: 120_000,
-  }, async () => {
+  it("sign returns {by, alg, value} with a 64-byte unpadded base64url value", async () => {
     await pbt(
       fc.asyncProperty(rawOrTypedArb, memberIdArb, async (c, memberId) => {
         const { sig } = await signAndCheck(c.envelope, memberId);
@@ -66,9 +64,7 @@ describe("Property 6: sign then verify holds for every message type", () => {
   });
 
   for (const type of MESSAGE_TYPES) {
-    it(`${type}: verifies with a fresh key as Public_JWK and as a key handle`, {
-      timeout: 120_000,
-    }, async () => {
+    it(`${type}: verifies with a fresh key as Public_JWK and as a key handle`, async () => {
       await pbt(
         fc.asyncProperty(signedEnvelopeArb(type), async (c) => {
           const { pair, publicJwk, sig } = await signAndCheck(c.envelope, MEMBER_ID);
@@ -82,7 +78,7 @@ describe("Property 6: sign then verify holds for every message type", () => {
     });
   }
 
-  it("typed and raw envelopes of any type verify", { timeout: 120_000 }, async () => {
+  it("typed and raw envelopes of any type verify", async () => {
     const anyArb = fc
       .constantFrom(...MESSAGE_TYPES)
       .chain((t) => fc.oneof(validEnvelopeArb(t), validRawEnvelopeArb(t)));
@@ -94,9 +90,7 @@ describe("Property 6: sign then verify holds for every message type", () => {
     );
   });
 
-  it("does not mutate the input, and a deeply frozen input works", {
-    timeout: 120_000,
-  }, async () => {
+  it("does not mutate the input, and a deeply frozen input works", async () => {
     await pbt(
       fc.asyncProperty(rawOrTypedArb, async (c) => {
         const frozen = deepFreeze(cloneJson(c.envelope) as Rec);
@@ -107,9 +101,7 @@ describe("Property 6: sign then verify holds for every message type", () => {
     );
   });
 
-  it("verifies the Signed_Member of parseRaw for the JSON text of the envelope", {
-    timeout: 120_000,
-  }, async () => {
+  it("verifies the Signed_Member of parseRaw for the JSON text of the envelope", async () => {
     await pbt(
       fc.asyncProperty(rawOrTypedArb, async (c) => {
         const pair = await generateKeyPair();
@@ -124,9 +116,7 @@ describe("Property 6: sign then verify holds for every message type", () => {
     );
   });
 
-  it("verifies parsed.signed but not parsed.envelope when the body has an unknown field", {
-    timeout: 120_000,
-  }, async () => {
+  it("verifies parsed.signed but not parsed.envelope when the body has an unknown field", async () => {
     let stripped = 0;
     await pbt(
       fc.asyncProperty(signedEnvelopeArb(undefined, true), async (c) => {

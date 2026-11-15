@@ -56,9 +56,7 @@ describe("Feature: s-crypto, Property 12: Verification never throws (no WebCrypt
     expect(globalThis.crypto?.subtle).toBeDefined();
   });
 
-  it("well-formed signatures resolve to false without WebCrypto", {
-    timeout: 120_000,
-  }, async () => {
+  it("well-formed signatures resolve to false without WebCrypto", async () => {
     removeCrypto();
     expect(await verify(scope, sigObject, key.publicJwk)).toBe(false);
     expect(await verify(scope, sigObject, key.pair.publicKey)).toBe(false);

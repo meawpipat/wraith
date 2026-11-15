@@ -40,9 +40,7 @@ function withPrefix(prefix: number, x: Uint8Array): Uint8Array {
 const xArb = fc.uint8Array({ minLength: 32, maxLength: 32 });
 const unit = fc.constant(null);
 describe("Property 17: compressed point conversions and fingerprint", () => {
-  it("compressed form has 33 bytes, prefix is parity of y, and it round trips", {
-    timeout: 120_000,
-  }, async () => {
+  it("compressed form has 33 bytes, prefix is parity of y, and it round trips", async () => {
     await pbt(
       fc.asyncProperty(unit, async () => {
         const jwk = await freshJwk();
@@ -57,9 +55,7 @@ describe("Property 17: compressed point conversions and fingerprint", () => {
       }),
     );
   });
-  it("ignorable members do not change the compressed bytes or fingerprint", {
-    timeout: 120_000,
-  }, async () => {
+  it("ignorable members do not change the compressed bytes or fingerprint", async () => {
     await pbt(
       fc.asyncProperty(fc.subarray([...IGNORABLE_MEMBERS], { minLength: 1 }), async (extras) => {
         const jwk = await freshJwk();
@@ -76,9 +72,7 @@ describe("Property 17: compressed point conversions and fingerprint", () => {
       }),
     );
   });
-  it("fingerprint is the SHA-256 of the compressed bytes, 32 bytes, deterministic", {
-    timeout: 120_000,
-  }, async () => {
+  it("fingerprint is the SHA-256 of the compressed bytes, 32 bytes, deterministic", async () => {
     await pbt(
       fc.asyncProperty(unit, async () => {
         const jwk = await freshJwk();
@@ -94,7 +88,7 @@ describe("Property 17: compressed point conversions and fingerprint", () => {
       }),
     );
   });
-  it("different keys give different fingerprints", { timeout: 120_000 }, async () => {
+  it("different keys give different fingerprints", async () => {
     await pbt(
       fc.asyncProperty(unit, async () => {
         const a = await keyFingerprint(await freshJwk());
@@ -104,9 +98,7 @@ describe("Property 17: compressed point conversions and fingerprint", () => {
       }),
     );
   });
-  it("flipping the prefix yields the negated point, distinct from the original", {
-    timeout: 120_000,
-  }, async () => {
+  it("flipping the prefix yields the negated point, distinct from the original", async () => {
     await pbt(
       fc.asyncProperty(unit, async () => {
         const jwk = await freshJwk();
@@ -155,9 +147,7 @@ describe("Property 17: compressed point conversions and fingerprint", () => {
       ),
     );
   });
-  it("accepts a decompressed point only when WebCrypto accepts it too", {
-    timeout: 120_000,
-  }, async () => {
+  it("accepts a decompressed point only when WebCrypto accepts it too", async () => {
     await pbt(
       fc.asyncProperty(xArb, fc.constantFrom(2, 3), async (x, prefix) => {
         const r = publicKeyFromCompressed(withPrefix(prefix, x));

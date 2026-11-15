@@ -419,7 +419,7 @@ Not a checkbox task of this spec. Under spec `s-protocol`, before group 1 of thi
 - [x] 6. Checkpoint - P0-D3 properties pass
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 7. Boundary check and source-rule scans (P0)
+- [x] 7. Boundary check and source-rule scans (P0)
   - DoD: P0-D1 (supports: the boundary check runs in `build`; CI is S-ops-packaging). Requirements: R2.2 to R2.7, R1.1, R1.3, R1.4, R3.1, R3.2, R4.7, R6.16. Design: "Boundary_Check", "Module dependency rules and diagram".
   - Files owned: `packages/crypto/scripts/check-boundaries.ts`, `packages/crypto/package.json` (scripts), `packages/crypto/test/{boundaries,source-rules,export-list}.node.test.ts`.
   - [x] 7.1 Create `scripts/check-boundaries.ts` and wire it into `build` and `check`
@@ -446,56 +446,56 @@ Not a checkbox task of this spec. Under spec `s-protocol`, before group 1 of thi
     - _Requirements: R3.7, R10.11, R11.11, R14.1_
     - Design: Testing Strategy (Scans)
     - DoD: P0-D1 (supports)
-  - [-] 7.5 Run the group verification (group 7)
+  - [x] 7.5 Run the group verification (group 7)
     - Run `pnpm -r test`, `pnpm -r build` (now including the boundary script), `pnpm typecheck`, `pnpm --filter @wraith/crypto check` and the Biome check for `packages/crypto`; all clean; list the files for the commit
     - _Requirements: R2.4_
     - Design: "Build, resolution and ordering"
     - DoD: P0-D1 (supports)
 
-- [ ] 8. Workers project with `@cloudflare/vitest-plugin` and the P0-D2 evidence (P0)
+- [x] 8. Workers project with `@cloudflare/vitest-plugin` and the P0-D2 evidence (P0)
   - DoD: P0-D2 (JCS byte-equality on Node and in the Workers runtime; evidence "V8 only"), P0-D1 (supports), P0-D3 (supports: the portable properties also run in Workers). Requirements: R12, R13.14, R13.17. Design: "Workers integration: task-time verification", "Why Node plus Workers is weaker than a browser run", Design choice 1.
   - Files owned: `packages/crypto/package.json` (devDependencies), `pnpm-lock.yaml`, `packages/crypto/vitest.config.ts`, `packages/crypto/wrangler.jsonc` (only if the plugin README asks for it), `packages/crypto/tsconfig.scripts.json` (only if the plugin needs types), `packages/crypto/test/config-projects.node.test.ts`, `docs/PHASE-STATUS.md` (P0-D2 row only), `docs/DECISIONS-PENDING.md` (only for agent-made decisions).
-  - [ ] 8.1 Pin and install `@cloudflare/vitest-plugin` and its required peers
+  - [x] 8.1 Pin and install `@cloudflare/vitest-plugin` and its required peers
     - Choose one exact version of `@cloudflare/vitest-plugin` at install time; confirm through the npm registry that the peer range of that exact version includes `vitest` 5.0.5; read the README of that exact version and list its required peer or dev dependencies (for example `wrangler`, `workerd`) and pin them exactly; install with `pnpm`; record every installed version
     - It is a plugin, not a pool: do not write a pool option block from memory. If the peer range excludes 5.0.5, STOP and report to the owner with the versions and the range; no downgrade of Vitest and no package-local Vitest on your own initiative
     - _Requirements: R12.4, R12.5_
     - Design: "Workers integration: task-time verification" (steps 1 to 3)
     - DoD: P0-D2
-  - [ ] 8.2 Add the `workers` project to `vitest.config.ts`
+  - [x] 8.2 Add the `workers` project to `vitest.config.ts`
     - Register the plugin and point it at a Workers config exactly as the README of the pinned version says (not guessed); the `workers` project runs `test/**/*.test.ts` except `*.node.test.ts`; both projects keep `resolve.conditions` including `"@wraith/source"`; create `wrangler.jsonc` only if the README requires one (compatibility date; no Node compatibility flag unless the plugin needs it)
     - This task owns the first edit of the `workers` project in `vitest.config.ts`; 8.3 owns the timeout
     - _Requirements: R12.2, R12.9, R13.14_
     - Design: Testing Strategy (Projects), "Workers integration" (step 2)
     - DoD: P0-D2
-  - [ ] 8.3 Run the suite once in both projects and tune the timeout
+  - [x] 8.3 Run the suite once in both projects and tune the timeout
     - Run `pnpm --filter @wraith/crypto test` and confirm the `workers` project runs `jcs-vectors.test.ts`, the base64url and sha256 vectors, Properties 1 to 17 portable tests and the signature vectors; fix test-side portability problems only (no `node:` import in portable files; JSON import attribute accepted by both projects); measure key generation and the slowest 1,000-run property in Workers and set a generous `testTimeout` in `vitest.config.ts` (no number is fixed by the design)
     - If the Workers suite unexpectedly fails for a reason other than test portability, STOP and report to the owner with the versions and the error text (no payload data). Do not switch approach, downgrade Vitest, add a package-local Vitest, or run the tests in Miniflare from a script; the Workers run of P0-D2 stays unproven until the owner decides
     - _Requirements: R12.2, R12.5, R12.6, R12.7, R13.14_
     - Design: "Workers integration" (steps 4 and 5), Testing Strategy (timeouts)
     - DoD: P0-D2, P0-D3 (supports)
-  - [ ] 8.4 Write the project config test and the no-`node:` scan
+  - [x] 8.4 Write the project config test and the no-`node:` scan
     - `test/config-projects.node.test.ts`: `vitest.config.ts` defines both projects, the `workers` project excludes `*.node.test.ts`, `package.json` has `test` and `build` scripts, the P0-D2 suite file (`jcs-vectors.test.ts`) is not `*.node.test.ts` and is non-empty; a scan that no non-node test file and no `test/support/*.ts` imports `node:*`
     - _Requirements: R12.9, R12.10, R13.17_
     - Design: "Unit and example tests" (Config test)
     - DoD: P0-D1 (supports), P0-D2
-  - [ ] 8.5 Update `docs/PHASE-STATUS.md` for P0-D2 and record the reuse note
+  - [x] 8.5 Update `docs/PHASE-STATUS.md` for P0-D2 and record the reuse note
     - Set the P0-D2 row to `pass` only if the JCS suite passed in both the `node` and the `workers` project; otherwise `pending` with the reason and the versions tried (R12.6). Evidence text must state: the commands, the runtime versions (Node, vitest 5.0.5, `@cloudflare/vitest-plugin` and its pinned peers, workerd), "V8 only: Node and Workers; the browser run is the P1 task 12.2", that the owner accepted `@cloudflare/vitest-plugin` (renamed from `@cloudflare/vitest-pool-workers`, C79) as the "vitest-pool-workers" evidence, the vectors file path, and the working project shape and command so that S-protocol task 19.1 can reuse the same package and config (S-protocol tasks are not edited)
     - Edit only the P0-D2 row and, if needed, one short note line under the table; P0-D1 stays `todo` (CI is S-ops-packaging)
     - _Requirements: R12.3, R12.8, R14.7_
     - Design: "Mapping to Definition of Done items", "Why Node plus Workers is weaker than a browser run"
     - DoD: P0-D2, P0-D1 (supports)
-  - [ ] 8.6 Record agent-made decisions in `docs/DECISIONS-PENDING.md` (conditional)
+  - [x] 8.6 Record agent-made decisions in `docs/DECISIONS-PENDING.md` (conditional)
     - Only if an agent decision was taken: the `@wraith/source` fallback applied in 2.2, the boundary-check copy fallback in 7.1, the per-type loop versus `fc.constantFrom` choice in 5.10, or a Workers timeout; one row each (id, date, question, default taken, impact if changed, resolved); skip the task body if none was taken
     - _Requirements: R14.5_
     - Design: "Build, resolution and ordering", "Boundary_Check"
     - DoD: P0-D1 (supports)
-  - [ ] 8.7 Run the group verification (group 8)
+  - [x] 8.7 Run the group verification (group 8)
     - Run `pnpm -r test` (both projects), `pnpm -r build`, `pnpm typecheck`, `pnpm --filter @wraith/crypto check` and the Biome check for `packages/crypto`; all clean; list the files for the commit
     - _Requirements: R12.10_
     - Design: "Build, resolution and ordering"
     - DoD: P0-D1 (supports), P0-D2
 
-- [ ] 9. Checkpoint - P0 complete
+- [-] 9. Checkpoint - P0 complete
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 10. HMAC-SHA-256 and the pairing HMAC (P1)

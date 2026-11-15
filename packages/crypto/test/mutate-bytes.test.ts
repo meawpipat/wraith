@@ -8,9 +8,7 @@ import { bitFlip } from "./support/envelopes.js";
 import { freshKeyPair } from "./support/keys.js";
 
 describe("Property 8: mutating any byte is rejected", () => {
-  it("verifies the original and rejects every single-bit and single-byte change", {
-    timeout: 120_000,
-  }, async () => {
+  it("verifies the original and rejects every single-bit and single-byte change", async () => {
     await pbt(
       fc.asyncProperty(
         fc.uint8Array({ minLength: 1, maxLength: 256 }),
