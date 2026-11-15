@@ -495,7 +495,7 @@ Not a checkbox task of this spec. Under spec `s-protocol`, before group 1 of thi
     - Design: "Build, resolution and ordering"
     - DoD: P0-D1 (supports), P0-D2
 
-- [-] 9. Checkpoint - P0 complete
+- [x] 9. Checkpoint - P0 complete
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 10. HMAC-SHA-256 and the pairing HMAC (P1)
