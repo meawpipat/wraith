@@ -215,10 +215,10 @@ Conventions:
 - [x] 5. Checkpoint - Secret_Scan and pre-commit
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 6. Reporter, Suites_Check and `required-suites.json` (P0)
+- [x] 6. Reporter, Suites_Check and `required-suites.json` (P0)
   - DoD: P0-D1 (supports: R11 "an empty run does not count"), P0-D2 and P0-D3 (supports: the required file makes their suites visible as having run; their rows are not edited). Requirements: R11.1 to R11.12. Design: "Suites_Check, reporter and required file", Property 7, D3, D4, O2.
   - Files owned: `tools/vitest-project-reporter.ts`, `tools/clean-reports.ts`, `tools/check-suites-ran.ts`, `tools/lib/suites.ts`, `tools/required-suites.json`, `tools/test/{reporter,check-suites,check-suites-cli}.test.ts`, `tools/test/support/suite-models.ts`.
-  - [ ] 6.1 Write the reporter and `clean-reports.ts`
+  - [x] 6.1 Write the reporter and `clean-reports.ts`
     - `vitest-project-reporter.ts`: default export class with `onTestRunEnd(testModules, errors, reason)`; for each module record project name (`module.project.name`), file relative to the package, and counts of `result().state` (`passed`, `failed`, `skipped`, `pending`); write `<cwd>/.reports/suites.json` (version 1); wrap everything in `try/catch` and never throw or change the exit code
     - `clean-reports.ts`: removes every `.reports` folder under the workspace package directories (used before local runs only, D4)
     - Verify that Vitest 5.0.5 loads a `.ts` reporter given by absolute path (unverified in the design). If it does not, use an `.mjs` file with JSDoc types, update the root scripts in `package.json` (owner of that edit here: this task, root `package.json` scripts only) and record the choice in 12.4
@@ -226,31 +226,31 @@ Conventions:
     - _Requirements: R11.1, R11.4_
     - Design: "Suites_Check, reporter and required file" (Reporter, Suite_Report model), "Risks and unverified items", V1, V4
     - DoD: P0-D1 (supports)
-  - [ ] 6.2 Implement `tools/lib/suites.ts`
+  - [x] 6.2 Implement `tools/lib/suites.ts`
     - `RequiredSuite`, `MINIMUM_SUITES` (the five entries of the design with `minTests` 1, R11.7), `SuiteRun`, `SuiteReport`, hand-written `parseSuiteReport` and `parseRequired` (return `null` on any shape error), and `checkSuites({ required, packagesWithTests, reports })` returning findings with the ten rule ids of the design table (`suites/required-invalid`, `floor-missing`, `floor-lowered`, `node-only-listed-for-workers`, `report-missing`, `report-invalid`, `report-empty`, `run-missing`, `too-few-tests`, `not-all-passed`); every state other than `passed` counts as not passed
     - _Requirements: R11.2, R11.3, R11.4, R11.5, R11.7, R11.9, R11.12_
     - Design: "Suites_Check, reporter and required file" (types, rules table)
     - DoD: P0-D1 (supports)
-  - [ ] 6.3 Write the property test for the Suites_Check
+  - [x] 6.3 Write the property test for the Suites_Check
     - **Property 7: The Suites_Check passes conforming runs and fails each single defect**
     - `check-suites.test.ts` with `test/support/suite-models.ts`; generators: report and required-file models rendered to the data model; assert no finding for conforming input and, for each single injected defect of the property text, at least one finding with that defect's rule id and none for unrelated rules; assert `parseSuiteReport(JSON.parse(JSON.stringify(model)))` equals the model
     - **Validates: Requirements 11.2, 11.3, 11.4, 11.7, 11.9, 11.12**
     - Design: Property 7
     - DoD: P0-D1 (supports)
-  - [ ] 6.4 Implement `tools/check-suites-ran.ts` and the CLI tests
+  - [x] 6.4 Implement `tools/check-suites-ran.ts` and the CLI tests
     - CLI `node --experimental-strip-types tools/check-suites-ran.ts [--root <dir>]`: reads `pnpm-workspace.yaml` (only the `dir/*` and plain `dir` forms; anything else is an error, exit 2) and each `package.json` to build `packagesWithTests` (the same listing function is exported for 7.4), reads each `<dir>/.reports/suites.json` and `tools/required-suites.json`, prints one `<package>/<file> <project> <passed> passed` line per listed run (R11.11), then the findings; exit 1 on findings, 2 on operational errors
     - `check-suites-cli.test.ts`: against a temporary tree: a conforming tree exits 0 with the count lines; a missing report, an empty report and a skipped test exit 1 with the matching rule; an unsupported workspace glob exits 2
     - _Requirements: R11.2, R11.6, R11.8, R11.9, R11.10, R11.11_
     - Design: "Suites_Check, reporter and required file" (`packagesWithTests`, CLI)
     - DoD: P0-D1 (supports)
-  - [ ] 6.5 Create `tools/required-suites.json` from a real local run
+  - [x] 6.5 Create `tools/required-suites.json` from a real local run
     - Check the real test file names in `packages/crypto/test/` (P0-D2: `jcs-vectors.test.ts`; P0-D3: the sign and verify round trip and the mutate-value, mutate-byte and mutate-signature suites) and use the actual names; list `node` and `workers` only for files the `workers` project runs (a `*.node.test.ts` file never lists `workers`, R11.12)
     - Run `pnpm -r test -- --reporter=default --reporter=<absolute path of tools/vitest-project-reporter.ts>` (absolute path written out in the command) after `node --experimental-strip-types tools/clean-reports.ts`, read the per-project counts from the written reports, and set `minTests` from them (40 for `jcs-vectors.test.ts`; the others are read, not guessed); no entry lists a file excluded from a project (R11.12)
     - The file holds data only: no code, no secret
     - _Requirements: R11.5, R11.6, R11.12_
     - Design: "Suites_Check, reporter and required file" (Required_Suites_File), V5
     - DoD: P0-D1 (supports), P0-D2 (supports), P0-D3 (supports)
-  - [ ] 6.6 Run the group verification (group 6)
+  - [x] 6.6 Run the group verification (group 6)
     - Run `pnpm -r test`, `pnpm -r build`, `pnpm typecheck`, `pnpm -r --if-present check`, `pnpm lint`, then `pnpm test:reports` followed by `pnpm check:suites`; all clean; confirm Biome does not lint `.reports`; list the files for the commit
     - _Requirements: R11.8, R11.9_
     - Design: "Build, resolution and ordering"

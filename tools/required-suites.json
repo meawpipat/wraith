@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "suites": [
+    {
+      "package": "packages/crypto",
+      "file": "test/jcs-vectors.test.ts",
+      "projects": ["node", "workers"],
+      "minTests": 40
+    },
+    {
+      "package": "packages/crypto",
+      "file": "test/sign-verify.test.ts",
+      "projects": ["node", "workers"],
+      "minTests": 14
+    },
+    {
+      "package": "packages/crypto",
+      "file": "test/mutate-value.test.ts",
+      "projects": ["node", "workers"],
+      "minTests": 17
+    },
+    {
+      "package": "packages/crypto",
+      "file": "test/mutate-bytes.test.ts",
+      "projects": ["node", "workers"],
+      "minTests": 1
+    },
+    {
+      "package": "packages/crypto",
+      "file": "test/mutate-signature.test.ts",
+      "projects": ["node", "workers"],
+      "minTests": 17
+    }
+  ]
+}
