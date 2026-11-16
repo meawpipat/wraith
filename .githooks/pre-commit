@@ -1,0 +1,4 @@
+#!/bin/sh
+# Wraith pre-commit: scan staged files for secrets. Fails closed: any non-zero exit blocks the commit.
+hook_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd) || exit 1
+exec node --experimental-strip-types "$hook_dir/../tools/secret-scan.ts" --staged

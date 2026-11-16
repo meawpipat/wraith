@@ -135,84 +135,84 @@ Conventions:
 - [x] 3. Checkpoint - Platform package, scaffold and Platform_Check
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 4. Secret_Scan, pre-commit script and the `secret-scan` hook file (P0)
+- [x] 4. Secret_Scan, pre-commit script and the `secret-scan` hook file (P0)
   - DoD: P0-D6 (supports: the `secret-scan` hook and its sample tests; the row changes only in 12.3), P0-D1 (supports: `check:secrets` is a CI step). Requirements: R3, R12.7 and R12.8 (sample assembly, shared with the SI hooks). Design: "Secret_Scan", "Pre_Commit_Hook", "Kiro Hook_Files", Properties 1, 2, 3 and 10, D6, D7, D10.
   - Files owned: `tools/secret-scan.ts`, `tools/lib/{secret-rules,git,hook-stdin}.ts`, `tools/test/support/samples.ts`, `tools/test/{git,secret-scan,secret-scan.property,hook-stdin,pre-commit,hook-files}.test.ts`, `.githooks/pre-commit`, `.kiro/hooks/secret-scan.json`.
-  - [ ] 4.1 Implement `tools/lib/git.ts` and its test
+  - [x] 4.1 Implement `tools/lib/git.ts` and its test
     - `stagedPaths`, `stagedContent` (reads the index with `git show :<path>`), `changedPaths`, `trackedPaths`, `treePaths` (cached plus others not ignored, minus deleted), each through `execFileSync("git", [...argv])`, no shell, `-z` output; a git failure throws `ToolError` with a fixed message
     - `git.test.ts` against a temporary repository (`git init`, identity via `-c`, global and system config pointed at `/dev/null`): staged content comes from the index even when the working copy differs; deleted files are not listed; an untracked file appears in `treePaths` and an ignored one does not; a git failure on a non-repository directory throws `ToolError`
     - _Requirements: R3.4, R3.12, R3.14_
     - Design: "Shared helpers" (`git.ts`), "Secret_Scan" (modes)
     - DoD: P0-D6 (supports)
-  - [ ] 4.2 Implement the Secret_Scan rules and the sample builders
+  - [x] 4.2 Implement the Secret_Scan rules and the sample builders
     - `lib/secret-rules.ts`: `SecretClass` (nine classes), `SECRET_RULES` (each rule returns offsets only, never text), `scanText(file, text)` returning `Finding[]` with rule `secret/<class>`; patterns and the placeholder rule (a body with at most two distinct characters is not reported) and the PEM body-line rule exactly as the design table (D6); strict base64url and `JSON.parse` for the `jwt` class; the `node-key` class by file name `node.key` (any non-blank content is a finding)
     - `test/support/samples.ts`: one assembled sample builder per class from fragment arrays joined at call time (fragments never form a complete sample in the source text), plus decoy builders (public JWK without `d`, short placeholder run, body one character under the minimum, RFC 4231-shaped hex, PEM public key block, PEM private header without a body line, JWT-shaped string whose first part does not decode to JSON)
     - After writing, run the Secret_Scan tree test of 4.6 to confirm that the support file itself passes
     - _Requirements: R3.2, R3.3, R3.5, R3.6, R3.7, R3.8_
     - Design: "Secret_Scan" (rules table), D6, Testing Strategy (Conventions)
     - DoD: P0-D6 (supports)
-  - [ ] 4.3 Write the property test for embedded secrets
+  - [x] 4.3 Write the property test for embedded secrets
     - **Property 1: The Secret_Scan finds every embedded secret at its line**
     - `secret-scan.property.test.ts`; generators: benign surrounding lines from words that avoid the token prefixes, class samples from fragments with `fc.stringMatching` bodies filtered to at least three distinct characters, one or more embeddings at generated lines; assert one finding per embedding with the class and the line and no other finding; the `node.key` file name selects `node-key`
     - **Validates: Requirements 3.1, 3.2, 3.3**
     - Design: Property 1
     - DoD: P0-D6 (supports)
-  - [ ] 4.4 Write the property test for content-free reports
+  - [x] 4.4 Write the property test for content-free reports
     - **Property 2: Reports never contain scanned content**
     - Append to `secret-scan.property.test.ts`; assert that `formatFinding` lines, the summary line and every `ToolError` message contain no substring of length 8 or more of any embedded sample or of the surrounding text, and that `Finding` objects have no member other than file, line, column and rule
     - **Validates: Requirements 3.1, 3.13, 3.17**
     - Design: Property 2
     - DoD: P0-D6 (supports)
-  - [ ] 4.5 Write the property test for decoys and near-misses
+  - [x] 4.5 Write the property test for decoys and near-misses
     - **Property 3: Decoys and near-misses are accepted**
     - Append to `secret-scan.property.test.ts`; generators: every decoy kind of 4.2 embedded in benign text; assert `scanText` returns no finding
     - **Validates: Requirements 3.5, 3.6**
     - Design: Property 3
     - DoD: P0-D6 (supports)
-  - [ ] 4.6 Implement the `tools/secret-scan.ts` CLI modes and the example tests
+  - [x] 4.6 Implement the `tools/secret-scan.ts` CLI modes and the example tests
     - `runSecretScan(mode, cwd)` and the CLI `--staged | --changed <base> | --tracked | --tree | <path>…`; skip any path with a segment `node_modules`, `dist` or `.git` (R3.12); print the number of files scanned; binary content decoded as UTF-8 with replacement; unreadable file, git failure, missing or directory path or bad usage exit 2 and name the path, no partial pass (R3.14); exit 1 on findings
     - `secret-scan.test.ts`: one failing and one passing sample per class through the CLI in paths mode (R3.6); `fixtures/crypto/known-answers.json` passes (R3.8); a missing path exits 2 and names it; skipped folders; `--staged`, `--changed` and `--tracked` against a temporary git repository; the real tree passes with `--tree` (`pnpm check:secrets`)
     - _Requirements: R3.1, R3.4, R3.6, R3.8, R3.12, R3.14_
     - Design: "Secret_Scan" (modes and file selection), Testing Strategy (Secret_Scan examples)
     - DoD: P0-D6 (supports), P0-D1 (supports)
-  - [ ] 4.7 Implement `lib/hook-stdin.ts` and the `--hook-stdin` mode
+  - [x] 4.7 Implement `lib/hook-stdin.ts` and the `--hook-stdin` mode
     - `extractHookText(json)` returns every string value of `tool_input` at any depth and the path when a path-named key (`path`, `file_path`, `filePath`, `targetFile`) holds a string; tool names accepted in both forms: `fsWrite`/`fs_write`, `fsAppend`/`fs_append`, `strReplace`/`str_replace`, `executeBash`/`execute_bash`; stdin read up to 4 MiB
     - `--hook-stdin` in `secret-scan.ts`: scans the strings as one pseudo-file named after the path; when no path is found, the text is scanned as product code and the exit is 2 only on a finding; for the shell tool, a `tool_input.command` matching `git … commit` scans `--staged`, other commands are scanned as text; unparsable, empty or oversized stdin and every finding exit 2 (D7); the output is `formatFinding` lines only, never the payload
     - The same helper is reused by the SI scanners in 9.5
     - _Requirements: R3.9, R3.13, R3.14_
     - Design: "Secret_Scan" (`--hook-stdin`), D7, Property 10
     - DoD: P0-D6 (supports)
-  - [ ] 4.8 Write the property test for hook input handling
+  - [x] 4.8 Write the property test for hook input handling
     - **Property 10: Hook input handling is total and fails closed**
     - `hook-stdin.test.ts`; generators: recursive JSON values of objects, arrays and strings, a secret sample placed at any depth of `tool_input`, with and without a path, camelCase and snake_case tool names; assert `extractHookText` returns every string and the path, the CLI exits 2 on the sample and 0 on a payload with no path and no finding, and 2 for any input that is not valid JSON, is empty, or exceeds the size limit
     - **Validates: Requirements 3.9, 3.14**
     - Design: Property 10
     - DoD: P0-D6 (supports)
-  - [ ] 4.9 Write the hook-stdin example tests for the Secret_Scan
+  - [x] 4.9 Write the hook-stdin example tests for the Secret_Scan
     - Append to `hook-stdin.test.ts`, through the CLI: a payload with no path in `tool_input` and a secret sample exits 2 (missing path is scanned as product code); the same payload with clean text exits 0; unparsable, empty and oversized stdin exit 2; each of the eight tool names is accepted and scanned; an `executeBash` payload with a `git commit` command scans the staged files of a temporary repository
     - _Requirements: R3.9, R3.14_
     - Design: Testing Strategy (`hook-stdin.test.ts` examples)
     - DoD: P0-D6 (supports)
-  - [ ] 4.10 Create `.githooks/pre-commit` and its test
+  - [x] 4.10 Create `.githooks/pre-commit` and its test
     - File content exactly as the design (POSIX `sh`, finds `tools/` from its own location, `exec node --experimental-strip-types "$hook_dir/../tools/secret-scan.ts" --staged`); set the execute bit on the file (`chmod 755 .githooks/pre-commit`) so the commit records mode `100755`; do not run `git config` (HS-3 is a human step)
     - `pre-commit.test.ts`: a temporary repository, a sample file assembled from fragments, `git add`, then `git -c core.hooksPath=<absolute path of the real .githooks> commit …`; the commit with the secret fails with a non-zero exit and a clean file commits; the script file has an execute bit and, when `git ls-files -s` lists it, mode `100755`; a scan of every file of the repository except this test finds no `git config` call
     - _Requirements: R3.15, R3.16, R3.17, R3.18, R3.20_
     - Design: "Pre_Commit_Hook", D10, Testing Strategy (Pre_Commit_Hook)
     - DoD: P0-D6 (supports)
-  - [ ] 4.11 Create `.kiro/hooks/secret-scan.json` and the hook-file test
+  - [x] 4.11 Create `.kiro/hooks/secret-scan.json` and the hook-file test
     - JSON exactly in the design shape (`version: "v1"`, `PreToolUse`, matcher listing the eight tool names, command `node --experimental-strip-types tools/secret-scan.ts --hook-stdin`), formatted for Biome
     - `hook-files.test.ts` (secret-scan part): the file parses, has `version: "v1"`, a `PreToolUse` trigger, a command that starts with `node --experimental-strip-types tools/` and ends with `--hook-stdin`; no `test-on-save`, `fixture-redact-check` or `protocol-codegen` file exists in `.kiro/hooks/` (R12.9); the unsafe-token check on hook text is added in 9.7 because it needs `unsafe.ts`
     - Create this file only after 4.7 to 4.9 pass: Kiro can load it at the next session start, and a wrongly blocking hook would stop later writes. Right after creating the file, smoke-test it in Kiro: (a) an ordinary write (a harmless scratch file under the OS temp directory, or a throwaway workspace file deleted afterwards) passes; (b) a sample write assembled from fragments in the command that performs it is blocked with exit 2; no sample is committed or left on disk. Also record whether the relative `tools/...` command path worked from the workspace root, and the Kiro version. If the hook does not load, does not block, or blocks an ordinary write, delete `.kiro/hooks/secret-scan.json`, STOP and report to the owner. If this environment cannot run the check, STOP and ask the owner to do it. Record the result (date, hook, outcome, Kiro version, working-directory finding) in the spec evidence notes or the P0-D6 evidence note, for task 12.3
     - _Requirements: R3.9, R3.19, R12.1, R12.9_
     - Design: "Kiro Hook_Files", Testing Strategy (`hook-files.test.ts`)
     - DoD: P0-D6 (supports)
-  - [ ] 4.12 Run the group verification (group 4)
+  - [x] 4.12 Run the group verification (group 4)
     - Run `pnpm -r test`, `pnpm -r build`, `pnpm typecheck`, `pnpm -r --if-present check`, `pnpm lint` and `pnpm check:secrets`; all clean; list the files for the commit (including `.githooks/pre-commit`, whose mode must be `100755`)
     - _Requirements: R3.8, R3.18_
     - Design: "Build, resolution and ordering"
     - DoD: P0-D6 (supports), P0-D1 (supports)
 
-- [ ] 5. Checkpoint - Secret_Scan and pre-commit
+- [x] 5. Checkpoint - Secret_Scan and pre-commit
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 6. Reporter, Suites_Check and `required-suites.json` (P0)

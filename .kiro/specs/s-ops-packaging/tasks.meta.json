@@ -231,6 +231,169 @@
         "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
         "timestamp": 1794803560358
       }
+    ],
+    "4.1 Implement `tools/lib/git.ts` and its test": [
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794803567455
+      },
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794803738948
+      }
+    ],
+    "4.2 Implement the Secret_Scan rules and the sample builders": [
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794803567554
+      },
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794803739079
+      }
+    ],
+    "4.3 Write the property test for embedded secrets": [
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794803739257
+      },
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794803845837
+      }
+    ],
+    "4.6 Implement the `tools/secret-scan.ts` CLI modes and the example tests": [
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794803740123
+      },
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794803846042
+      }
+    ],
+    "4.4 Write the property test for content-free reports": [
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794803846276
+      },
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794803976673
+      }
+    ],
+    "4.7 Implement `lib/hook-stdin.ts` and the `--hook-stdin` mode": [
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794803847020
+      },
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794803976804
+      }
+    ],
+    "4.5 Write the property test for decoys and near-misses": [
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794803976924
+      },
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794804204331
+      }
+    ],
+    "4.8 Write the property test for hook input handling": [
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794803977236
+      },
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794804204535
+      }
+    ],
+    "4.10 Create `.githooks/pre-commit` and its test": [
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794803978111
+      },
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794804206558
+      }
+    ],
+    "4.9 Write the hook-stdin example tests for the Secret_Scan": [
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794804206805
+      },
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794804274723
+      }
+    ],
+    "4.11 Create `.kiro/hooks/secret-scan.json` and the hook-file test": [
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794804274898
+      },
+      {
+        "executionId": "52589904-70d0-4e62-b23e-5f850ce2f9b6",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794805168140
+      },
+      {
+        "executionId": "52589904-70d0-4e62-b23e-5f850ce2f9b6",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794805281814
+      }
+    ],
+    "4.12 Run the group verification (group 4)": [
+      {
+        "executionId": "52589904-70d0-4e62-b23e-5f850ce2f9b6",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794805282088
+      },
+      {
+        "executionId": "52589904-70d0-4e62-b23e-5f850ce2f9b6",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794805399564
+      }
+    ],
+    "4. Secret_Scan, pre-commit script and the `secret-scan` hook file (P0)": [
+      {
+        "executionId": "52589904-70d0-4e62-b23e-5f850ce2f9b6",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794805399630
+      }
+    ],
+    "5. Checkpoint - Secret_Scan and pre-commit": [
+      {
+        "executionId": "52589904-70d0-4e62-b23e-5f850ce2f9b6",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794805400464
+      }
     ]
   }
 }
