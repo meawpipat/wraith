@@ -10,7 +10,14 @@
     "build": "pnpm -r --if-present build",
     "test": "pnpm -r --if-present test",
     "typecheck": "tsc -b",
-    "lint": "biome check ."
+    "lint": "biome check .",
+    "check:platform": "node --experimental-strip-types tools/check-platform.ts",
+    "check:secrets": "node --experimental-strip-types tools/secret-scan.ts --tree",
+    "check:pins": "node --experimental-strip-types tools/check-workflow-pins.ts",
+    "check:suites": "node --experimental-strip-types tools/check-suites-ran.ts",
+    "check:si": "node --experimental-strip-types tools/no-trust-all-tools.ts --tree && node --experimental-strip-types tools/no-auto-approve.ts --tree",
+    "test:reports": "node --experimental-strip-types tools/clean-reports.ts && pnpm -r test -- --reporter=default --reporter=$PWD/tools/vitest-project-reporter.ts",
+    "verify:local": "pnpm lint && pnpm typecheck && pnpm -r --if-present check && pnpm -r build && pnpm test:reports && pnpm check:platform && pnpm check:secrets && pnpm check:pins && pnpm check:suites && pnpm check:si"
   },
   "devDependencies": {
     "@biomejs/biome": "2.6.4",

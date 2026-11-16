@@ -9,5 +9,6 @@
 | Grok Build CLI (`grok`) | Optional agent (DECISION-48), runtime dependency on the user's machine | xAI terms | https://docs.x.ai/build/overview |
 | Poppins (font) | UI typeface (bundle the woff2 files; do not hotlink in the desktop app) | SIL OFL 1.1 | https://fonts.google.com/specimen/Poppins |
 | JetBrains Mono (font) | Code and terminal typeface | SIL OFL 1.1 | https://www.jetbrains.com/lp/mono/ |
+| `yaml` 2.9.1 | Parses `ci.yml` in the structure test; dev dependency of `@wraith/tools` only, not shipped | ISC | https://github.com/eemeli/yaml |
 
 Update this file whenever a dependency with notable licensing or vendored code is added.

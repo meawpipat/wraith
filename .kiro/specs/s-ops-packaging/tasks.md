@@ -22,10 +22,10 @@ Conventions:
 
 ## Tasks
 
-- [ ] 1. `packages/platform`, `tools` scaffold and root wiring (P0)
+- [x] 1. `packages/platform`, `tools` scaffold and root wiring (P0)
   - DoD: P0-D7 (supports: the platform package and its exemption), P0-D1 (supports: the `tools` and `platform` suites join `pnpm -r test`). Requirements: R9, R8.1, R8.2, R8.4, R5.3, R2.16 (scaffold only). Design: "Module layout", "Dependency rules", "Build, resolution and ordering", "`packages/platform`", D1, D11, O1, O3.
   - Files owned: `packages/platform/{package.json,tsconfig.json,vitest.config.ts,README.md}`, `packages/platform/src/{index,platform,errors,select,darwin,linux,win32}.ts`, `packages/platform/test/{config,select,structure}.test.ts` (`config.ts` is a support file), `tools/{package.json,tsconfig.json,vitest.config.ts,README.md}`, `tools/lib/{finding,mask,walk}.ts`, `tools/test/config.ts`, `tools/test/lib.test.ts`, root `package.json`, `pnpm-workspace.yaml`, root `tsconfig.json`, `biome.json`, `.gitignore`, `pnpm-lock.yaml`, `docs/THIRD_PARTY.md`.
-  - [ ] 1.1 Create the `packages/platform` package files and install
+  - [x] 1.1 Create the `packages/platform` package files and install
     - `package.json`: name `@wraith/platform`, `private`, `type: module`, `exports` `"."` with `types` and `default` into `dist`, scripts `build` (`tsc -p tsconfig.json`), `test` (`vitest run`), `check` (`tsc -p tsconfig.json --noEmit`); no `dependencies` key entries and no workspace dependency (R9.7); `devDependencies`: `@types/node` 22.20.5, `vitest` 5.0.5, `fast-check` 4.10.2 (exact)
     - `tsconfig.json` extends the base with `composite`, `rootDir: src`, `outDir: dist`, `lib: ["ES2022"]`, `types: ["node"]`, `include: ["src"]`; `vitest.config.ts` with one `node` project (`include: ["test/**/*.test.ts"]`, `passWithNoTests` off)
     - `README.md`: states the package is Node-only (OQ-18), lists the six future call groups of §4.10 (local IPC with the 0600 file and 0700 folder checks, secret-file creation with mode 0600 and the mode check before reading, login environment capture and finding a command on PATH, the service unit, process control with signals, killing a process tree and the sprite's pane-lost signals and exit 75, paths and opening a URL) as P1 contents (R9.5), and says only `apps/node`, `apps/sprite` and `apps/relay-node` may import it (§4.10)
@@ -33,31 +33,31 @@ Conventions:
     - _Requirements: R9.1, R9.2, R9.5, R9.6, R9.7_
     - Design: "`packages/platform`" (package.json bullet)
     - DoD: P0-D7 (supports), P0-D1 (supports)
-  - [ ] 1.2 Write the platform sources
+  - [x] 1.2 Write the platform sources
     - `errors.ts`: `ProgrammerError` with `reason: "unsupported_platform"` and a sanitised `platform` field (`[A-Za-z0-9_-]{1,32}`, otherwise `<invalid>`); message `wraith-platform: unsupported platform <sanitised value>`; no import from `@wraith/crypto` (D11)
     - `platform.ts`: `PlatformId`, `PlatformBase`, `DarwinPlatform`, `LinuxPlatform` (`isWsl()`), `Win32Platform` (`notice`, `exitCode: 1`), `Platform`; `win32.ts`: `WSL2_DOCS_URL = "docs/wsl2.md"` and `WIN32_NOTICE`; `darwin.ts`, `linux.ts` (`isWsl()` returns `false` in P0, R9.10), `win32.ts`: frozen module-level adapter objects; `select.ts`: `selectPlatform(platform: string = process.platform)` returns the adapter with that id or throws `ProgrammerError`; `index.ts` exports the types, `selectPlatform`, the three adapters, `WIN32_NOTICE`, `WSL2_DOCS_URL` and `ProgrammerError`
     - `process.platform` appears only in this package, in the default parameter of `select.ts` (the exempt folder, R9.9)
     - _Requirements: R9.3, R9.4, R9.10, R8.1, R8.2, R8.4_
     - Design: "`packages/platform`" (interfaces, bullets)
     - DoD: P0-D7 (supports)
-  - [ ] 1.3 Write the platform test config and the example tests for the selector
+  - [x] 1.3 Write the platform test config and the example tests for the selector
     - `test/config.ts` (support file): `OPS_PBT_RUNS = 500` and `pbt(...)` wrapping `fc.assert`, defaulting `numRuns` to the constant and refusing a lower value; its own copy, imported by nothing outside this package
     - `test/select.test.ts`: `darwin`, `linux`, `win32` return the adapter with that id; `freebsd` throws `ProgrammerError` with reason `unsupported_platform`; `win32` exposes `WIN32_NOTICE` (which names `WSL2_DOCS_URL`) and exit code 1; `isWsl()` returns `false` and never throws
     - _Requirements: R9.3, R9.4, R8.2, R8.4, R9.10_
     - Design: "`packages/platform`", Testing Strategy (Conventions)
     - DoD: P0-D7 (supports)
-  - [ ] 1.4 Write the property test for the platform selector
+  - [x] 1.4 Write the property test for the platform selector
     - **Property 8: The Platform_Selector is total and exact**
     - Append to `test/select.test.ts`, through `pbt(...)`, tag `Feature: s-ops-packaging, Property 8: The Platform_Selector is total and exact`; generators: any string (including unicode, long strings, `darwin`-prefixed strings) and the three valid ids; assert the result id or the `ProgrammerError` whose message contains only the sanitised string
     - **Validates: Requirements 8.2, 8.4, 9.3, 9.4, 9.10**
     - Design: Property 8
     - DoD: P0-D7 (supports)
-  - [ ] 1.5 Write the platform structure test
+  - [x] 1.5 Write the platform structure test
     - `test/structure.test.ts` (reads files with `node:fs`; test only): README contains the six call groups of R9.5; `package.json` has no `dependencies` and no `workspace:` value in any dependency field; no package other than `apps/node`, `apps/sprite` and `apps/relay-node` lists `@wraith/platform` in a dependency field or imports it in a source file (in particular `relay-core`, `protocol`, `crypto`, `ui-kit` and the web and Worker apps), scanning every `package.json` and `src/**` of `apps/` and `packages/`; the root `tsconfig.json` references `./packages/platform` (checked after 1.8)
     - _Requirements: R9.2, R9.5, R9.7, R9.8_
     - Design: Testing Strategy (`structure.test.ts`), "Dependency rules"
     - DoD: P0-D7 (supports), P0-D1 (supports)
-  - [ ] 1.6 Create the `tools` workspace package scaffold and pin `yaml`
+  - [x] 1.6 Create the `tools` workspace package scaffold and pin `yaml`
     - Add `tools` to `pnpm-workspace.yaml` (O1; keep `apps/*` and `packages/*`)
     - `tools/package.json`: name `@wraith/tools`, `private`, `type: module`, scripts `test` (`vitest run`), `check` (`tsc -p tsconfig.json --noEmit`); `devDependencies`: `vitest` 5.0.5, `fast-check` 4.10.2, `@types/node` 22.20.5, and `yaml` at one exact version chosen from the npm registry at install time (license ISC; no `^` or `~`); no workspace dependency (design: Dependency rules)
     - `tools/tsconfig.json`: not `composite`; `noEmit`; `allowImportingTsExtensions`; `types: ["node"]`; `include` covers the tools files, `test/**` and the protocol script it imports; a `.ts` import of `../../packages/protocol/scripts/check-boundaries.ts` must type-check; if it does not, record the working settings and use them
@@ -66,7 +66,7 @@ Conventions:
     - _Requirements: R2.16 (scaffold), R11.9_
     - Design: "Module layout", "Dependency rules", D1, O1, O3, Testing Strategy (Tools, Conventions)
     - DoD: P0-D1 (supports)
-  - [ ] 1.7 Write the shared helpers and their tests
+  - [x] 1.7 Write the shared helpers and their tests
     - `lib/finding.ts`: `EXIT_OK`, `EXIT_FINDINGS`, `EXIT_ERROR`, `Finding` (file, line, optional column, rule; no field for text), `formatFinding` (`<file>:<line>[:<col>] <rule>`), `ToolError` (fixed messages, optional path only)
     - `lib/mask.ts`: `maskComments(src)` returns `scan(src).noComments` using a relative `.ts` import of `packages/protocol/scripts/check-boundaries.ts` (D2); if the import cannot be resolved by `node --experimental-strip-types` or `tsc`, use the guarded copy fallback of D2 and record it (task 12.4)
     - `lib/walk.ts`: `walkFiles({ root, dirs, skipDirNames })` returns sorted repo-relative posix paths, uses `lstat`, never follows symlinks
@@ -74,7 +74,7 @@ Conventions:
     - _Requirements: R3.13, R3.17, R5.5, R5.10_
     - Design: "Shared helpers (`tools/lib`)", D2
     - DoD: P0-D7 (supports), P0-D6 (supports), P0-D1 (supports)
-  - [ ] 1.8 Wire the root scripts, tsconfig reference, Biome and `.gitignore`
+  - [x] 1.8 Wire the root scripts, tsconfig reference, Biome and `.gitignore`
     - Root `package.json`: add the scripts of the design table (`check:platform`, `check:secrets`, `check:pins`, `check:suites`, `check:si`, `test:reports`, `verify:local`) with the exact commands of "Build, resolution and ordering"; existing `build`, `test`, `typecheck`, `lint` unchanged; `packageManager` unchanged
     - Root `tsconfig.json`: add `{ "path": "./packages/platform" }` to `references` (R9.8)
     - `biome.json`: add the exclusion `!**/.reports` to `files.includes`; `.gitignore`: add `.reports/`
@@ -82,12 +82,12 @@ Conventions:
     - _Requirements: R9.8, R2.7_
     - Design: "Build, resolution and ordering" (root scripts table, `.reports/` bullet), D4
     - DoD: P0-D1 (supports), P0-D7 (supports)
-  - [ ] 1.9 Record `yaml` in `docs/THIRD_PARTY.md`
+  - [x] 1.9 Record `yaml` in `docs/THIRD_PARTY.md`
     - Add one entry: name `yaml`, the exact installed version from 1.6, license ISC, reason: parses `ci.yml` in the structure test; dev dependency of `@wraith/tools` only, not shipped (O3); follow the existing table format of the file
     - _Requirements: R2.16_
     - Design: "Design choices confirmed by owner" (O3), Testing Strategy (Tools)
     - DoD: P0-D1 (supports)
-  - [ ] 1.10 Run the group verification (group 1)
+  - [x] 1.10 Run the group verification (group 1)
     - Run `pnpm -r test`, `pnpm -r build`, `pnpm typecheck`, `pnpm -r --if-present check` and `pnpm lint`; all clean; the `tools` and `platform` suites appear in the test output
     - List the files this group changed for the commit
     - _Requirements: R9.8_

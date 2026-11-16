@@ -23,6 +23,9 @@
       "path": "./packages/fakes"
     },
     {
+      "path": "./packages/platform"
+    },
+    {
       "path": "./packages/protocol"
     },
     {

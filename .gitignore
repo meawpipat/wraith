@@ -6,6 +6,7 @@ build/
 *.log
 .DS_Store
 coverage/
+.reports/
 apps/desktop/src-tauri/target/
 apps/desktop/src-tauri/binaries/
 # secrets (SI-12)

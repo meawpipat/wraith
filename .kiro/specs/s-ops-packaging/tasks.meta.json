@@ -1,0 +1,142 @@
+{
+  "pbtResults": {
+    "1.4 Write the property test for the platform selector": {
+      "status": "passed",
+      "lastRunTimestamp": 1794797952837
+    }
+  },
+  "executionHistory": {
+    "1.1 Create the `packages/platform` package files and install": [
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794797635111
+      },
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794797635201
+      },
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794797697409
+      }
+    ],
+    "1.2 Write the platform sources": [
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794797704484
+      },
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794797801630
+      }
+    ],
+    "1.6 Create the `tools` workspace package scaffold and pin `yaml`": [
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794797704591
+      },
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794797801724
+      }
+    ],
+    "1.3 Write the platform test config and the example tests for the selector": [
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794797810839
+      },
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794797895809
+      }
+    ],
+    "1.7 Write the shared helpers and their tests": [
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794797810933
+      },
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794797895894
+      }
+    ],
+    "1.8 Wire the root scripts, tsconfig reference, Biome and `.gitignore`": [
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794797912994
+      },
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794797970984
+      }
+    ],
+    "1.9 Record `yaml` in `docs/THIRD_PARTY.md`": [
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794797913128
+      },
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794797971597
+      }
+    ],
+    "1.4 Write the property test for the platform selector": [
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794797913194
+      },
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794797970892
+      }
+    ],
+    "1.5 Write the platform structure test": [
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794797972057
+      },
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794798033486
+      }
+    ],
+    "1.10 Run the group verification (group 1)": [
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794798033589
+      },
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794798101662
+      }
+    ],
+    "1. `packages/platform`, `tools` scaffold and root wiring (P0)": [
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794798101753
+      }
+    ]
+  }
+}
