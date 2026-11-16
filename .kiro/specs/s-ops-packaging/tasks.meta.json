@@ -3,6 +3,14 @@
     "1.4 Write the property test for the platform selector": {
       "status": "passed",
       "lastRunTimestamp": 1794797952837
+    },
+    "2.3 Write the property test for exact non-comment token reporting": {
+      "status": "passed",
+      "lastRunTimestamp": 1794798251252
+    },
+    "2.4 Write the property test for the scanned scope": {
+      "status": "passed",
+      "lastRunTimestamp": 1794798316953
     }
   },
   "executionHistory": {
@@ -136,6 +144,92 @@
         "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
         "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
         "timestamp": 1794798101753
+      }
+    ],
+    "2.1 Implement `tools/check-platform.ts`": [
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794798117680
+      },
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794798193127
+      }
+    ],
+    "2.2 Write the example tests (token table and CLI)": [
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794798193258
+      },
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794798270687
+      }
+    ],
+    "2.3 Write the property test for exact non-comment token reporting": [
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794798193404
+      },
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794798270815
+      }
+    ],
+    "2.5 Write the real-tree test": [
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794798193985
+      },
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794798271267
+      }
+    ],
+    "2.4 Write the property test for the scanned scope": [
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794798271989
+      },
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794798328402
+      }
+    ],
+    "2.6 Run the group verification (group 2)": [
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794798329000
+      },
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794803552434
+      }
+    ],
+    "2. Platform_Check (P0)": [
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794803552505
+      }
+    ],
+    "3. Checkpoint - Platform package, scaffold and Platform_Check": [
+      {
+        "executionId": "2f7fb7d0-1f48-466e-bbb3-8dca6d5dfad5",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794803560358
       }
     ]
   }

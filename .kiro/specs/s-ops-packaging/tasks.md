@@ -94,45 +94,45 @@ Conventions:
     - Design: "Build, resolution and ordering"
     - DoD: P0-D1 (supports), P0-D7 (supports)
 
-- [ ] 2. Platform_Check (P0)
+- [x] 2. Platform_Check (P0)
   - DoD: P0-D7 (the sample tests and the real-tree run), P0-D1 (supports: `check:platform` is a CI step). Requirements: R5.1 to R5.3, R5.5 to R5.10, R9.9. Design: "Platform_Check", Properties 4 and 5.
   - Files owned: `tools/check-platform.ts`, `tools/test/check-platform.test.ts`, `tools/test/check-platform.property.test.ts`, `tools/test/check-platform.tree.test.ts`, `tools/test/support/platform-samples.ts`.
-  - [ ] 2.1 Implement `tools/check-platform.ts`
+  - [x] 2.1 Implement `tools/check-platform.ts`
     - `PLATFORM_TOKENS` with the nine ids and patterns of the design table, applied to `maskComments(text)`; `isScannedPath(rel)`, `checkPlatformSource(rel, text)` (findings with file, 1-based line and column, rule `platform/<id>`), `checkPlatformTree(root)` walking `apps/` and `packages/` and skipping `.reports`, `.wrangler` and `target`
     - CLI `node --experimental-strip-types tools/check-platform.ts [--root <dir>]`: reads every file, collects every finding, sorts by file, line and column, prints one `formatFinding` line per finding plus a summary line; exit 0 clean, 1 on findings, 2 on an unreadable file; never exits after the first finding (R5.10)
     - The exemption is exactly `packages/platform/` (plus `packages/fakes/` and the other path rules of `isScannedPath`); no other folder is exempt (R9.9)
     - _Requirements: R5.1, R5.2, R5.3, R5.5, R5.9, R5.10, R9.9_
     - Design: "Platform_Check" (token table, `isScannedPath`, Behavior, Stated limits)
     - DoD: P0-D7, P0-D1 (supports)
-  - [ ] 2.2 Write the example tests (token table and CLI)
+  - [x] 2.2 Write the example tests (token table and CLI)
     - `check-platform.test.ts` with `test/support/platform-samples.ts`: for each of the nine tokens one failing sample outside `packages/platform` and one passing sample inside it (R5.6, R5.7); `process.platform` and `SIGHUP` samples through the CLI with `--root <tmp>` assert exit 1 and a `file:line:col token` style line; a file with several violations lists them all; an unreadable file exits 2; `os.tmpdir()` is not flagged
     - _Requirements: R5.6, R5.7, R5.9, R5.10_
     - Design: Testing Strategy (Platform_Check example tests)
     - DoD: P0-D7
-  - [ ] 2.3 Write the property test for exact non-comment token reporting
+  - [x] 2.3 Write the property test for exact non-comment token reporting
     - **Property 4: The Platform_Check reports exactly the non-comment tokens**
     - `check-platform.property.test.ts`; generators: source files as arrays of (kind, token) placements (code, string literal, template literal, line comment, single-line block comment, multi-line block comment) with the expected (line, token) set computed from the model, not from the scanner; assert equality, no early exit, and the same result for any ordering of equal lines
     - **Validates: Requirements 5.2, 5.5, 5.10**
     - Design: Property 4
     - DoD: P0-D7
-  - [ ] 2.4 Write the property test for the scanned scope
+  - [x] 2.4 Write the property test for the scanned scope
     - **Property 5: The Platform_Check scope is exactly the stated tree**
     - Append to `check-platform.property.test.ts`; generators: relative paths built from segments including `apps`, `packages`, `platform`, `fakes`, `node_modules`, `dist`, `generated`, `test`, `spike`, `tools`, the scanned and unscanned extensions and the `.test.ts`, `.test.tsx`, `.d.ts` suffixes; assert `isScannedPath` and the presence of findings equal the stated predicate; `spike/` and `tools/` are never scanned
     - **Validates: Requirements 5.3, 9.9**
     - Design: Property 5
     - DoD: P0-D7
-  - [ ] 2.5 Write the real-tree test
+  - [x] 2.5 Write the real-tree test
     - `check-platform.tree.test.ts`: run the CLI on the repository root and assert exit 0 (R5.8); in the design phase no match existed in `apps/` and `packages/`, so any failure now is a real finding to fix at its source, not a reason to extend the exemption
     - _Requirements: R5.8_
     - Design: Testing Strategy (the real tree exits 0)
     - DoD: P0-D7, P0-D1 (supports)
-  - [ ] 2.6 Run the group verification (group 2)
+  - [x] 2.6 Run the group verification (group 2)
     - Run `pnpm -r test`, `pnpm -r build`, `pnpm typecheck`, `pnpm -r --if-present check`, `pnpm lint` and `pnpm check:platform`; all clean; list the files for the commit
     - _Requirements: R5.8_
     - Design: "Build, resolution and ordering"
     - DoD: P0-D7, P0-D1 (supports)
 
-- [ ] 3. Checkpoint - Platform package, scaffold and Platform_Check
+- [x] 3. Checkpoint - Platform package, scaffold and Platform_Check
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 4. Secret_Scan, pre-commit script and the `secret-scan` hook file (P0)
