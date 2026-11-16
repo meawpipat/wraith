@@ -8,3 +8,4 @@ export * from "./registry.js";
 export * from "./scope.js";
 export * from "./shapes.js";
 export * from "./text.js";
+export * from "./unsafe.js";

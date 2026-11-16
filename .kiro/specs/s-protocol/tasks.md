@@ -391,13 +391,13 @@ Conventions:
 
 - [ ] 14. Unsafe tokens, agents, cloud prompt and Terminal guard template (P1)
   - DoD: P0-D6 (supports: the SI hooks and `secret-scan` belong to the other P0 hook specs; this group supplies the data they import), P1-D11 (supports: S-node-core owns the `agents validate` validators), P1-D6. Requirements: R21. Design: "Protocol-owned data (R21)", Properties 17 and 18.
-  - [ ] 14.1 Create `unsafe.ts`
+  - [x] 14.1 Create `unsafe.ts`
     - Typed `as const` groups (argv flags, environment names, settings values, patterns) built from the SI-1 pattern list, SI-2, the Claude bypass flags and the Grok approval values listed in R21.2; `samples` per pattern entry; `findUnsafeToken(text)` returns `{ group, index }` or `null`, never the literal
     - This is the only source file that spells an unsafe literal; this task owns its `index.ts` edit
     - _Requirements: R21.1, R21.2, R21.3_
     - Design: "Protocol-owned data (R21)"
     - DoD: P0-D6 (supports), P1-D11 (supports)
-  - [ ] 14.2 Write property test for the unsafe-token matcher
+  - [x] 14.2 Write property test for the unsafe-token matcher
     - **Property 18: Unsafe token matcher**
     - **Validates: Requirements 21.2, 21.3**
     - Tag `Feature: s-protocol, Property 18: Unsafe token matcher`; runs with `PBT_MIN_RUNS`
