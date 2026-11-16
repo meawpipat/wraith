@@ -256,28 +256,28 @@ Conventions:
     - Design: "Build, resolution and ordering"
     - DoD: P0-D1 (supports)
 
-- [ ] 7. Pin_Check and `ci.yml` (P0)
+- [x] 7. Pin_Check and `ci.yml` (P0)
   - DoD: P0-D1 (supports: local evidence part (a) only; the row stays `todo` until the GitHub run). Requirements: R2 (criteria 1 to 14, 16, 17), R10, R3.10, R3.11. Design: "Pin_Check", "CI workflow", Property 6, D5, D12, D13, O3, O5.
   - Files owned: `tools/check-workflow-pins.ts`, `tools/test/{check-workflow-pins,ci-workflow}.test.ts`, `.github/workflows/ci.yml`; only if the OQ-7 fallback of 7.4 applies: `tools/check-suites-ran.ts`, `tools/lib/suites.ts`, `tools/required-suites.json`, `tools/test/check-suites-cli.test.ts`, `tools/test/check-suites.test.ts`.
-  - [ ] 7.1 Implement `tools/check-workflow-pins.ts`
+  - [x] 7.1 Implement `tools/check-workflow-pins.ts`
     - `checkWorkflowText(file, text)` and `checkWorkflowsDir(root)` with the line-based classification of the design (drop trailing comments outside quotes; `./` ignored; `docker://` needs `@sha256:` and 64 lowercase hex; otherwise `owner/repo[/path]@<40 lowercase hex>`; problems `no-ref`, `bad-action`, `mutable-ref`, `short-sha`, `long-sha`, `uppercase-sha`, `docker-no-digest`; rule `pin/<problem>`); reads only the top level of `.github/workflows/` (`*.yml`, `*.yaml`); CLI `[--root <dir>]` with exit 0, 1 or 2
     - _Requirements: R10.1, R10.2, R10.3, R10.4, R10.5, R10.7, R10.8_
     - Design: "Pin_Check"
     - DoD: P0-D1 (supports)
-  - [ ] 7.2 Write the property test and the example table for the Pin_Check
+  - [x] 7.2 Write the property test and the example table for the Pin_Check
     - **Property 6: The Pin_Check accepts exactly full lowercase SHAs**
     - `check-workflow-pins.test.ts`; generators: `uses:` values (tags, branches, expressions, hex strings of 7 to 64 characters, uppercase hex, no `@`, `docker://` with and without digest, local paths) and workflow texts with a `uses:` only after a comment marker; assert pass if and only if the stated forms, otherwise a finding with file, 1-based line and the matching problem id; add the example table of R10.6 (a tag, a branch, a 7-character SHA and a 39-character SHA fail; a 40-hex SHA and `./` pass); the real `.github/workflows/` folder passes
     - **Validates: Requirements 10.2, 10.3, 10.4, 10.5, 10.8**
     - Design: Property 6, Testing Strategy (Property tests table)
     - DoD: P0-D1 (supports)
-  - [ ] 7.3 Look up the pins and write `.github/workflows/ci.yml`
+  - [x] 7.3 Look up the pins and write `.github/workflows/ci.yml`
     - Re-run the read-only lookup `git ls-remote --tags https://github.com/actions/checkout.git` and the same for `https://github.com/actions/setup-node.git`; confirm the owner-verified pins before writing: `actions/checkout` v7.0.1 = `3d3c42e5aac5ba805825da76410c181273ba90b1` and `actions/setup-node` v7.1.0 = `949feb2413d6458794dcd2491c4babbbce0c15c1` (no peeled `^{}` entry means the SHA is the commit); if a SHA differs from the owner-verified value, STOP and report to the owner, do not substitute
     - Write the workflow exactly as the design YAML: `pull_request` and `push` to `main`; workflow-level `permissions: contents: read`; `concurrency` with `cancel-in-progress: true`; matrix `os: [ubuntu-latest, macos-latest]` with `fail-fast: false`; checkout with `persist-credentials: false`; setup-node with `node-version: 22`; then `npm install -g pnpm@9.15.0` (after setup-node, R2.5), the version-equality step against `packageManager`, `pnpm install --frozen-lockfile`, lint, typecheck, `pnpm -r --if-present check` (D12), `pnpm -r build`, the reporter test step, and `check:platform`, `check:secrets`, `check:pins`, `check:suites`; each `uses:` line carries a trailing `# v<major>.<minor>.<patch>` comment with the tag (R10.9); no `continue-on-error`, no `if:`, no `environment`, no secrets, no push, no `actions/cache`, no gitleaks step (R3.11), no actionlint (D13); no other third-party action
     - The test step line is written as in the design and is confirmed or replaced in 7.4 before this group is committed
     - _Requirements: R2.1, R2.2, R2.3, R2.4, R2.5, R2.6, R2.7, R2.8, R2.9, R2.10, R2.11, R2.12, R2.13, R2.14, R3.10, R3.11, R10.1, R10.9_
     - Design: "CI workflow" (pins table, YAML, reading against the requirements), D5, D12, D13, O5
     - DoD: P0-D1 (supports)
-  - [ ] 7.4 Run the exact CI test command locally and confirm flag forwarding and report files
+  - [x] 7.4 Run the exact CI test command locally and confirm flag forwarding and report files
     - Delete every `.reports/` folder, then run the exact CI test command as written in `ci.yml`: `pnpm -r test -- --reporter=default --reporter="<absolute path of tools/vitest-project-reporter.ts>"` (the repository path written out in full for the local run; the file keeps `$PWD`)
     - Confirm (1) the flags reach vitest in every package: the `default` reporter output appears and the reporter writes its file; (2) every package with a test script (the `packagesWithTests` list exported by 6.4) wrote `<dir>/.reports/suites.json`, non-empty and valid JSON with at least one run; the proof is this local run followed by `pnpm check:suites`: its `report-missing` outcome covers a package that has a test script but wrote no report (no extra test file is written)
     - If either confirmation fails, use the OQ-7 two-run fallback: for `packages/crypto` two runs, `vitest run --project node` and `vitest run --project workers`, each with the built-in JSON reporter writing `.reports/suites-node.json` and `.reports/suites-workers.json`; change `check-suites-ran.ts` and `lib/suites.ts` to read both files and take the project from the file name; adjust their tests and `required-suites.json` if needed; the other packages keep one run; list the two runs as separate steps in `ci.yml` in the same position (the R2.7 order still holds)
@@ -286,18 +286,18 @@ Conventions:
     - _Requirements: R2.9, R2.16, R11.1, R11.9, R11.10_
     - Design: "CI workflow" (Test-step check), "Risks and unverified items" (pnpm 9 flag forwarding), OQ-7
     - DoD: P0-D1 (supports)
-  - [ ] 7.5 Write the `ci.yml` structure test
+  - [x] 7.5 Write the `ci.yml` structure test
     - `ci-workflow.test.ts`: parse `.github/workflows/ci.yml` with `yaml` and assert: triggers `pull_request` and `push` to `main`; matrix labels equal to exactly `ubuntu-latest` and `macos-latest`; `node-version` equals the `.nvmrc` major; the `npm install -g pnpm@9.15.0` step after setup-node and before `pnpm install --frozen-lockfile`; the version-equality step; the required commands as an ordered subsequence of the `run` steps (extras allowed, D12); workflow-level `permissions` equal to `{contents: read}` and none at job level; `concurrency.cancel-in-progress`; no `continue-on-error`, no `if`, no `environment`, no `secrets.` text, no `git push`; no third-party action beyond `actions/checkout` and `actions/setup-node`; every `uses:` line is followed by a `# v<major>.<minor>.<patch>` comment; the two SHAs equal the owner-verified values; the Pin_Check passes on the file; no gitleaks file or step exists (R3.11)
     - _Requirements: R2.1 to R2.14, R2.16, R3.11, R10.1, R10.9_
     - Design: Testing Strategy (`ci-workflow.test.ts`)
     - DoD: P0-D1 (supports)
-  - [ ] 7.6 Run the group verification (group 7)
+  - [x] 7.6 Run the group verification (group 7)
     - Run `pnpm -r test`, `pnpm -r build`, `pnpm typecheck`, `pnpm -r --if-present check`, `pnpm lint`, `pnpm check:pins`, then `pnpm test:reports` and `pnpm check:suites`; all clean; list the files for the commit; do not push
     - _Requirements: R2.16, R10.7_
     - Design: "Build, resolution and ordering"
     - DoD: P0-D1 (supports)
 
-- [ ] 8. Checkpoint - Reporter, Suites_Check, Pin_Check and `ci.yml`
+- [x] 8. Checkpoint - Reporter, Suites_Check, Pin_Check and `ci.yml`
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 9. SI hooks `no-trust-all-tools` and `no-auto-approve` (P0, BLOCKED until S-protocol 14.1 and 14.2)
