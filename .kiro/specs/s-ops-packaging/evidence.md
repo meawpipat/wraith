@@ -36,3 +36,14 @@ Same as the 4.11 section. The agent typed the token directly in the tool input. 
 ## Results collected for task 12.3
 - `secret-scan`: smoke result in the task 4.11 section above (ordinary write passes, token-shaped write blocked with `secret/github-token`).
 - `no-trust-all` and `no-auto-approve`: smoke results in this task 9.7 section (ordinary write passes, `argvFlags` and `envNames` samples blocked, `envNames` in a shell `echo` passes).
+
+## P0-D1: first CI run
+
+- Repo: github.com/meawpipat/wraith (public). The owner pushed `main`.
+- First CI run 44006801204 failed on ubuntu-latest and macos-latest at the test step only. Install, lint, typecheck, check and build passed.
+- Failing test: `tools/test/reporter.test.ts` > "a focused test leaves the others skipped" (failed 1, expected 0).
+- Cause: GitHub sets `CI=true`, and vitest then rejects `test.only` (`allowOnly` defaults to false in CI). The fixture project spawned by the test contains a `test.only`.
+- Fix: `--allowOnly` is passed only to the vitest run that `runProject` spawns in `tools/test/reporter.test.ts`. No real vitest config sets `allowOnly`, so CI still rejects a stray `.only`. The fixture still asserts passed 1, skipped 1, failed 0.
+- Local reproduction: `CI=true pnpm --filter @wraith/tools exec vitest run test/reporter.test.ts` (failed before the fix, passes after).
+- Verification: `CI=true pnpm verify:local` and `pnpm verify:local` both exit 0.
+- Status: P0-D1 stays `todo` until a green CI run is read (HS-5).

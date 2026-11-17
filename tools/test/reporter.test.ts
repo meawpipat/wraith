@@ -29,7 +29,7 @@ function runProject(testSource: string): { status: number | null; report: unknow
   );
   const result = spawnSync(
     process.execPath,
-    [vitestBin, "run", `--reporter=${reporterPath}`, "--reporter=dot"],
+    [vitestBin, "run", "--allowOnly", `--reporter=${reporterPath}`, "--reporter=dot"],
     { cwd: dir, encoding: "utf8", timeout: 60_000 },
   );
   const report = JSON.parse(readFileSync(join(dir, ".reports", "suites.json"), "utf8"));
