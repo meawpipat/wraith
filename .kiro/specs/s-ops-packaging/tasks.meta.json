@@ -692,6 +692,80 @@
         "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
         "timestamp": 1794879149558
       }
+    ],
+    "12.1 Update the P0-D7 row": [
+      {
+        "executionId": "67bea578-bc9d-4325-a23a-2f9d18a83e18",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794879167820
+      },
+      {
+        "executionId": "67bea578-bc9d-4325-a23a-2f9d18a83e18",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794879223430
+      }
+    ],
+    "12.4 Record agent-made decisions in `docs/DECISIONS-PENDING.md` (conditional)": [
+      {
+        "executionId": "67bea578-bc9d-4325-a23a-2f9d18a83e18",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794879167906
+      },
+      {
+        "executionId": "67bea578-bc9d-4325-a23a-2f9d18a83e18",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794879223497
+      }
+    ],
+    "12.2 Update the P0-D1 row (local evidence only)": [
+      {
+        "executionId": "67bea578-bc9d-4325-a23a-2f9d18a83e18",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794879229385
+      },
+      {
+        "executionId": "67bea578-bc9d-4325-a23a-2f9d18a83e18",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794879317357
+      }
+    ],
+    "12.3 Update the P0-D6 row": [
+      {
+        "executionId": "67bea578-bc9d-4325-a23a-2f9d18a83e18",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794879317443
+      },
+      {
+        "executionId": "67bea578-bc9d-4325-a23a-2f9d18a83e18",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794879405469
+      }
+    ],
+    "12.5 Run the final verification": [
+      {
+        "executionId": "67bea578-bc9d-4325-a23a-2f9d18a83e18",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794879405579
+      },
+      {
+        "executionId": "67bea578-bc9d-4325-a23a-2f9d18a83e18",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794879578905
+      }
+    ],
+    "12. Evidence and decisions (P0)": [
+      {
+        "executionId": "67bea578-bc9d-4325-a23a-2f9d18a83e18",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794879578965
+      }
+    ],
+    "13. Final checkpoint - Ensure all tests pass": [
+      {
+        "executionId": "67bea578-bc9d-4325-a23a-2f9d18a83e18",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794879579044
+      }
     ]
   }
 }

@@ -365,39 +365,39 @@ Conventions:
     - Design: "Kiro Hook_Files" (Smoke test before enabling), OQ-3
     - DoD: P0-D6
 
-- [ ] 12. Evidence and decisions (P0)
+- [x] 12. Evidence and decisions (P0)
   - DoD: P0-D1 (supports: local evidence part (a); the row stays `todo`), P0-D6, P0-D7. Requirements: R13.1 to R13.6, R12.2, R14.5 of the project decision-log convention. Design: "Mapping to Definition of Done items and evidence rules".
   - Files owned: `docs/PHASE-STATUS.md` (rows P0-D1, P0-D6, P0-D7 only, plus one short note line under the table if needed), `docs/DECISIONS-PENDING.md`.
-  - [ ] 12.1 Update the P0-D7 row
+  - [x] 12.1 Update the P0-D7 row
     - Set P0-D7 to `pass` only if the Platform_Check sample tests (every token, `process.platform`, `SIGHUP`) and the real-tree run (`pnpm check:platform`) pass; evidence text: the commands, the test file names, the node and pnpm versions, the date; the CI step is P0-D1 evidence, not a P0-D7 condition; if anything failed, leave `todo` and state why
     - Edit only the P0-D7 row
     - _Requirements: R5.6, R5.8, R9.9_
     - Design: Mapping table (P0-D7)
     - DoD: P0-D7
-  - [ ] 12.2 Update the P0-D1 row (local evidence only)
+  - [x] 12.2 Update the P0-D1 row (local evidence only)
     - Run `pnpm install --frozen-lockfile` and then `pnpm verify:local`; record in the evidence column: the command list, the node and pnpm versions, the `check:suites` count lines, the outcome of the test-step check and the command used (7.4, including whether the OQ-7 fallback was needed), the date, and that the Workers_Project has run only on the dev machine and on no GitHub runner yet (R13.5)
     - The row stays `todo` (R13.3): it becomes `pass` only after the human steps HS-1 to HS-5 and a green GitHub run on `ubuntu-latest` and `macos-latest` with the run link; this task never writes `pass` and never pushes (R13.4). If a failed run on a runner is later recorded, the evidence states runner, versions and error and the Workers_Project is not dropped (R13.6)
     - _Requirements: R13.1, R13.3, R13.4, R13.5, R13.6_
     - Design: Mapping table (P0-D1)
     - DoD: P0-D1 (supports; row stays `todo`)
-  - [ ] 12.3 Update the P0-D6 row
+  - [x] 12.3 Update the P0-D6 row
     - Set P0-D6 to `pass` only when all three Hook_Files exist in `.kiro/hooks/`, each has its passing sample tests (Properties 1 and 9, the per-class example tables), the real-tree tests pass (`pnpm check:secrets` and `pnpm check:si`), the `unsafe.ts` commit exists (R12.2) and the smoke tests recorded by 4.11 and 9.7 (collected in 11.1) passed; otherwise leave `todo` and state which condition is missing; the evidence column records the smoke-test results collected in 11.1 (date, hook, outcome, Kiro version)
     - Edit only the P0-D6 row
     - _Requirements: R12.1, R12.2, R12.7_
     - Design: Mapping table (P0-D6), Kiro Hook_Files (H-smoke)
     - DoD: P0-D6
-  - [ ] 12.4 Record agent-made decisions in `docs/DECISIONS-PENDING.md` (conditional)
+  - [x] 12.4 Record agent-made decisions in `docs/DECISIONS-PENDING.md` (conditional)
     - Only if an agent decision was taken: the guarded-copy fallback for `mask.ts` (1.7), the `.mjs` reporter instead of `.ts` (6.1), the OQ-7 two-run fallback (7.4), the platform package's own `OPS_PBT_RUNS` copy, a `tools/tsconfig.json` setting needed for the relative import, and the group-to-hook assignment of `unsafe.ts` (9.2); one row each (id, date, question, default taken, impact if changed, resolved); skip the task body if none was taken
     - _Requirements: R14.5 of the project decision-log convention_
     - Design: D2, D3, OQ-7
     - DoD: P0-D1 (supports)
-  - [ ] 12.5 Run the final verification
+  - [x] 12.5 Run the final verification
     - Run `pnpm -r test`, `pnpm -r build`, `pnpm typecheck`, `pnpm -r --if-present check`, `pnpm lint`, `pnpm test:reports` and the five checks (`check:platform`, `check:secrets`, `check:pins`, `check:suites`, `check:si`); all clean; confirm `git status` lists only files owned by this plan; list the files for the final local commit; do not push
     - _Requirements: R13.1, R13.4_
     - Design: "Mapping to Definition of Done items and evidence rules"
     - DoD: P0-D1 (supports), P0-D6, P0-D7
 
-- [ ] 13. Final checkpoint - Ensure all tests pass
+- [x] 13. Final checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
 ## Notes
