@@ -1,6 +1,9 @@
 import { readSync } from "node:fs";
 import { ToolError } from "./finding.ts";
 
+/** Pseudo-file name for hook text that names no path. */
+export const HOOK_PSEUDO_FILE = "hook-input.ts";
+
 /** Stdin limit for hook mode (4 MiB). */
 export const MAX_HOOK_BYTES = 4 * 1024 * 1024;
 

@@ -2,7 +2,7 @@
 
 ## Overview
 
-This plan builds the P0-tagged part of S-ops-packaging in TypeScript, following design.md: the `packages/platform` skeleton (R9, R8.1, R8.2, R8.4), the `@wraith/tools` workspace package with the five check scripts, the two SI hook scanners, the Vitest reporter and shared helpers (D1), the Platform_Check (R5), the Secret_Scan with its pre-commit script and Kiro hook file (R3), the Pin_Check and `.github/workflows/ci.yml` (R2, R10), the Suites_Check with `required-suites.json` (R11), the SI hooks `no-trust-all-tools` and `no-auto-approve` (R12), the Kiro hook smoke test, and the P0-D1, P0-D6 and P0-D7 evidence rules (R13). Requirement ids are R-numbers and criteria of requirements.md; "Design" names a section, decision (D1 to D13), owner choice (O1 to O5) or Correctness Property of design.md. Neither document is edited by this plan.
+This plan builds the P0-tagged part of S-ops-packaging in TypeScript, following design.md: the `packages/platform` skeleton (R9, R8.1, R8.2, R8.4), the `@wraith/tools` workspace package with the five check scripts, the two SI hook scanners, the Vitest reporter and shared helpers (D1), the Platform_Check (R5), the Secret_Scan with its pre-commit script and Kiro hook file (R3), the Pin_Check and `.github/workflows/ci.yml` (R2, R10), the Suites_Check with `required-suites.json` (R11), the SI hooks `no-trust-all` and `no-auto-approve` (R12), the Kiro hook smoke test, and the P0-D1, P0-D6 and P0-D7 evidence rules (R13). Requirement ids are R-numbers and criteria of requirements.md; "Design" names a section, decision (D1 to D13), owner choice (O1 to O5) or Correctness Property of design.md. Neither document is edited by this plan.
 
 Later-phase requirements get no tasks: R1, R4, R6, R7, R14, R15, R2.15, R5.4, R8.3, R8.5 to R8.7.
 
@@ -300,65 +300,65 @@ Conventions:
 - [x] 8. Checkpoint - Reporter, Suites_Check, Pin_Check and `ci.yml`
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 9. SI hooks `no-trust-all-tools` and `no-auto-approve` (P0, BLOCKED until S-protocol 14.1 and 14.2)
+- [x] 9. SI hooks `no-trust-all` and `no-auto-approve` (P0, BLOCKED until S-protocol 14.1 and 14.2)
   - **PREREQUISITE (outside this task list, separate S-protocol commit):** S-protocol tasks 14.1 (`packages/protocol/src/unsafe.ts`) and 14.2 (its property test), both done in full and ticked, must be committed as their own S-protocol commit before any task of this group starts (R12.10, OQ-2). Task 9.1 verifies it and stops if it is missing. No other group of this plan depends on it, and no earlier group verification runs anything from this group. This plan does not edit S-protocol files or tasks.
   - DoD: P0-D6 (supports: the two SI hooks and their sample tests; the row changes only in 12.3). Requirements: R12.3 to R12.8, R12.10, R12.1 (two Hook_Files). Design: "SI hook scanners", "Ordering with S-protocol", Properties 9 and 10, D8, D9, O4.
-  - Files owned: `tools/lib/{unsafe-tokens,si-rules}.ts`, `tools/no-trust-all-tools.ts`, `tools/no-auto-approve.ts`, `tools/test/si-hooks.test.ts`, `tools/test/hook-files.test.ts` (extension), `.kiro/hooks/no-trust-all-tools.json`, `.kiro/hooks/no-auto-approve.json`.
-  - [ ] 9.1 Verify the S-protocol prerequisite (precondition step, no file changes)
+  - Files owned: `tools/lib/{unsafe-tokens,si-rules}.ts`, `tools/no-trust-all.ts`, `tools/no-auto-approve.ts`, `tools/test/si-hooks.test.ts`, `tools/test/hook-files.test.ts` (extension), `.kiro/hooks/no-trust-all.json`, `.kiro/hooks/no-auto-approve.json`.
+  - [x] 9.1 Verify the S-protocol prerequisite (precondition step, no file changes)
     - Check that `packages/protocol/src/unsafe.ts` and its property test exist, that tasks 14.1 and 14.2 in `.kiro/specs/s-protocol/tasks.md` are ticked, and with read-only `git log --oneline -- packages/protocol/src/unsafe.ts` that the files are in a commit of their own; run `pnpm -r test` and `pnpm typecheck` to confirm the commit is clean
     - If any item is missing, STOP and report to the owner. Do not write a local copy of the unsafe tokens and do not spell any token in this plan's files (R12.6)
     - _Requirements: R12.10_
     - Design: "Ordering with S-protocol"
     - DoD: P0-D6 (supports)
-  - [ ] 9.2 Write `lib/unsafe-tokens.ts` and read the real token groups
+  - [x] 9.2 Write `lib/unsafe-tokens.ts` and read the real token groups
     - `export * from "../../packages/protocol/src/unsafe.ts"` (D8); verify that `node --experimental-strip-types` can import the file (no `enum`, no parameter properties) and that `tsc -p tools/tsconfig.json --noEmit` type-checks the import; if not, STOP and report (a change to `unsafe.ts` belongs to S-protocol)
-    - Read the group names, the `findUnsafeToken` return shape and the `samples` of `unsafe.ts`, and write the group-to-hook assignment (SI-2 groups for `no-trust-all-tools`, every group for `no-auto-approve`) in `si-rules.ts` in 9.3; record that assignment in the evidence notes
+    - Read the group names, the `findUnsafeToken` return shape and the `samples` of `unsafe.ts`, and write the group-to-hook assignment (SI-2 groups for `no-trust-all`, every group for `no-auto-approve`) in `si-rules.ts` in 9.3; record that assignment in the evidence notes
     - _Requirements: R12.6_
     - Design: "SI hook scanners" (lib/unsafe-tokens.ts), D8
     - DoD: P0-D6 (supports)
-  - [ ] 9.3 Implement `lib/si-rules.ts`
+  - [x] 9.3 Implement `lib/si-rules.ts`
     - `isProductCode(rel)` (everything except `**/test/**`, `*.test.ts`, `packages/fakes/`, `spike/`, `fixtures/`, plus the scanner skips `docs/`, `.kiro/`, `*.md`, `node_modules`, `dist`, `.git`, and reads only the text file types of the design), `checkSiSource(hook, rel, text)` (rule `si/<hook>/<group-or-class>`), `checkSiTree(hook, root)`; the token classes use `findUnsafeToken` per line and the allowed locations `packages/protocol/src/unsafe.ts` and `packages/protocol/templates/claude-terminal-guard.json`; the `autopilot-marker` class (marker assembled from fragments in the script; allowed in `packages/protocol/**` and `apps/node/src/autopilot/**`) and the `allow-unverified` class (a statement within the same line or the next 8 lines naming the `approval.answer` or `approval.respond` type and an `allow_` option; allowed in `packages/protocol/**`, `apps/web/**`, `apps/watch-zepp/**`, `apps/desktop/**`, `apps/node/src/autopilot/**`); `generated/` is not exempt (O4); the file spells no unsafe token
     - _Requirements: R12.3, R12.4, R12.5, R12.6_
     - Design: "SI hook scanners" (scope, table), D9, O4
     - DoD: P0-D6 (supports)
-  - [ ] 9.4 Write the property test for the SI scanners
+  - [x] 9.4 Write the property test for the SI scanners
     - **Property 9: The SI scanners flag unsafe samples only in product code outside the allowed locations**
     - `si-hooks.test.ts`; generators: benign text, a sample taken from the `samples` of a group of `unsafe.ts` (or an assembled autopilot marker or approval-with-allow statement) at a generated line, and generated paths including product, test, fakes, spike, fixtures, docs, `.kiro`, `*.md` and the allowed locations; assert a finding at that line if and only if the path is product code, the hook covers the group or class, and the path is not an allowed location; assert every group of `unsafe.ts` is covered by at least one hook
     - **Validates: Requirements 12.3, 12.4, 12.5, 12.6**
     - Design: Property 9
     - DoD: P0-D6 (supports)
-  - [ ] 9.5 Implement `tools/no-trust-all-tools.ts` and `tools/no-auto-approve.ts`
-    - Both: CLI `--tree | --hook-stdin | <path>…`; `--tree` scans product code from `treePaths`; findings print `formatFinding` lines only; exit 0, 1, 2 (in hook mode every finding and error exits 2, D7); `--hook-stdin` reuses `extractHookText` from 4.7: a path found and outside product code exits 0 without scanning, no path found means the text is scanned as product code, unparsable stdin exits 2; `no-trust-all-tools` also scans `tool_input.command` of the shell tool (both name forms) for the SI-2 patterns; `no-auto-approve` handles the write tools only
+  - [x] 9.5 Implement `tools/no-trust-all.ts` and `tools/no-auto-approve.ts`
+    - Both: CLI `--tree | --hook-stdin | <path>…`; `--tree` scans product code from `treePaths`; findings print `formatFinding` lines only; exit 0, 1, 2 (in hook mode every finding and error exits 2, D7); `--hook-stdin` reuses `extractHookText` from 4.7: a path found and outside product code exits 0 without scanning, no path found means the text is scanned as product code, unparsable stdin exits 2; `no-trust-all` also scans `tool_input.command` of the shell tool (both name forms) for the SI-2 patterns; `no-auto-approve` handles the write tools only
     - The scripts and their tests spell no forbidden token (R12.6, R12.8)
     - _Requirements: R12.3, R12.4, R12.5, R12.6, R12.7_
     - Design: "SI hook scanners" (Hook mode), D7
     - DoD: P0-D6 (supports)
-  - [ ] 9.6 Write the example tests for the SI hooks
-    - Append to `si-hooks.test.ts`: at least one sample per pattern class that must be caught and samples that must pass, for each hook, assembled at test time (token samples from `unsafe.ts` `samples`, never spelled; R12.7, R12.8); the real tree passes both scanners (`pnpm check:si`); the scripts' own sources and tests contain no unsafe token (`findUnsafeToken` over them); hook-stdin examples through the CLI: an `executeBash` payload whose `tool_input.command` holds an SI-2 pattern is blocked by `no-trust-all-tools` (exit 2) and a clean command passes; both tool-name forms; a payload with no path and a sample exits 2; unparsable stdin exits 2; `.kiro/agents` build agent files and specs are not scanned
+  - [x] 9.6 Write the example tests for the SI hooks
+    - Append to `si-hooks.test.ts`: at least one sample per pattern class that must be caught and samples that must pass, for each hook, assembled at test time (token samples from `unsafe.ts` `samples`, never spelled; R12.7, R12.8); the real tree passes both scanners (`pnpm check:si`); the scripts' own sources and tests contain no unsafe token (`findUnsafeToken` over them); hook-stdin examples through the CLI: an `executeBash` payload whose `tool_input.command` holds an SI-2 pattern is blocked by `no-trust-all` (exit 2) and a clean command passes; both tool-name forms; a payload with no path and a sample exits 2; unparsable stdin exits 2; `.kiro/agents` build agent files and specs are not scanned
     - _Requirements: R12.3, R12.4, R12.5, R12.7, R12.8_
     - Design: Testing Strategy (`si-hooks.test.ts`, `hook-stdin.test.ts` examples)
     - DoD: P0-D6 (supports)
-  - [ ] 9.7 Create the two SI Hook_Files and extend the hook-file test
-    - `.kiro/hooks/no-trust-all-tools.json` (matcher: the write tools and the shell tool, both name forms; command `node --experimental-strip-types tools/no-trust-all-tools.ts --hook-stdin`) and `.kiro/hooks/no-auto-approve.json` (matcher: the write tools only; command `… tools/no-auto-approve.ts --hook-stdin`), same shape as `secret-scan.json`, formatted for Biome
+  - [x] 9.7 Create the two SI Hook_Files and extend the hook-file test
+    - `.kiro/hooks/no-trust-all.json` (matcher: the write tools and the shell tool, both name forms; command `node --experimental-strip-types tools/no-trust-all.ts --hook-stdin`) and `.kiro/hooks/no-auto-approve.json` (matcher: the write tools only; command `… tools/no-auto-approve.ts --hook-stdin`), same shape as `secret-scan.json`, formatted for Biome
     - Extend `hook-files.test.ts` (this task owns its second edit): all three files parse with `version: "v1"`, a `PreToolUse` trigger and a command shape of `node --experimental-strip-types tools/… --hook-stdin`; none of the three contains an unsafe token (`findUnsafeToken`); only these three hook files were added by this spec (R12.9)
     - Create the files only after 9.5 and 9.6 pass. Right after creating them, smoke-test both in Kiro: (a) an ordinary write passes; (b) an unsafe-token sample taken from the `unsafe.ts` samples (never typed as a literal, never committed or left on disk) is blocked with exit 2 by each hook. If either hook does not load, does not block, or blocks an ordinary write, delete both files, STOP and report to the owner. If this environment cannot run the check, STOP and ask the owner. Record the result (date, hook, outcome, Kiro version, working-directory finding) in the spec evidence notes or the P0-D6 evidence note, for task 12.3
     - _Requirements: R12.1, R12.3, R12.4, R12.6, R12.9_
     - Design: "Kiro Hook_Files", "Ordering with S-protocol"
     - DoD: P0-D6 (supports)
-  - [ ] 9.8 Run the group verification (group 9)
+  - [x] 9.8 Run the group verification (group 9)
     - Run `pnpm -r test`, `pnpm -r build`, `pnpm typecheck`, `pnpm -r --if-present check`, `pnpm lint` and `pnpm check:si`; all clean; list the files for the commit
     - _Requirements: R12.7_
     - Design: "Build, resolution and ordering"
     - DoD: P0-D6 (supports)
 
-- [ ] 10. Checkpoint - SI hooks
+- [x] 10. Checkpoint - SI hooks
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 11. Collect the Kiro hook smoke-test results (P0)
+- [x] 11. Collect the Kiro hook smoke-test results (P0)
   - DoD: P0-D6 (the hook files must be shown to load and block before the row can be `pass`; the smoke tests run in 4.11 and 9.7). Requirements: R3.9, R12.1. Design: "Kiro Hook_Files" (H-smoke), "Risks and unverified items" (Kiro hook format and working directory).
   - Files owned: none created; the results are recorded by 4.11 and 9.7 in the evidence notes of this spec or the P0-D6 evidence note, and written into `docs/PHASE-STATUS.md` (P0-D6 evidence column) by 12.3.
-  - [ ] 11.1 Collect the recorded smoke-test results for task 12.3
-    - Read the results recorded by task 4.11 (`secret-scan`) and task 9.7 (`no-trust-all-tools`, `no-auto-approve`): date, hook, outcome, Kiro version, working-directory finding. This task runs no smoke test and creates or edits no file
+  - [x] 11.1 Collect the recorded smoke-test results for task 12.3
+    - Read the results recorded by task 4.11 (`secret-scan`) and task 9.7 (`no-trust-all`, `no-auto-approve`): date, hook, outcome, Kiro version, working-directory finding. This task runs no smoke test and creates or edits no file
     - If a result is missing or failed, STOP and report to the owner: P0-D6 stays `todo`; only the hook JSON files are affected, the pre-commit script and CI keep guarding
     - Hand the three results to task 12.3
     - _Requirements: R3.9, R3.19, R12.1_
@@ -414,7 +414,7 @@ Conventions:
 - Dependency versions pinned at install time and recorded: `yaml` (exact, ISC, recorded in `docs/THIRD_PARTY.md` by 1.9). `fast-check` 4.10.2, `vitest` 5.0.5 and `@types/node` 22.20.5 follow the other packages. The CI pins are the owner-verified `actions/checkout` v7.0.1 (`3d3c42e5aac5ba805825da76410c181273ba90b1`) and `actions/setup-node` v7.1.0 (`949feb2413d6458794dcd2491c4babbbce0c15c1`), with `npm install -g pnpm@9.15.0` after setup-node (OQ-10).
 - Owner decisions carried (2026-11-16): O1 `tools` is a workspace package; O2 per-project reports by a custom reporter with the OQ-7 two-run route as fallback; O3 `yaml` as a pinned dev dependency, one entry in `docs/THIRD_PARTY.md`, and the extra CI step `pnpm -r --if-present check`; O4 SI scanner allowed lists as in the SI table, `generated/` not exempt, the owner may edit the lists when `unsafe.ts` lands; O5 the action pins above.
 - `tools` tests cannot import `pbt()` or `CRYPTO_PBT_RUNS` from crypto or protocol; `tools/test/config.ts` and `packages/platform/test/config.ts` each define `OPS_PBT_RUNS = 500` locally.
-- Files outside the two new packages touched by this spec: root `package.json`, `tsconfig.json`, `pnpm-workspace.yaml`, `pnpm-lock.yaml`, `biome.json`, `.gitignore`, `.githooks/pre-commit`, `.github/workflows/ci.yml`, `.kiro/hooks/{secret-scan,no-trust-all-tools,no-auto-approve}.json`, `docs/THIRD_PARTY.md`, and recording-only edits in `docs/PHASE-STATUS.md` (12.1 to 12.3) and `docs/DECISIONS-PENDING.md` (12.4). S-protocol and S-crypto files and tasks, `requirements.md` and `design.md` are not edited.
+- Files outside the two new packages touched by this spec: root `package.json`, `tsconfig.json`, `pnpm-workspace.yaml`, `pnpm-lock.yaml`, `biome.json`, `.gitignore`, `.githooks/pre-commit`, `.github/workflows/ci.yml`, `.kiro/hooks/{secret-scan,no-trust-all,no-auto-approve}.json`, `docs/THIRD_PARTY.md`, and recording-only edits in `docs/PHASE-STATUS.md` (12.1 to 12.3) and `docs/DECISIONS-PENDING.md` (12.4). S-protocol and S-crypto files and tasks, `requirements.md` and `design.md` are not edited.
 
 ## DoD Coverage Table
 

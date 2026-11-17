@@ -11,6 +11,10 @@
     "2.4 Write the property test for the scanned scope": {
       "status": "passed",
       "lastRunTimestamp": 1794798316953
+    },
+    "9.4 Write the property test for the SI scanners": {
+      "status": "passed",
+      "lastRunTimestamp": 1794824661854
     }
   },
   "executionHistory": {
@@ -558,6 +562,135 @@
         "executionId": "52589904-70d0-4e62-b23e-5f850ce2f9b6",
         "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
         "timestamp": 1794807226070
+      }
+    ],
+    "9.1 Verify the S-protocol prerequisite (precondition step, no file changes)": [
+      {
+        "executionId": "9bd8aac1-8f61-4c78-803e-1ebe4b020d74",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794824226028
+      },
+      {
+        "executionId": "9bd8aac1-8f61-4c78-803e-1ebe4b020d74",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794824484806
+      }
+    ],
+    "9.2 Write `lib/unsafe-tokens.ts` and read the real token groups": [
+      {
+        "executionId": "9bd8aac1-8f61-4c78-803e-1ebe4b020d74",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794824484900
+      }
+    ],
+    "9.3 Implement `lib/si-rules.ts`": [
+      {
+        "executionId": "9bd8aac1-8f61-4c78-803e-1ebe4b020d74",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794824485012
+      },
+      {
+        "executionId": "9bd8aac1-8f61-4c78-803e-1ebe4b020d74",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794824591571
+      }
+    ],
+    "9.5 Implement `tools/no-trust-all.ts` and `tools/no-auto-approve.ts`": [
+      {
+        "executionId": "9bd8aac1-8f61-4c78-803e-1ebe4b020d74",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794824591626
+      },
+      {
+        "executionId": "9bd8aac1-8f61-4c78-803e-1ebe4b020d74",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794824686284
+      }
+    ],
+    "9.4 Write the property test for the SI scanners": [
+      {
+        "executionId": "9bd8aac1-8f61-4c78-803e-1ebe4b020d74",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794824598508
+      },
+      {
+        "executionId": "9bd8aac1-8f61-4c78-803e-1ebe4b020d74",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794824686224
+      }
+    ],
+    "9.6 Write the example tests for the SI hooks": [
+      {
+        "executionId": "9bd8aac1-8f61-4c78-803e-1ebe4b020d74",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794824686347
+      },
+      {
+        "executionId": "9bd8aac1-8f61-4c78-803e-1ebe4b020d74",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794826777327
+      }
+    ],
+    "9.7 Create the two SI Hook_Files and extend the hook-file test": [
+      {
+        "executionId": "9bd8aac1-8f61-4c78-803e-1ebe4b020d74",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794824692921
+      },
+      {
+        "executionId": "23686a36-1afd-43a0-960b-d0558e994c67",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794827602294
+      },
+      {
+        "executionId": "67bea578-bc9d-4325-a23a-2f9d18a83e18",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794878660820
+      },
+      {
+        "executionId": "67bea578-bc9d-4325-a23a-2f9d18a83e18",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794879049451
+      }
+    ],
+    "9.8 Run the group verification (group 9)": [
+      {
+        "executionId": "67bea578-bc9d-4325-a23a-2f9d18a83e18",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794879049554
+      },
+      {
+        "executionId": "67bea578-bc9d-4325-a23a-2f9d18a83e18",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794879141300
+      }
+    ],
+    "9. SI hooks `no-trust-all` and `no-auto-approve` (P0, BLOCKED until S-protocol 14.1 and 14.2)": [
+      {
+        "executionId": "67bea578-bc9d-4325-a23a-2f9d18a83e18",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794879141335
+      }
+    ],
+    "10. Checkpoint - SI hooks": [
+      {
+        "executionId": "67bea578-bc9d-4325-a23a-2f9d18a83e18",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794879149440
+      }
+    ],
+    "11.1 Collect the recorded smoke-test results for task 12.3": [
+      {
+        "executionId": "67bea578-bc9d-4325-a23a-2f9d18a83e18",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794879149528
+      }
+    ],
+    "11. Collect the Kiro hook smoke-test results (P0)": [
+      {
+        "executionId": "67bea578-bc9d-4325-a23a-2f9d18a83e18",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794879149558
       }
     ]
   }

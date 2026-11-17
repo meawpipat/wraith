@@ -1,0 +1,14 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "no-trust-all",
+      "trigger": "PreToolUse",
+      "matcher": "^(fsWrite|fs_write|fsAppend|fs_append|strReplace|str_replace|executeBash|execute_bash)$",
+      "action": {
+        "type": "command",
+        "command": "node --experimental-strip-types tools/no-trust-all.ts --hook-stdin"
+      }
+    }
+  ]
+}

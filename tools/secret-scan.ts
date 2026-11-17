@@ -12,6 +12,7 @@ import {
 import { changedPaths, stagedContent, stagedPaths, trackedPaths, treePaths } from "./lib/git.ts";
 import {
   extractHookText,
+  HOOK_PSEUDO_FILE,
   isGitCommit,
   isShellTool,
   parseHookInput,
@@ -92,9 +93,6 @@ function selectFiles(
       throw new ToolError(USAGE);
   }
 }
-
-/** Pseudo-file name when the payload names no path. */
-const HOOK_PSEUDO_FILE = "hook-input";
 
 function scanHookPayload(raw: string, cwd: string): ScanResult {
   const json = parseHookInput(raw);
