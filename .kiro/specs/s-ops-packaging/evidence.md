@@ -46,4 +46,17 @@ Same as the 4.11 section. The agent typed the token directly in the tool input. 
 - Fix: `--allowOnly` is passed only to the vitest run that `runProject` spawns in `tools/test/reporter.test.ts`. No real vitest config sets `allowOnly`, so CI still rejects a stray `.only`. The fixture still asserts passed 1, skipped 1, failed 0.
 - Local reproduction: `CI=true pnpm --filter @wraith/tools exec vitest run test/reporter.test.ts` (failed before the fix, passes after).
 - Verification: `CI=true pnpm verify:local` and `pnpm verify:local` both exit 0.
-- Status: P0-D1 stays `todo` until a green CI run is read (HS-5).
+- Status: superseded by the green run 44010006026 (see the next section). P0-D1 is now `pass`.
+
+## P0-D1: human steps and green run
+
+Facts recorded as stated by the owner (2026-11-17); not verified online by the agent.
+
+- HS-2: Secret Protection and push protection are on for the repository (owner, 2026-11-17).
+- HS-3: `core.hooksPath` is `.githooks` (owner, 2026-11-17).
+- HS-4: `main` is pushed to https://github.com/meawpipat/wraith (public) (owner, 2026-11-17).
+- HS-5: CI run 44010006026 is green on both runners (2026-11-17): https://github.com/meawpipat/wraith/actions/runs/44010006026
+  - Durations: ubuntu-latest 2m10s, macos-latest 2m50s.
+  - Counts on both runners: crypto 74 files/1112 tests (node and workers projects, so workerd works on both runners; closes OQ-9), protocol 17/169, tools 17/217, platform 2/9.
+  - `check:platform`, `check:secrets` (262 files, 0 findings), `check:pins` and `check:suites` clean.
+  - The first run 44006801204 failed on the reporter test under `CI=true`; fixed in commit ee7e251 (see the previous section).
