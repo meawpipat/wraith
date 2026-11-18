@@ -226,56 +226,56 @@ Conventions:
     - Design: Testing Strategy
     - DoD: P0-D4 (supports)
 
-- [ ] 4. `tools` side: metadata parser, RESULTS parser, `check:spikes`, required suites, CI step (P0)
+- [x] 4. `tools` side: metadata parser, RESULTS parser, `check:spikes`, required suites, CI step (P0)
   - DoD: P0-D4 (R4.2, R6, R17 tooling), P0-D1 (supports: the CI step and required suites). Requirements: R4.2, R4.3, R6.1 to R6.9, R7.7, R7.9, R10.1, R17.1 to R17.4. Design: "Metadata block", "RESULTS tooling", D2, D7, D14, Properties 13, 14, 20.
   - Files owned: `tools/lib/{spike-meta,spike-results}.ts`, `tools/check-spike-results.ts`, `tools/test/{spike-meta,spike-meta.property,spike-results,spike-results.property,check-spike-results}.test.ts`, `tools/test/support/results-sample.ts`, `tools/required-suites.json`, root `package.json`, `.github/workflows/ci.yml`, `tools/test/ci-workflow.test.ts`.
-  - [ ] 4.1 Implement `tools/lib/spike-meta.ts` and its example test
+  - [x] 4.1 Implement `tools/lib/spike-meta.ts` and its example test
     - `SpikeMeta` (id, group, cost, runBy, agents, maxPrompts, maxWallSeconds, estimateCredits, claudePrompts, human, depends, shares, allowAlways, assumption), `parseMetaBlock(fileText)` reading only the first 40 lines between `// spike-meta` and `// end-spike-meta`, one `// key: value` per line, lists comma-separated; an unknown key, duplicate key, missing required key, bad number or missing block returns `{ok:false, reason}`; `formatMetaBlock(meta)`
     - `tools/test/spike-meta.test.ts`: the example block of the design parses; each failure kind returns its reason; a block starting after line 40 is not found; `estimate-credits: none` and `2-6` both parse
     - _Requirements: R4.2, R4.3, R10.1_
     - Design: "Metadata block (data model)", "Metadata block (components)"
     - DoD: P0-D4
-  - [ ] 4.2 Write the property test for the metadata block
+  - [x] 4.2 Write the property test for the metadata block
     - **Property 13: Metadata block round trip and strictness**
     - `tools/test/spike-meta.property.test.ts` through `tools/test/config.ts` `pbt(...)`, tag `Feature: s-spikes, Property 13: Metadata block round trip and strictness`; generators: any valid `SpikeMeta`, and blocks with a missing required key, an unknown key, a duplicate key, a non-numeric number or a start after line 40; assert `parse(format(m))` equals `m` and every broken block returns `ok:false`
     - **Validates: Requirements 4.2, 4.3, 10.1**
     - Design: Property 13
     - DoD: P0-D4
-  - [ ] 4.3 Implement `tools/lib/spike-results.ts` and its example test
+  - [x] 4.3 Implement `tools/lib/spike-results.ts` and its example test
     - `ResultsEntry`, `renderEntry`, `parseResults(md)` returning entries, table rows (the three layouts found by the nearest header row and the `| Qn` prefix) and parse errors, `upsertEntry(md, e, today)` touching only `## Entries` and the id's own table row (cells whose header starts with `result`, `status`, `evidence`, `branch` or `date`, case-insensitive; a pre-check text after `pending ·` moves to the entry notes as "pre-check note, context only", R6.8), `checkResults(md, o)` with the checks of the design (field set; `pending` needs a reason; non-pending needs at least one evidence path that exists, posix, no `..`, under `spike/` or `docs/spikes/`; `PARTIAL` lists missing parts and an open-human-steps line; branch and affects present; a table result equals its entry; no `pending` row carries a non-pending value), `evaluateGate(entries, exists)`
     - `tools/test/support/results-sample.ts`: a RESULTS fixture string with the three table layouts and no entries; `tools/test/spike-results.test.ts`: the fixture checks clean, an entry renders and parses back, `upsertEntry` adds the `## Entries` section on first use
     - _Requirements: R6.1, R6.2, R6.5, R6.6, R6.8, R6.9, R17.1 to R17.4_
     - Design: "RESULTS tooling", "RESULTS.md entry (data model)", D7
     - DoD: P0-D4
-  - [ ] 4.4 Write the property test for RESULTS entries and the checker
+  - [x] 4.4 Write the property test for RESULTS entries and the checker
     - **Property 14: RESULTS entries round trip and the checker rejects bad entries**
     - `tools/test/spike-results.property.test.ts`, tag `Feature: s-spikes, Property 14: RESULTS entries round trip and the checker rejects bad entries`; generators: valid entries; documents with each defect of the property; assert `parseResults(renderEntry(e))` equals `e`, `upsertEntry` is idempotent, changes nothing outside `## Entries` and the id's row, other table rows stay byte-identical, and `checkResults` reports each defect and nothing for a valid document
     - **Validates: Requirements 6.1, 6.2, 6.5, 6.6, 6.9, 6.10**
     - Design: Property 14
     - DoD: P0-D4
-  - [ ] 4.5 Write the property test for the P0-D4 gate
+  - [x] 4.5 Write the property test for the P0-D4 gate
     - **Property 20: The P0-D4 gate opens exactly on answers with evidence**
     - Append to `tools/test/spike-results.property.test.ts`; generators: sets of entries over `GATE_LIST` and `q14` with any Result_Value and evidence paths that exist or not; assert `evaluateGate` is open iff every `GATE_LIST` id has `PASS|FAIL|PARTIAL` with existing evidence, `q14` does not affect openness, any `pending` id keeps it closed, and the counts equal the entries per value
     - **Validates: Requirements 17.1, 17.2, 17.3, 17.4**
     - Design: Property 20
     - DoD: P0-D4
-  - [ ] 4.6 Implement `tools/check-spike-results.ts`
+  - [x] 4.6 Implement `tools/check-spike-results.ts`
     - CLI `node --experimental-strip-types tools/check-spike-results.ts [--root <dir>] [--gate]`; default mode: parse `docs/spikes/RESULTS.md`, run `checkResults`, run `findUnsafeToken` over RESULTS.md and every `*.ts` and `README.md` under `spike/` (the token-spelling rule has no exempt folder, R7.9; use `tools/lib/walk.ts`, report file and line only, never the token), validate every `spike/<dir>/<q>/<q>.ts` metadata block through `parseMetaBlock`, and check that `spike/` and `docs/spikes/` are not listed in `.gitignore` (R7.7); exit 0 on a tree with zero entries; exit 1 on findings, 2 on an unreadable file (codes from `tools/lib/finding.ts`)
     - `--gate`: additionally `evaluateGate`; exit 1 unless open; prints the counts by Result_Value, the hc, kiro-cli and Claude Code versions read from the entries' experiment lines, and the date, for the P0-D4 evidence cell (R17.4); it never edits `PHASE-STATUS.md`
     - _Requirements: R4.2, R6.9, R7.7, R7.9, R17.1 to R17.4_
     - Design: "RESULTS tooling" (`check-spike-results.ts`), D2
     - DoD: P0-D4
-  - [ ] 4.7 Write the CLI tests
+  - [x] 4.7 Write the CLI tests
     - `tools/test/check-spike-results.test.ts` using temp trees with `--root <tmp>`: default mode exits 0 on a tree with zero entries and on the real committed tree; a planted SI token (taken from the imported set) in a `spike/` file exits 1 with file and line and no token text; a script with a broken metadata block exits 1; `--gate` exits 1 on a temp tree where every id is `pending` (the test never depends on the real RESULTS state, which changes in group 16) and exits 0 on a temp tree with all 18 ids answered and evidence files present
     - _Requirements: R6.9, R7.7, R7.9, R17.1 to R17.3_
     - Design: Testing Strategy (`tools/test/check-spike-results.test.ts` row)
     - DoD: P0-D4
-  - [ ] 4.8 Add the tools suites to `tools/required-suites.json`
+  - [x] 4.8 Add the tools suites to `tools/required-suites.json`
     - Add entries for `tools/test/spike-meta.property.test.ts`, `spike-results.property.test.ts` and `check-spike-results.test.ts` (and the two example files) in the existing format (`package`, `file`, `projects`, `minTests`), with `minTests` set to the exact count seen in the `pnpm test:reports` output
     - _Requirements: R4.2, R6.1_
     - Design: Testing Strategy ("These suites are added to `tools/required-suites.json`")
     - DoD: P0-D4 (supports), P0-D1 (supports: an empty run does not count)
-  - [ ] 4.9 Wire `check:spikes` into the root scripts, `verify:local` and `ci.yml`, and update the S-ops structure test (same task, same commit)
+  - [x] 4.9 Wire `check:spikes` into the root scripts, `verify:local` and `ci.yml`, and update the S-ops structure test (same task, same commit)
     - Owner-approved edit of S-ops files (D14, 2026-11-18). All four edits land together, and only now that `tools/check-spike-results.ts` exists:
       - root `package.json`: add `"check:spikes": "node --experimental-strip-types tools/check-spike-results.ts"` and append `&& pnpm check:spikes` to `verify:local` after `pnpm check:suites` (the `--gate` mode is not in `verify:local` or CI)
       - `.github/workflows/ci.yml`: add `- run: pnpm check:spikes` directly after `- run: pnpm check:suites`; keep the pinned action SHAs untouched
@@ -284,7 +284,7 @@ Conventions:
     - _Requirements: R7.9, R6.9_
     - Design: D14, "Ordering" item 1
     - DoD: P0-D4 (supports), P0-D1 (supports: new CI step; the GitHub run is human-gated, S-ops HS-5)
-  - [ ] 4.10 Run the group verification (group 4)
+  - [x] 4.10 Run the group verification (group 4)
     - Run `pnpm -r test`, `pnpm -r build`, `pnpm typecheck`, `pnpm -r --if-present check`, `pnpm lint`, `pnpm test:reports` and the checks `check:platform`, `check:secrets`, `check:pins`, `check:suites`, `check:si`, `check:spikes`; all clean
     - List the files this group changed for the commit (note which are S-ops files: `package.json`, `.github/workflows/ci.yml`, `tools/test/ci-workflow.test.ts`, `tools/required-suites.json`)
     - _Requirements: R6.9, R7.9_

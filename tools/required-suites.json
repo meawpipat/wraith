@@ -30,6 +30,36 @@
       "file": "test/mutate-signature.test.ts",
       "projects": ["node", "workers"],
       "minTests": 17
+    },
+    {
+      "package": "tools",
+      "file": "test/spike-meta.test.ts",
+      "projects": ["node"],
+      "minTests": 11
+    },
+    {
+      "package": "tools",
+      "file": "test/spike-meta.property.test.ts",
+      "projects": ["node"],
+      "minTests": 6
+    },
+    {
+      "package": "tools",
+      "file": "test/spike-results.test.ts",
+      "projects": ["node"],
+      "minTests": 6
+    },
+    {
+      "package": "tools",
+      "file": "test/spike-results.property.test.ts",
+      "projects": ["node"],
+      "minTests": 6
+    },
+    {
+      "package": "tools",
+      "file": "test/check-spike-results.test.ts",
+      "projects": ["node"],
+      "minTests": 10
     }
   ]
 }

@@ -85,6 +85,7 @@ describe("ci.yml structure", () => {
       "pnpm check:secrets",
       "pnpm check:pins",
       "pnpm check:suites",
+      "pnpm check:spikes",
     ];
     let from = 0;
     for (const cmd of order) {

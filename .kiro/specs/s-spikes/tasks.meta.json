@@ -310,6 +310,103 @@
         "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
         "timestamp": 1795006204451
       }
+    ],
+    "4.1 Implement `tools/lib/spike-meta.ts` and its example test": [
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795006214612
+      },
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795006509950
+      }
+    ],
+    "4.3 Implement `tools/lib/spike-results.ts` and its example test": [
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795006219970
+      },
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795006510039
+      }
+    ],
+    "4.2 Write the property test for the metadata block": [
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795006516426
+      }
+    ],
+    "4.4 Write the property test for RESULTS entries and the checker": [
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795006517206
+      }
+    ],
+    "4.6 Implement `tools/check-spike-results.ts`": [
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795006517964
+      },
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795006776333
+      }
+    ],
+    "4.5 Write the property test for the P0-D4 gate": [
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795006783355
+      }
+    ],
+    "4.7 Write the CLI tests": [
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795006783606
+      }
+    ],
+    "4.8 Add the tools suites to `tools/required-suites.json`": [
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795006790488
+      }
+    ],
+    "4.9 Wire `check:spikes` into the root scripts, `verify:local` and `ci.yml`, and update the S-ops structure test (same task, same commit)": [
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795006797440
+      }
+    ],
+    "4.10 Run the group verification (group 4)": [
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795006798128
+      },
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795006925199
+      }
+    ],
+    "4. `tools` side: metadata parser, RESULTS parser, `check:spikes`, required suites, CI step (P0)": [
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795006925251
+      }
     ]
   }
 }
