@@ -1,0 +1,16 @@
+{
+  "name": "@wraith/spike",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Spike runner and its tests. Not product code; imported by no apps/ or packages/ file.",
+  "scripts": {
+    "test": "vitest run",
+    "check": "tsc -p tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.5",
+    "fast-check": "4.10.2",
+    "vitest": "5.0.5"
+  }
+}

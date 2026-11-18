@@ -90,6 +90,18 @@ importers:
 
   packages/ui-kit: {}
 
+  spike:
+    devDependencies:
+      '@types/node':
+        specifier: 22.20.5
+        version: 22.20.5
+      fast-check:
+        specifier: 4.10.2
+        version: 4.10.2
+      vitest:
+        specifier: 5.0.5
+        version: 5.0.5(@types/node@22.20.5)(vite@8.3.8(@types/node@22.20.5)(esbuild@0.28.2)(yaml@2.9.1))
+
   tools:
     devDependencies:
       '@types/node':

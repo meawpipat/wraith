@@ -26,10 +26,10 @@ Conventions:
 
 ## Tasks
 
-- [ ] 1. `@wraith/spike` scaffold, workspace entry and fakes (P0)
+- [x] 1. `@wraith/spike` scaffold, workspace entry and fakes (P0)
   - DoD: P0-D4 (supports: layout and test harness). Requirements: R5.1 to R5.4, R5.7, R5.8 (scaffold only), R2.12, R1.10. Design: "Module layout", "Dependency rules", D1, D2, D15, A1.
   - Files owned: `spike/{package.json,tsconfig.json,vitest.config.ts,README.md}`, `spike/test/config.ts`, `spike/test/ids.test.ts`, `spike/test/fakes.test.ts`, `spike/lib/{ids,outcome}.ts`, `spike/test/support/{fake-hc,fake-kiro,bin-dir}.ts`, `pnpm-workspace.yaml`, `pnpm-lock.yaml`.
-  - [ ] 1.1 Create the `@wraith/spike` package files and install
+  - [x] 1.1 Create the `@wraith/spike` package files and install
     - `pnpm-workspace.yaml`: add `spike` to `packages` (keep `apps/*`, `packages/*`, `tools`)
     - `spike/package.json`: name `@wraith/spike`, `private`, `type: module`, scripts `test` (`vitest run`) and `check` (`tsc -p tsconfig.json --noEmit`), no `build` script (A1, D1), no workspace dependency; `devDependencies`: `vitest` 5.0.5, `fast-check` 4.10.2, `@types/node` 22.20.5 (exact)
     - `spike/tsconfig.json` extends `../tsconfig.base.json` with `noEmit`, `allowImportingTsExtensions`, `types: ["node"]`, `include` covering `run.ts`, `lib/**`, `hc/**`, `kiro/**`, `agents/**` and `test/**`, plus the `../tools/lib/**` files it imports by relative path; if the relative `.ts` import of a `tools/lib` file does not type-check, record the working settings (as S-ops did for `tools`) and use them
@@ -39,14 +39,14 @@ Conventions:
     - _Requirements: R5.3, R5.4, R5.7, R2.12_
     - Design: "Module layout", D1, D15, A1
     - DoD: P0-D4 (supports), P0-D1 (supports: the lockfile stays valid for `--frozen-lockfile`)
-  - [ ] 1.2 Write `lib/ids.ts` and `lib/outcome.ts` and their example test
+  - [x] 1.2 Write `lib/ids.ts` and `lib/outcome.ts` and their example test
     - `ids.ts`: `SpikeId`, `SpikeDir`, `OWNER_LIST` (the 19 ids), `GATE_LIST` (18, without `q14`), `locate(id)` returning `{dir, script, evidenceRoot}` with `hc` for Group A, `kiro` for Groups B and I (Q30, Q31, Q32 and the Group B ids) and `agents` for Q33 and Q35, `<q>` lowercase (`q3b`, `q33`) (R5.1)
     - `outcome.ts`: `ResultValue`, `CriterionRecord`, `SpikeOutcome`, `SpikeModule`, `EXIT` with the exact numbers of the design (`OK 0`, `INTERNAL 1`, `PENDING 10`, `PREFLIGHT 20`, `BUDGET 21`, `NEEDS_HUMAN 22`, `CLEANUP_UNCONFIRMED 30`); runner-local numbers, no `E_*` code (D16)
     - `test/ids.test.ts`: 19 distinct ids, 18 in `GATE_LIST`, `q14` only in `OWNER_LIST`, `locate("q3b")` is under `spike/kiro/q3b/`, `locate("q33")` under `spike/agents/q33/`, `locate("q2")` under `spike/hc/q2/`, every `locate(...).evidenceRoot` ends in `/evidence`
     - _Requirements: R4.1, R5.1, R5.2_
     - Design: "Ids and outcome types", D16
     - DoD: P0-D4 (supports)
-  - [ ] 1.3 Write the fake binaries and their test
+  - [x] 1.3 Write the fake binaries and their test
     - `test/support/bin-dir.ts`: `withBinDir(files, fn)` creates a `mkdtemp` folder, writes each fake as an executable Node script with a `#!/usr/bin/env node` first line, runs `fn(env)` with a PATH of that folder plus the folder of `process.execPath`, and removes the folder in `finally`
     - `test/support/fake-hc.ts`: a fake `hc` that appends its argv (JSON line) and the sorted NAMES of its `HC_*`, `HERDR_*` and `XDG_*` environment variables (never values) to a log file named by the test, prints `hc <version>` for `--version` (version chosen by the test), and prints a fixed `server status` text for `["server","status"]`; it never opens a socket
     - `test/support/fake-kiro.ts`: minimal version for now: `--version` and `chat --list-sessions --help` output (help text from a test-supplied string); the ACP behaviour is added by task 8.2
@@ -54,7 +54,7 @@ Conventions:
     - _Requirements: R2.12, R1.10_
     - Design: Testing Strategy (Suites table: fake-hc, fake-kiro)
     - DoD: P0-D4 (supports)
-  - [ ] 1.4 Run the group verification (group 1)
+  - [x] 1.4 Run the group verification (group 1)
     - Run `pnpm -r test`, `pnpm -r build`, `pnpm typecheck`, `pnpm -r --if-present check` and `pnpm lint`; all clean; the `spike` suites appear in the test output; run `pnpm check:secrets` and `pnpm check:platform`
     - List the files this group changed for the commit
     - _Requirements: R5.3_

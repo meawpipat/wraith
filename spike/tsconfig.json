@@ -1,0 +1,21 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": false,
+    "declaration": false,
+    "sourceMap": false,
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "lib": ["ES2022"],
+    "types": ["node"]
+  },
+  "include": [
+    "run.ts",
+    "lib/**/*.ts",
+    "hc/**/*.ts",
+    "kiro/**/*.ts",
+    "agents/**/*.ts",
+    "test/**/*.ts",
+    "../tools/lib/**/*.ts"
+  ]
+}
