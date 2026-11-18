@@ -1,5 +1,14 @@
 {
-  "pbtResults": {},
+  "pbtResults": {
+    "3.2 Write the property test for line count and class coverage": {
+      "status": "passed",
+      "lastRunTimestamp": 1795005958141
+    },
+    "3.3 Write the property test for idempotence and masking": {
+      "status": "passed",
+      "lastRunTimestamp": 1795005958695
+    }
+  },
   "executionHistory": {
     "1.1 Create the `@wraith/spike` package files and install": [
       {
@@ -241,6 +250,65 @@
         "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
         "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
         "timestamp": 1794987641266
+      }
+    ],
+    "3.1 Implement `lib/redact.ts` and the sample builders": [
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794987653602
+      },
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795005990982
+      }
+    ],
+    "3.2 Write the property test for line count and class coverage": [
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795005991131
+      }
+    ],
+    "3.3 Write the property test for idempotence and masking": [
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795005992006
+      }
+    ],
+    "3.4 Implement `lib/evidence.ts`": [
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795005998301
+      },
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795006192504
+      }
+    ],
+    "3.5 Write the example tests for the evidence writer": [
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795006198415
+      }
+    ],
+    "3.6 Run the group verification (group 3)": [
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795006204423
+      }
+    ],
+    "3. Redactor, evidence writer and named copies (P0)": [
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795006204451
       }
     ]
   }

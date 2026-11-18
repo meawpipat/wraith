@@ -185,41 +185,41 @@ Conventions:
     - Design: Testing Strategy
     - DoD: P0-D4 (supports)
 
-- [ ] 3. Redactor, evidence writer and named copies (P0)
+- [x] 3. Redactor, evidence writer and named copies (P0)
   - DoD: P0-D4 (R7 evidence hygiene; SI-8 and SI-12 support). Requirements: R7.1 to R7.5, R7.9, R5.5, R5.6, R10.2. Design: "Redactor", "Evidence writer", D8, D9, Properties 11 and 12.
   - Files owned: `spike/lib/{redact,evidence}.ts`, `spike/test/support/samples.ts`, `spike/test/{redact,redact.property,evidence}.test.ts`.
-  - [ ] 3.1 Implement `lib/redact.ts` and the sample builders
+  - [x] 3.1 Implement `lib/redact.ts` and the sample builders
     - `redactText(input, o)`: pass 1 `scanText(file, text)` (import `tools/lib/secret-rules.ts` by relative path): each reported line becomes `[REDACTED-LINE:<class>]`; for `pem-private-key` the following lines up to and including the closing line (at most 200) get the same marker; pass 2 `findUnsafeToken` on each remaining line replaces a hit with `[REDACTED-LINE:si-token]` (D9); pass 3 `home` and `realHome` prefixes become `~`; pass 4 values (length 8 or more) of environment variables whose names match `TOKEN|KEY|SECRET|PASSWORD` become `<ENV:NAME>` (D6a); split and join on `\n` only so the line count and a final newline are kept; `RedactResult` carries `lineCount`, `replaced` per class, `homeMasked`, `envMasked`
     - `test/support/samples.ts`: one builder per class of `SECRET_RULES` (nine classes) assembled from fragment arrays joined at call time, plus decoys; after writing, `pnpm check:secrets` must pass on the file itself
     - `test/redact.test.ts`: examples per class, a multi-line PEM block, a JSONL file with one secret line, a line with an SI token built from the imported tokens, home path and short env value cases
     - _Requirements: R7.1 to R7.4, R7.9_
     - Design: "Redactor", D6a, D9, OQ-13 (whole-line replacement)
     - DoD: P0-D4
-  - [ ] 3.2 Write the property test for line count and class coverage
+  - [x] 3.2 Write the property test for line count and class coverage
     - **Property 11: The redactor preserves line count and covers every secret class**
     - `test/redact.property.test.ts`, tag `Feature: s-spikes, Property 11: The redactor preserves line count and covers every secret class`; generators: ordinary lines mixed with secret-shaped lines of every class built from fragments; assert equal line count, every `scanText` line replaced, `scanText` on the result empty, `replaced` counts equal, untouched lines unchanged apart from home and environment masking
     - **Validates: Requirements 7.1, 7.2, 7.3**
     - Design: Property 11
     - DoD: P0-D4
-  - [ ] 3.3 Write the property test for idempotence and masking
+  - [x] 3.3 Write the property test for idempotence and masking
     - **Property 12: Redaction is idempotent and masks home paths and environment values**
     - Append to `test/redact.property.test.ts`; generators: texts with home paths, environment values (length 8 or more) of secret-named variables and SI tokens from the imported set; assert idempotence, no home path or env value left, no `findUnsafeToken` hit
     - **Validates: Requirements 7.3, 7.4, 7.9**
     - Design: Property 12
     - DoD: P0-D4
-  - [ ] 3.4 Implement `lib/evidence.ts`
+  - [x] 3.4 Implement `lib/evidence.ts`
     - `EvidenceIndex` (v, q, stamp, times, runner, interactive, versions incl. `claudeAgentSdk`, result, reason, promptsSent, criteria, files with bytes and sha256 of the redacted content and per-class counts, openHumanSteps, branch, affects), `newStamp(now, exists, dir)` (`YYYYMMDDTHHMMSSZ`, `-2` suffix on a clash, never an existing folder, R5.5), `EvidenceWriter` with `addText`, `addJsonl`, `finish`; each file passes `redactText`, is written, then `node --experimental-strip-types tools/secret-scan.ts <path>` runs as a child process with the `tool` env profile; a finding deletes the file, fails the spike and reports the class only (stop condition 8); a second `findUnsafeToken` check on the written text fails the same way; raw logs stay under the Spike_Root; `finish` takes a local structural input `{ id, runBy }` instead of the tools `SpikeMeta` type, which task 4.1 creates later
     - `publishNamedCopy(q, from)` writes a redacted COPY (never a link) to `spike/hc/schema.json` for `q2` or `spike/kiro/q3.jsonl` for `q3`, only when the run ends `PASS` or `PARTIAL` (D8, A4)
     - Files owned also: none outside `spike/lib/evidence.ts`
     - _Requirements: R5.5, R5.6, R7.1, R7.5, R10.2_
     - Design: "Evidence writer", D8, A4
     - DoD: P0-D4
-  - [ ] 3.5 Write the example tests for the evidence writer
+  - [x] 3.5 Write the example tests for the evidence writer
     - `test/evidence.test.ts` (temp repo-like folder): a file is redacted before it is written; a planted secret (assembled from fragments) in the input is replaced and the secret scan stays clean; a secret that the redactor is made to miss (writer given a stub redactor in the test) is caught by the scan, the file is deleted and the spike fails with the class only; an SI token in the input is replaced; `newStamp` adds a suffix on a clash and never returns an existing folder; `publishNamedCopy` writes only for `PASS` and `PARTIAL` and writes a regular file
     - _Requirements: R5.5, R7.1, R7.5, R7.9_
     - Design: Testing Strategy (`runner.integration.test.ts` row: evidence goes through redaction and the scan), D8
     - DoD: P0-D4
-  - [ ] 3.6 Run the group verification (group 3)
+  - [x] 3.6 Run the group verification (group 3)
     - Run `pnpm -r test`, `pnpm -r build`, `pnpm typecheck`, `pnpm -r --if-present check`, `pnpm lint`, `pnpm check:secrets` and `pnpm check:platform`; all clean
     - List the files this group changed for the commit
     - _Requirements: R7.1, R7.5_
