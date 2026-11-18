@@ -55,6 +55,193 @@
         "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
         "timestamp": 1794987014226
       }
+    ],
+    "2.1 Implement `lib/env.ts` and its example test": [
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794987027397
+      },
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794987148786
+      }
+    ],
+    "2.3 Implement `lib/own-marker.ts` and its test": [
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794987027716
+      },
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794987149384
+      }
+    ],
+    "2.11 Implement `lib/no-direct-hc.ts`": [
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794987027902
+      },
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794987150255
+      }
+    ],
+    "2.2 Write the property test for the environment builder": [
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794987148933
+      }
+    ],
+    "2.12 Write the property test and the real-tree test for the detector": [
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794987151117
+      }
+    ],
+    "2.4 Implement the pure preflight core in `lib/preflight.ts`": [
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794987160225
+      },
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794987337517
+      }
+    ],
+    "2.13 Implement `lib/hc.ts` (decision, wrapper, observe wrapper, version reader)": [
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794987160449
+      },
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794987340427
+      }
+    ],
+    "2.5 Write the example tests for the preflight core": [
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794987337601
+      }
+    ],
+    "2.6 Write the property test for preflight acceptance": [
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794987337695
+      }
+    ],
+    "2.7 Write the property test for path containment": [
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794987337792
+      }
+    ],
+    "2.8 Write the property test for hc version comparison": [
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794987338576
+      }
+    ],
+    "2.9 Write the property test for preflight output": [
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794987339371
+      }
+    ],
+    "2.14 Write the property test and the fake-hc examples for the wrapper": [
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794987341226
+      }
+    ],
+    "2.15 Implement `lib/cleanup.ts`": [
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794987347142
+      },
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794987486959
+      }
+    ],
+    "2.10 Write the property test for pane environment handling": [
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794987347906
+      },
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794987486706
+      }
+    ],
+    "2.16 Write the example tests for cleanup": [
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794987487774
+      }
+    ],
+    "2.17 Write the property test for deletion plans": [
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794987488677
+      }
+    ],
+    "2.18 Write the property test for own-pid checks": [
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794987489477
+      }
+    ],
+    "2.19 Implement `gatherPreflightInput` and its fake-hc tests": [
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794987490421
+      }
+    ],
+    "2.20 Run the group verification (group 2)": [
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794987497598
+      },
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794987641210
+      }
+    ],
+    "2. Pure safety core: env, preflight, Own_Marker, hc wrapper, cleanup, direct-spawn detector (P0)": [
+      {
+        "executionId": "8f02721a-87a9-4453-a14b-870a89bf4018",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1794987641266
+      }
     ]
   }
 }

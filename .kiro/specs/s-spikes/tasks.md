@@ -61,124 +61,124 @@ Conventions:
     - Design: "Build, resolution and ordering" of S-ops (convention)
     - DoD: P0-D4 (supports), P0-D1 (supports)
 
-- [ ] 2. Pure safety core: env, preflight, Own_Marker, hc wrapper, cleanup, direct-spawn detector (P0)
+- [x] 2. Pure safety core: env, preflight, Own_Marker, hc wrapper, cleanup, direct-spawn detector (P0)
   - DoD: P0-D4 (R1 to R3 and R5.7 are the safety contract of every spike). Requirements: R1.1 to R1.10, R2.1 to R2.16, R3.1 to R3.8, R7.6. Design: "Environment builder", "Preflight", "hc wrapper", "Own_Marker and cleanup", D3 to D5, D13, Properties 1 to 10.
   - Files owned: `spike/lib/{env,preflight,own-marker,hc,cleanup,no-direct-hc}.ts`, `spike/test/{env,env.property,preflight,preflight.property,preflight-gather,own-marker,hc,hc.property,cleanup,cleanup.property,no-direct-hc.property}.test.ts`.
-  - [ ] 2.1 Implement `lib/env.ts` and its example test
+  - [x] 2.1 Implement `lib/env.ts` and its example test
     - `BASE_PASS` (PATH, HOME, LANG, TERM, TMPDIR), `EnvProfile` (`hc`, `agent`, `listener`, `tool`), `buildChildEnv(i)` starting from an empty object (never from a copy of `base`); profile `hc` adds `HC_SESSION`, `XDG_STATE_HOME=<root>/s` and `XDG_CONFIG_HOME=<root>/c`; `agent` adds only `extraPass` names; `listener` and `tool` add nothing; `isPaneEnvName(name)` is true for `HC_*` and `HERDR_*`; a pane name in `extraPass` is dropped; the function never logs and never prints a value (R1.6, R7.6, D3)
     - `test/env.test.ts`: examples per profile; `HC_SCOPE`, `HC_TERMINAL_ID`, `HC_TERMINAL_SOCKET` and `HC_SOCKET` in `base` never appear in any profile; `agent` has no `XDG_*`; `extraPass` with a name such as `HC_X` is dropped
     - _Requirements: R1.1, R1.2, R1.6, R2.13, R7.6_
     - Design: "Environment builder", D3, A2, A7
     - DoD: P0-D4
-  - [ ] 2.2 Write the property test for the environment builder
+  - [x] 2.2 Write the property test for the environment builder
     - **Property 1: Child environments come from the allow-list only**
     - `test/env.property.test.ts` through `pbt(...)`, tag `Feature: s-spikes, Property 1: Child environments come from the allow-list only`; generators: environments with any mix of `HC_*`, `HERDR_*`, `XDG_*`, secret-looking and arbitrary names, every profile, any `extraPass`; assert key subset, no pane names except `HC_SESSION` (profile `hc`), no `XDG_*` or `HC_*` in `agent`, `listener`, `tool`, and `hc`-profile values equal to the runner's values
     - **Validates: Requirements 1.1, 1.2, 1.6, 2.13, 7.6**
     - Design: Property 1
     - DoD: P0-D4
-  - [ ] 2.3 Implement `lib/own-marker.ts` and its test
+  - [x] 2.3 Implement `lib/own-marker.ts` and its test
     - `OwnMarker` (v, session, qs, root, runnerPid, startedAt, nonce, pids, agentFiles), `readMarker(root)` validating shape, session pattern, `root` equal to the directory's own realpath, known ids and a 32-hex nonce (otherwise `null`), `writeMarker(m)` with mode 0600 through a temp file and rename, `pidAlive(pid)` with `process.kill(pid, 0)`
     - `test/own-marker.test.ts`: write then read round trip; a marker with a bad session, a root that differs from its folder, an unknown id or a short nonce reads as `null`; file mode is 0600; `pidAlive(process.pid)` is true and a pid of a finished child is false
     - _Requirements: R2.8, R2.9, R3.2_
     - Design: "Own_Marker and cleanup", "Own_Marker (data model)"
     - DoD: P0-D4
-  - [ ] 2.4 Implement the pure preflight core in `lib/preflight.ts`
+  - [x] 2.4 Implement the pure preflight core in `lib/preflight.ts`
     - `SESSION_RE` (`^wsp(-[a-z0-9]{1,8})?$`), `SOCKET_LIMIT = 90`, `LONGEST_SOCKET_NAME = 40`, `isUnder(root, p)` (segment-wise, normalised, strict prefix), `parseHcVersion(text)`, `PfId`, `PreflightInput`, `PreflightDeps`, `PreflightReport`, `runPreflight(i, deps)` running every check independently so the report lists all failures (PF-SESSION, PF-XDG, PF-SOCKLEN, PF-DEFAULT-PATH, PF-HOME, PF-VERSION, PF-ROOT, PF-WRAPPER, PF-CHILD-ENV, PF-PANE-ENV), `formatPreflight(r, i)` printing criterion ids and only `HC_SESSION`, the XDG paths and `HC_SOCKET` (R2.11)
     - The Q1 minimum is `[0,1,17]`, every other spike `[0,1,18]` (R2.7); socket paths are `<realRoot>/s/herdr-core/<session>/<40-byte name>` (D13); path comparison with `defaultStateDir` is by string, never by connecting (R2.5)
     - `gatherPreflightInput` is NOT part of this task (task 2.19); the Own_Marker is written by the runner, never by `runPreflight` (R2.9)
     - _Requirements: R2.1 to R2.8, R2.10, R2.11, R2.13 to R2.16_
     - Design: "Preflight", D13, A6
     - DoD: P0-D4
-  - [ ] 2.5 Write the example tests for the preflight core
+  - [x] 2.5 Write the example tests for the preflight core
     - `test/preflight.test.ts`: one failing case per criterion 2 to 8 and 13 to 14 with the expected `PF-*` id, the case "pane env present" of criterion 15 (passes only when the child environment built from the allow-list lacks all three names; fails with a wrapper variant that copies them), the sibling `/tmp/hcw-evil`, a 91-byte socket path, a `live` root, and a passing baseline; the tests start no real core and run no `hc`
     - _Requirements: R2.2 to R2.8, R2.12 to R2.15_
     - Design: Testing Strategy (`preflight.property.test.ts` row, examples)
     - DoD: P0-D4
-  - [ ] 2.6 Write the property test for preflight acceptance
+  - [x] 2.6 Write the property test for preflight acceptance
     - **Property 2: Preflight accepts exactly the valid inputs**
     - `test/preflight.property.test.ts`, tag `Feature: s-spikes, Property 2: Preflight accepts exactly the valid inputs`; generator: a valid baseline with exactly one field changed; assert the report fails iff the change violates the criterion of that field, with the matching `PF-*` id, and the baseline passes
     - **Validates: Requirements 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.10, 2.12, 2.16**
     - Design: Property 2
     - DoD: P0-D4
-  - [ ] 2.7 Write the property test for path containment
+  - [x] 2.7 Write the property test for path containment
     - **Property 3: Path containment is segment-wise**
     - Append to `test/preflight.property.test.ts`; generators: root and candidate built from segments including `..`, `.`, empty segments, repeated separators and sibling prefixes; assert `isUnder` equals "strict segment prefix after normalisation"
     - **Validates: Requirements 2.3, 2.5, 3.2**
     - Design: Property 3
     - DoD: P0-D4
-  - [ ] 2.8 Write the property test for hc version comparison
+  - [x] 2.8 Write the property test for hc version comparison
     - **Property 4: hc version comparison equals tuple order**
     - Append to `test/preflight.property.test.ts`; generators: pairs of version triples printed as `hc a.b.c`, and arbitrary non-version text; assert the parsed triple, "at least" equals numeric tuple order, and non-version text returns `null` and fails PF-VERSION
     - **Validates: Requirements 2.7**
     - Design: Property 4
     - DoD: P0-D4
-  - [ ] 2.9 Write the property test for preflight output
+  - [x] 2.9 Write the property test for preflight output
     - **Property 5: Preflight output reveals no other environment value**
     - Append to `test/preflight.property.test.ts`; generators: environments with sentinel values under arbitrary names; assert `formatPreflight` contains no sentinel except the values of `HC_SESSION`, the XDG paths and `HC_SOCKET`
     - **Validates: Requirements 2.11**
     - Design: Property 5
     - DoD: P0-D4
-  - [ ] 2.10 Write the property test for pane environment handling
+  - [x] 2.10 Write the property test for pane environment handling
     - **Property 6: Pane environment never reaches a child, and a leaking builder is caught**
     - Append to `test/env.property.test.ts`; generators: environments that set `HC_SCOPE`, `HC_TERMINAL_ID` and `HC_TERMINAL_SOCKET` with any values; assert preflight with the real `buildChildEnv` passes PF-CHILD-ENV and PF-PANE-ENV, and preflight with a builder variant that copies any of the three names fails with PF-PANE-ENV
     - **Validates: Requirements 1.6, 2.13, 2.14, 2.15**
     - Design: Property 6
     - DoD: P0-D4
-  - [ ] 2.11 Implement `lib/no-direct-hc.ts`
+  - [x] 2.11 Implement `lib/no-direct-hc.ts`
     - `findDirectHcSpawn(file, text)` over `maskComments` output (import `tools/lib/mask.ts` by relative path): reports a line when a `spawn`, `spawnSync`, `exec`, `execSync`, `execFile`, `execFileSync`, `fork` call, a shell string, or a `pkill` or `killall` call names `hc`, `herdr-core` or `hold` as the program; `lib/hc.ts` is exempt by path; `scanSpikeTree(root)` walks `spike/` with `tools/lib/walk.ts` and returns the violations (the input of PF-WRAPPER)
     - _Requirements: R1.4, R2.10, R3.4_
     - Design: "Dependency rules", "Preflight" (PF-WRAPPER)
     - DoD: P0-D4
-  - [ ] 2.12 Write the property test and the real-tree test for the detector
+  - [x] 2.12 Write the property test and the real-tree test for the detector
     - **Property 10: The direct-spawn detector**
     - `test/no-direct-hc.property.test.ts`, tag `Feature: s-spikes, Property 10: The direct-spawn detector`; generated TypeScript sources with calls in code, in string literals and in comments; assert a line is reported iff a spawn-family call or `pkill`/`killall` names `hc`, `herdr-core` or `hold` as the program, comments and non-argument strings are not reported, and `lib/hc.ts` is exempt by path; plus an example test that no file of the real `spike/` tree outside `lib/hc.ts` is flagged
     - **Validates: Requirements 1.4, 2.10, 3.4**
     - Design: Property 10
     - DoD: P0-D4
-  - [ ] 2.13 Implement `lib/hc.ts` (decision, wrapper, observe wrapper, version reader)
+  - [x] 2.13 Implement `lib/hc.ts` (decision, wrapper, observe wrapper, version reader)
     - `HcMode`, `HcDecision`, pure total `decideHc(args, ctx)` with the rules of the design: session must match `SESSION_RE` and not be `default` in `normal` mode; `machine`, `exec`, `file`, `update` refused in every mode (D5); `server stop|restart|start` allowed in `normal` only; `observe` accepts exactly `["server","status"]` (D4: no `ls`, no `terminal.list` form); a single argument that is itself a command line is refused; the function never throws
     - `createHc` (calls `decideHc` before each spawn, `spawn(file, argv)` without a shell, child env from `buildChildEnv({profile:"hc"})`, records every started pid in the Own_Marker, refuses before the runner marked "preflight passed", `spawnLong` for event followers), `createObserveHc` (child env from `buildChildEnv({profile:"tool"})`: no `HC_*`, `HERDR_*`, no `HC_SESSION`)
     - `readHcVersion(baseEnv)`: the one other `hc` call in `spike/`, `hc --version` with the `tool` env profile and no session, so it never contacts a core; used only by `gatherPreflightInput` (task 2.19); it is not part of `decideHc`, which keeps Property 7 exact
     - _Requirements: R1.3, R1.4, R1.5, R1.8, R1.10, R2.7, R2.16, R3.4_
     - Design: "hc wrapper", D4, D5
     - DoD: P0-D4
-  - [ ] 2.14 Write the property test and the fake-hc examples for the wrapper
+  - [x] 2.14 Write the property test and the fake-hc examples for the wrapper
     - **Property 7: The hc decision never allows what the mode forbids**
     - `test/hc.property.test.ts`, tag `Feature: s-spikes, Property 7: The hc decision never allows what the mode forbids`; generators: argument arrays from hc verbs, flags, case variants, extra whitespace, shell metacharacters, single-string command lines and random strings, with any session value; assert (a) to (e) of the property
     - `test/hc.test.ts` with `fake-hc`: observe mode runs `server status` only, refuses `ls`, `ls --all` and the seven commands of R1.10 (`server stop`, `server restart`, `server start`, `terminal.create`, `terminal.run`, `terminal.send`, a configuration write) before anything runs (the fake's log stays empty), its child env (recorded by the fake as names) holds no `HC_*`/`HERDR_*` name; normal mode refuses session `default`; `readHcVersion` reads the fake's version
     - **Validates: Requirements 1.4, 1.5, 1.8, 1.10, 2.16**
     - Design: Property 7
     - DoD: P0-D4
-  - [ ] 2.15 Implement `lib/cleanup.ts`
+  - [x] 2.15 Implement `lib/cleanup.ts`
     - `DeletePlan`, `planDeletion(root, marker, candidates)` (allowed only with a matching marker, path strictly under the root, root strictly under `/tmp/hcw` or `/private/tmp/hcw`, `..`, empty and relative paths refused, root's parent refused, no path derived toward the Default_Core directories), `pidIsOwn(pid, own, status, cmdline, root)`, `cleanupRun(c)` in the design order (stop children with SIGTERM then SIGKILL for own pids; `server stop` under the Test_Session; confirm stopped by a failed connect to the main socket and dead marker pids; kill remaining own pids by `pidIsOwn`; delete the agent files in the marker; delete the root with `fs.rm` after `lstat` shows no symlink at the root); if the stop cannot be confirmed the root stays, its path is printed and the result is `stopped:false` (exit 30)
     - No `pkill`, `killall` or name-based kill anywhere; SIGINT and SIGTERM handlers are installed by the runner (task 7.4), not here
     - _Requirements: R1.7, R3.1 to R3.8_
     - Design: "Own_Marker and cleanup"
     - DoD: P0-D4
-  - [ ] 2.16 Write the example tests for cleanup
+  - [x] 2.16 Write the example tests for cleanup
     - `test/cleanup.test.ts` under `os.tmpdir()` with a fake root path override for the `/tmp/hcw` prefix check (the prefix is a parameter of the pure function so tests stay out of the real `/tmp/hcw`): a root with a valid marker is deleted; a root without a marker is not; a symlinked root is refused; agent files in the marker are removed and no other file in their folder; `cleanupRun` with a core stub that cannot be confirmed stopped leaves the root and returns `stopped:false`
     - _Requirements: R3.1, R3.2, R3.5, R3.7_
     - Design: Testing Strategy (`cleanup.property.test.ts` row, examples)
     - DoD: P0-D4
-  - [ ] 2.17 Write the property test for deletion plans
+  - [x] 2.17 Write the property test for deletion plans
     - **Property 8: Deletion plans stay inside the marked root**
     - `test/cleanup.property.test.ts`, tag `Feature: s-spikes, Property 8: Deletion plans stay inside the marked root`; generators: marker, root and candidates including `..`, symlink-like names, the root's parent, the Default_Core directories, `~/.config/herdr-core` and sibling prefixes; assert every deleted path is strictly under the marker's root, every other candidate is refused, and with no marker or a mismatched marker nothing is deleted
     - **Validates: Requirements 3.1, 3.2, 3.7, 3.8**
     - Design: Property 8
     - DoD: P0-D4
-  - [ ] 2.18 Write the property test for own-pid checks
+  - [x] 2.18 Write the property test for own-pid checks
     - **Property 9: Only own pids are killed**
     - Append to `test/cleanup.property.test.ts`; generators: pid, own list, status list, command line, root; assert `pidIsOwn` is true iff the pid is in the own list, or in the status list with a command line containing the root path
     - **Validates: Requirements 1.7, 3.3, 3.4**
     - Design: Property 9
     - DoD: P0-D4
-  - [ ] 2.19 Implement `gatherPreflightInput` and its fake-hc tests
+  - [x] 2.19 Implement `gatherPreflightInput` and its fake-hc tests
     - In `lib/preflight.ts`: `gatherPreflightInput(q, env)` computes the session `wsp-<first id>` (A6), the Spike_Root, realpaths, socket paths, `defaultStateDir`, the root state (absent, stale with a valid marker, live, foreign), the version through `readHcVersion`, and `scriptTreeViolations` through `scanSpikeTree`; it opens no socket and runs no other `hc` command
     - `test/preflight-gather.test.ts` with `fake-hc`: a fake reporting 0.1.20 passes and 0.1.17 fails for a non-Q1 spike and passes for Q1 (R2.7); a stale root with a dead pid is reported `stale`; a root with a live pid is `live`; a root without a marker is `foreign`
     - _Requirements: R2.1, R2.7, R2.8, R2.12_
     - Design: "Preflight" (`gatherPreflightInput`), A6
     - DoD: P0-D4
-  - [ ] 2.20 Run the group verification (group 2)
+  - [x] 2.20 Run the group verification (group 2)
     - Run `pnpm -r test`, `pnpm -r build`, `pnpm typecheck`, `pnpm -r --if-present check`, `pnpm lint`, `pnpm check:platform` and `pnpm check:secrets`; all clean
     - List the files this group changed for the commit
     - _Requirements: R1.4, R2.12_
