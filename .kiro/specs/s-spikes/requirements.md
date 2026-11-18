@@ -551,6 +551,7 @@ None open. OQ-1 to OQ-15 are resolved (see "Resolved decisions"); the criteria t
 | OQ-13 | The redactor of SI-8 (`tools/redact.ts`) does not exist yet, and `tools/lib/secret-rules.ts` exposes match offsets only inside its module. | Redact whole lines that `scanText` reports, using the same rule set, plus home path and env-value masking; no change to `tools/`. | `owner, 2026-11-18` |
 | OQ-14 | Is the redacted `q3.jsonl` committed under `spike/kiro/` before human review? | Yes under `spike/` (the repo is public, the secret scan guards it); promotion to `fixtures/` is a later reviewed step. | `owner, 2026-11-18` |
 | OQ-15 | §22.3 has no "notify" entry for Q4, Q7, Q12, Q13, Q14, Q23, Q30, Q31, Q32. | Record, no notify, unless the branch changes a DoD. | `owner, 2026-11-18` |
+| RD-11 | R5.8 exception: `@anthropic-ai/claude-agent-sdk` (npm license "SEE LICENSE IN README.md", Anthropic terms, not permissive). | Allowed as an exact-pinned devDependency of `@wraith/spike` only, never shipped, no other package; recorded in THIRD_PARTY.md and DECISIONS-PENDING (`S-spikes-1`). | `owner, 2026-11-18` |
 
 ## Facts verified from the repository and the machine
 
