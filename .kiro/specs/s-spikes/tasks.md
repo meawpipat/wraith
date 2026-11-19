@@ -291,7 +291,7 @@ Conventions:
     - Design: D14
     - DoD: P0-D4 (supports), P0-D1 (supports)
 
-- [ ] 5. Checkpoint - Scaffold, safety core, redactor and tools side
+- [x] 5. Checkpoint - Scaffold, safety core, redactor and tools side
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 6. Budget guard, approval client, agent profile and Claude launch assertion (P0)
