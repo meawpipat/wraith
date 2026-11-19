@@ -133,6 +133,36 @@ describe("hc wrapper with the fake hc", () => {
     });
   });
 
+  it("refuses remote targets in both modes and the fake's log stays empty", async () => {
+    await withBinDir({ hc: fakeHcSource({ version: "0.1.20", logFile }) }, async (env) => {
+      markPreflightPassed();
+      const normal = createHc({
+        mode: "normal",
+        session: "wsp-q6",
+        root: dir,
+        baseEnv: env,
+        marker: marker(),
+      });
+      const observe = createObserveHc({ baseEnv: env });
+      const bad = [
+        ["run", "--on", "vps", "ls"],
+        ["run", "--on=vps", "ls"],
+        ["terminal.send", "vps/t7", "x"],
+        ["terminal.read", "--target=vps/t7"],
+      ];
+      for (const args of bad) {
+        await expect(normal.run(args)).rejects.toThrow(/refused/);
+        await expect(observe.run(args)).rejects.toThrow(/refused/);
+      }
+      await expect(observe.run(["server", "status", "--on", "vps"])).rejects.toThrow(/refused/);
+      expect(() => normal.spawnLong(["run", "--on", "vps"])).toThrow(/refused/);
+      expect(calls()).toEqual([]);
+      const d = decideHc(["terminal.send", "vps/t7"], { mode: "normal", session: "wsp-q6" });
+      expect(d.allow).toBe(false);
+      if (!d.allow) expect(d.reason).not.toContain("vps");
+    });
+  });
+
   it("decideHc refuses a single-string command line", () => {
     expect(decideHc(["server stop"], { mode: "normal", session: "wsp-q6" }).allow).toBe(false);
     expect(decideHc(["server", "stop"], { mode: "normal", session: "wsp-q6" }).allow).toBe(true);

@@ -12,6 +12,17 @@ const VERB_PATTERN = /^[a-z][a-z0-9._-]*$/;
 const ALWAYS_REFUSED: ReadonlySet<string> = new Set(["machine", "exec", "file", "update"]);
 const DEFAULT_TIMEOUT_MS = 30_000;
 
+/** Machine address such as `vps/t7`. */
+const MACHINE_ADDRESS = /^[A-Za-z0-9._-]+\/t\d+$/;
+
+/** `--on`, `--on=...`, a machine address, or a machine address after `=` in a flag value. */
+function isRemoteTarget(a: string): boolean {
+  if (a === "--on" || a.startsWith("--on=")) return true;
+  if (MACHINE_ADDRESS.test(a)) return true;
+  const eq = a.indexOf("=");
+  return eq >= 0 && MACHINE_ADDRESS.test(a.slice(eq + 1));
+}
+
 let preflightPassed = false;
 
 /** Called by the runner once preflight passed (R1.3). `createHc` handles refuse before that. */
@@ -33,6 +44,9 @@ export function decideHc(
     }
     if (ctx.mode !== "normal" && ctx.mode !== "observe") {
       return { allow: false, reason: "unknown mode" };
+    }
+    if (args.some(isRemoteTarget)) {
+      return { allow: false, reason: "remote targets are refused in every mode" };
     }
     if (ctx.mode === "observe") {
       return args.length === 2 && args[0] === "server" && args[1] === "status"

@@ -116,6 +116,42 @@ describe("Property 7: The hc decision never allows what the mode forbids", () =>
     );
   });
 
+  it("(f) remote targets (--on, --on=x, machine addresses) are refused in every mode and position", () => {
+    const remote: fc.Arbitrary<string> = fc.oneof(
+      fc.constant("--on"),
+      fc.string({ maxLength: 8 }).map((x) => `--on=${x}`),
+      fc
+        .tuple(fc.stringMatching(/^[A-Za-z0-9._-]{1,8}$/), fc.integer({ min: 0, max: 99999 }))
+        .map(([n, d]) => `${n}/t${d}`),
+      fc
+        .tuple(
+          fc.stringMatching(/^--[a-z]{1,6}$/),
+          fc.stringMatching(/^[A-Za-z0-9._-]{1,8}$/),
+          fc.integer({ min: 0, max: 99999 }),
+        )
+        .map(([f, n, d]) => `${f}=${n}/t${d}`),
+    );
+    pbt(
+      fc.property(
+        argsArb,
+        remote,
+        fc.nat(),
+        goodSession,
+        fc.constantFrom<"normal" | "observe">("normal", "observe"),
+        (args, r, pos, session, mode) => {
+          const at = pos % (args.length + 1);
+          const argv = [...args.slice(0, at), r, ...args.slice(at)];
+          const d = decideHc(argv, { mode, session });
+          return !d.allow && !d.reason.includes(r);
+        },
+      ),
+    );
+    // The allowed shapes still pass.
+    const ok = decideHc(["server", "status"], { mode: "observe", session: undefined });
+    const okNormal = decideHc(["terminal.list"], { mode: "normal", session: "wsp-q6" });
+    if (!ok.allow || !okNormal.allow) throw new Error("allowed shape refused");
+  });
+
   it("(e) the decision never throws, whatever the input", () => {
     pbt(
       fc.property(
