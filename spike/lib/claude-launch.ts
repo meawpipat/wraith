@@ -41,17 +41,18 @@ export function buildClaudeLaunch(input: BuildClaudeLaunchInput): ClaudeLaunchVi
 
 /** Throws when the launch options could run a tool without the owner's tap (R7.11). */
 export function assertSafeClaudeLaunch(opts: ClaudeLaunchView): void {
-  if (opts.settingSources.length > 0) throw new Error("E_CLAUDE_UNSAFE: setting sources not empty");
-  if (opts.permMode !== "default") throw new Error("E_CLAUDE_UNSAFE: permission mode");
-  if (opts.allowRules.length > 0) throw new Error("E_CLAUDE_UNSAFE: allow rules not empty");
+  if (opts.settingSources.length > 0)
+    throw new Error("spike-claude-unsafe: setting sources not empty");
+  if (opts.permMode !== "default") throw new Error("spike-claude-unsafe: permission mode");
+  if (opts.allowRules.length > 0) throw new Error("spike-claude-unsafe: allow rules not empty");
   for (const tool of opts.allowedTools ?? []) {
     if (tool.includes("*") || !READ_ONLY_CLAUDE_TOOLS.includes(tool)) {
-      throw new Error("E_CLAUDE_UNSAFE: allowed tool is not read-only");
+      throw new Error("spike-claude-unsafe: allowed tool is not read-only");
     }
   }
   if (opts.settings !== undefined && opts.settings !== null) {
-    throw new Error("E_CLAUDE_UNSAFE: settings file or object");
+    throw new Error("spike-claude-unsafe: settings file or object");
   }
   const serialised = JSON.stringify(opts, (k, v) => (k === "askOwner" ? undefined : v));
-  if (findUnsafeToken(serialised) !== null) throw new Error("E_CLAUDE_UNSAFE: unsafe token");
+  if (findUnsafeToken(serialised) !== null) throw new Error("spike-claude-unsafe: unsafe token");
 }

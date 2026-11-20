@@ -34,7 +34,7 @@ describe("claude launch options", () => {
       { ...base, settings: "/some/settings.json" },
       { ...base, settings: {} },
     ];
-    for (const o of bad) expect(() => assertSafeClaudeLaunch(o)).toThrow();
+    for (const o of bad) expect(() => assertSafeClaudeLaunch(o)).toThrow(/^spike-claude-unsafe: /);
   });
 
   it("refuses an SI token in the serialised options", () => {
