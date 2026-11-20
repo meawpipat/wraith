@@ -1,7 +1,11 @@
 /**
- * Q6 respawn rule (pure). It is the spike's reading of R13.7: respawn only when the holder was
- * lost or the core stopped, never after a clean exit or a person's close.
+ * Q6 respawn rule (pure), after architecture §7.6: respawn when the holder was lost, the core
+ * stopped, or the sprite exited 75 (a signal) with no node close intent; never after exited 0 or killed.
+ * The Q6 node stub never closes a pane itself, so every exited 75 it sees has no node intent.
  */
+
+/** The sprite exits 75 on signals or a refused duplicate (§7.6). */
+export const EXIT_LOST_CODE = 75;
 
 export type RespawnDecision = "respawn" | "none";
 
@@ -16,6 +20,7 @@ export function respawnDecision(reason: string, code: number | null): RespawnDec
   if (code === 0) return "none";
   if (reason === "killed") return "none";
   if (reason === "holder_lost") return "respawn";
+  if (reason === "exited" && code === EXIT_LOST_CODE) return "respawn";
   return CORE_STOP_REASONS.includes(reason) ? "respawn" : "none";
 }
 

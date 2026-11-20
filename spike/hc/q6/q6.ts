@@ -378,15 +378,22 @@ export async function run(ctx: SpikeContext, over: Partial<Q6Deps> = {}): Promis
     tracked.push(specC.token);
     const pidC = await d.pidOf(specC.token, ctx.scratch);
     if (pidC === null) return pendingOutcome("stub c wrote no pid file");
+    const tt = d.now();
     d.killPid(pidC, "SIGTERM");
     const evC2 = await waitEvent(specC.token);
     criteria.push({
-      id: "d-term-exited-75",
-      ok: evC2 !== null && evC2.reason === "exited" && evC2.code === 75,
+      id: "d-term-exited-75-respawn",
+      ok:
+        evC2 !== null &&
+        evC2.reason === "exited" &&
+        evC2.code === 75 &&
+        evC2.decision === "respawn" &&
+        evC2.respawnedMs !== null &&
+        withinLimit(tt, evC2.respawnedMs, d.limitMs),
       observed:
         evC2 === null
           ? "no finished pane seen"
-          : `reason ${evC2.reason} code ${evC2.code ?? "none"}, decision ${evC2.decision}`,
+          : `reason ${evC2.reason} code ${evC2.code ?? "none"}, decision ${evC2.decision}, respawn ${evC2.respawnedMs === null ? "none" : `${evC2.respawnedMs - tt} ms after the signal`}`,
     });
 
     // (d3) a clean exit 0 is never respawned.

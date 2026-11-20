@@ -187,11 +187,15 @@ describe("respawnDecision", () => {
     for (const r of CORE_STOP_REASONS) expect(respawnDecision(r, null)).toBe("respawn");
   });
 
+  it("respawns an external SIGTERM (exited 75, no node intent)", () => {
+    expect(respawnDecision("exited", 75)).toBe("respawn");
+  });
+
   it("never respawns for killed or exited 0", () => {
     expect(respawnDecision("killed", 75)).toBe("none");
     expect(respawnDecision("killed", null)).toBe("none");
     expect(respawnDecision("exited", 0)).toBe("none");
-    expect(respawnDecision("exited", 75)).toBe("none");
+    expect(respawnDecision("exited", 76)).toBe("none");
   });
 
   it("property: respawn exactly for holder_lost or a core stop, never for code 0 or killed", () => {
@@ -202,7 +206,9 @@ describe("respawnDecision", () => {
     pbt(
       fc.property(reasons, fc.option(fc.integer({ min: 0, max: 255 }), { nil: null }), (r, c) => {
         const want =
-          c !== 0 && r !== "killed" && (r === "holder_lost" || CORE_STOP_REASONS.includes(r));
+          c !== 0 &&
+          r !== "killed" &&
+          (r === "holder_lost" || CORE_STOP_REASONS.includes(r) || (r === "exited" && c === 75));
         expect(respawnDecision(r, c)).toBe(want ? "respawn" : "none");
       }),
     );
@@ -274,7 +280,7 @@ describe("Q6 script (fake core)", () => {
       ["b-holder-lost-respawn", true],
       ["c-stop-start-respawn", true],
       ["d-killed-no-respawn", true],
-      ["d-term-exited-75", true],
+      ["d-term-exited-75-respawn", true],
       ["d-exit0-no-respawn", true],
     ]);
     expect(out.result).toBe("PASS");

@@ -145,17 +145,20 @@ describe("Feature: s-spikes, Property 21: Metrics helpers", () => {
     );
   });
 
-  it("respawns exactly for holder_lost and core stop, never for code 0 or killed", () => {
+  it("respawns exactly for holder_lost, a core stop and exited 75, never for code 0 or killed", () => {
     const reasons = fc.oneof(
       fc.constantFrom("holder_lost", "killed", "exited", ...CORE_STOP_REASONS),
       fc.string({ maxLength: 12 }),
     );
-    const codes = fc.oneof(fc.constant(null), fc.integer({ min: 0, max: 255 }));
+    const codes = fc.oneof(fc.constant(null), fc.constant(75), fc.integer({ min: 0, max: 255 }));
     pbt(
       fc.property(reasons, codes, (reason, code) => {
         const d = respawnDecision(reason, code);
         if (code === 0 || reason === "killed") return d === "none";
-        const should = reason === "holder_lost" || CORE_STOP_REASONS.includes(reason);
+        const should =
+          reason === "holder_lost" ||
+          CORE_STOP_REASONS.includes(reason) ||
+          (reason === "exited" && code === 75);
         return d === (should ? "respawn" : "none");
       }),
     );

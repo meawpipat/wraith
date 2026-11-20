@@ -18,15 +18,16 @@ and are an assumption until checked against that schema. No agent, no prompt, no
 - a: `server restart`; the stub sprite keeps its pid.
 - b: kill the holder pid from `server status` (own-pid check first); expect `holder_lost`, respawn within 10 s.
 - c: `server stop`, then `server start`; respawn within 10 s of the core being back.
-- d: `hc kill` of a stub records `killed`; `kill -TERM` records `exited` 75; `exited 0`; none is respawned.
+- d: `hc kill` of a stub records `killed`; `exited 0` is not respawned. `kill -TERM` records `exited` 75 with no node intent: lost, respawned within 10 s (§7.6).
 
 ## Human step
 
 HS-S5 (optional): close a Wraith-labelled pane with the Herdr.app close button and report the
-reason. Until then it is recorded as "unobserved". `exited 75` selects the branch "document `/exit`".
+reason. Until then it is recorded as "unobserved". An `exited` 75 from the close button selects the branch "document `/exit`" (the node would respawn it).
+
 
 ## What to read in the evidence
 
 `summary.json` (core pids, finish reason and decision for each pane) and `timeline.txt`
 (monotonic times). Raw `ls` and `status` output stays in `q6-raw.log` under the Spike_Root.
-`respawnDecision` treats only `holder_lost` and a core stop as respawn reasons.
+`respawnDecision` respawns for `holder_lost`, a core stop, and `exited` 75 (no node intent); never for `exited 0` or `killed`.
