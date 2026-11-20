@@ -471,7 +471,7 @@ Conventions:
     - Design: Testing Strategy
     - DoD: P0-D4 (supports)
 
-- [ ] 9. Checkpoint - Libraries and runner
+- [x] 9. Checkpoint - Libraries and runner
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 10. Group A spike scripts: Q2, Q13, Q12, Q1, Q6, Q14 (P0, authoring only)
