@@ -33,3 +33,64 @@ The loop proceeds with the default unless the human answers. Source: `docs/archi
 | S-ops-7 | 2026-11-16 | Pseudo-file name used by hook scanners when the payload has no path | `hook-input.ts`, shared by all hook scanners | rule output and allowed-location matching for path-less payloads | yes (2026-11-17, owner) |
 | S-ops-8 | 2026-11-16 | `secret-scan` hook mode edge behaviour | Fails closed on non-object JSON; line numbers are relative to the matched string | hook exit codes for malformed input; reported line numbers | yes (2026-11-16, owner) |
 | S-spikes-1 | 2026-11-20 | Exit code when a secret is found in spike evidence | 22 (`EXIT.NEEDS_HUMAN`): the owner must stop, revoke and report. The design error table said 1; task 7.6 text fixed to 22 (owner, 2026-11-20) | `run.ts` exit code, `runner.integration.test.ts`, the design error table | yes (2026-11-20, owner) |
+| P-SI2-1 | 2026-11-20 | Let Claude bots launch on a machine whose `~/.claude/settings.json` holds allow rules (proposal below; no spec, steering or `unsafe.ts` edited yet) | None. SI-2 stays as written, so a Claude bot is refused with `E_AGENT_UNSAFE` on the owner's machine until this is decided | `architecture.md` §12.1 SI-2 and §6.9, `security.md`, `unsafe.ts`, S-protocol and later sprite/node specs; see "Files and tests" below | no |
+
+## Proposal P-SI2-1: Claude bots launch without the user setting source
+
+Status: proposal only. Facts about Claude Code 2.1.323 come from the owner's `claude --help`; they are not verified by the loop (the loop never runs `claude`). Items marked 🧪 are checked by spike task 13.8 from the installed SDK types before anything is adopted.
+
+### 1. Launch without the user setting source
+
+Today SI-2 reads `~/.claude/settings.json` and refuses the launch when it holds allow rules beyond read-only tools. The owner keeps many allow rules there for their own Claude Code use, so every Claude bot would be refused.
+
+Proposal:
+
+- A Claude bot never loads the user setting source. SDK driver: the `settingSources` option has no `user` entry. Terminal-mode TUI: the CLI is started with `--setting-sources` listing no `user` (🧪 exact flag and value syntax).
+- The owner's `~/.claude/settings.json` is neither read for the SI-2 check nor changed. Login is unaffected: OAuth and keychain credentials are not settings (🧪 confirm in 13.8 that a launch with no user source still authenticates).
+- SI-2 checks the effective launch instead of the files it hoped were loaded:
+  1. the setting sources the launch asks for (default: none; `project` and `local` only if a later decision turns them on);
+  2. the permission mode (section 2);
+  3. the allowed-tools list (read-only tools only, no wildcard);
+  4. the guard `--settings` file for Terminal mode (the only `--settings` file allowed; no `PreToolUse` or `PermissionRequest` hook entry, a unit test pins the template);
+  5. the managed settings files, which Claude Code always loads whatever the sources are;
+  6. project and local settings files from the bot's cwd up to the workspace root, only when those sources are loaded.
+- Any other settings source, an env-supplied settings file, or a `--settings` value other than the guard is refused.
+- The check runs before every launch and every epoch bump, and on return from Terminal mode (unchanged).
+
+### 2. Permission modes and the new flag
+
+Claude Code 2.1.323 lists these permission modes: accept-edits, auto, bypass, manual, don't-ask and plan (exact spellings stay in `packages/protocol/src/unsafe.ts`; this file does not spell the unsafe ones). There is no `default` any more. `auto` and the new `--permission-prompts` flag are in neither SI-2 nor `unsafe.ts`.
+
+Proposal:
+
+- Allow-list, not block-list: the only allowed mode is the asking mode. That is `manual` for the CLI. For older CLI versions, or for the SDK if its installed types still name the asking mode `default`, the allowed value is that name (🧪 read the real names from the SDK types in 13.8). Any other value, including a value this list has never seen, is refused (fail closed).
+- Add `auto` to the unsafe set, as a mode value in the Claude positions only (the CLI mode flag and the SDK mode option). It must not become a bare word match: `unsafe.ts` already holds a Grok `auto` pattern and "auto" is common prose.
+- Add the `--permission-prompts` flag to the unsafe argv flags until its meaning is read from the CLI help and a decision is taken (🧪; if it only chooses how prompts are shown, it may move to an allowed list later).
+- The existing pattern `claude-permission-mode-not-default` becomes "mode not in the asking set" and keeps its samples; samples for `manual` (allowed) and `auto` (refused) are added.
+- Version pinning: the SDK stays exact-pinned (RD-11). A constant `CLAUDE_CODE_CHECKED` (version range the allow-list was verified against) lives in `packages/protocol`. The sprite reads `claude --version` (argv array, no shell) before a launch and records it. Outside the range the launch still passes only if its mode is in the allow-list, and the node shows a "Claude Code version not checked" notice; a mode list change in a new version therefore cannot widen what is allowed. Task 13.8 re-reads the mode list from `claude --help` whenever the pinned version changes, owner-run.
+
+### 3. Files and tests
+
+| File or spec | Change |
+|---|---|
+| `docs/architecture.md` §12.1 SI-2 | rewrite the Claude clause: no user source, effective-launch check, managed files always checked, mode allow-list |
+| `docs/architecture.md` §6.9 `E_AGENT_UNSAFE` | the message text names "setting sources, mode, allowed tools, guard, managed files" instead of "Claude settings allow-rules/`defaultMode`" |
+| `docs/architecture.md` §8.1, §4.4 (SDK mapping), DECISION-47, SI-1 Terminal exception, C-table row | "manual permission mode" wording and the sources rule; new changelog row and version bump |
+| `.kiro/steering/security.md` | SI-2 row and the Claude "Never" bullets, same wording |
+| `.kiro/steering/agent-loop.md` | the Rewind/Claude driver bullet ("settings files are checked before launch") |
+| `packages/protocol/src/unsafe.ts` | mode allow-list constant, `auto` in Claude mode positions, `--permission-prompts` flag, changed pattern id, samples |
+| `packages/protocol/test` (S-protocol) | Property for the allow-list (every mode value outside it is refused, unknown values too); sample tests for `manual`, `default` (SDK/older only), `auto`; the flag in argv and in a settings string |
+| `.kiro/specs/s-protocol/tasks.md` | new task under the unsafe-token work (task 8.1 stays open for P1); do not run it through the task tool for partial work |
+| `.kiro/hooks/no-auto-approve.json` and the pattern in architecture SI-1 | the grep pattern changes from "mode not default" to the allow-list form; hook tests and the P0-D6 sample files get one sample per new class |
+| `tools/check-si.ts`, `tools/test` | read the new constants; tests for the new samples |
+| `spike/lib/claude-launch.ts` | field `permMode` and its checked value `"default"` become the asking value from the installed types; `settingSources` stays empty; tests extended with `auto`, an unknown value and the flag |
+| `.kiro/specs/s-spikes/tasks.md` task 13.8 | add: read mode names and the `--setting-sources` form from the installed types and `--help` text the owner pastes; STOP rule if no asking mode exists |
+| Sprite and node specs (P1, not written yet) | launch builder omits the user source; SI-2 check module takes the effective launch as input; version record; `E_AGENT_UNSAFE` message |
+
+Tests to add beyond those above: a launch-builder test that the user source is never present (SDK and CLI forms); a test that a managed settings file with an allow rule still refuses the launch; a test that a user settings file with allow rules does not (it is not read); a Terminal-mode test that the guard remains the only `--settings` file.
+
+### 4. Open questions for the owner
+
+1. Should project and local sources ever be loaded (CLAUDE.md-style project settings)? Proposal: no, until a later decision; then SI-2 checks those files too.
+2. Is "version not checked" a notice or a refusal? Proposal: notice, because the allow-list already fails closed.
+3. Which Claude Code versions does the owner run daily? The range in `CLAUDE_CODE_CHECKED` starts at 2.1.323.
