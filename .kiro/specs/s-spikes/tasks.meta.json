@@ -788,6 +788,109 @@
         "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
         "timestamp": 1795152392379
       }
+    ],
+    "10.1 Write the Q2 spike": [
+      {
+        "executionId": "ecd94474-2b77-4b0c-8873-4058a9652ff3",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795152910447
+      },
+      {
+        "executionId": "ecd94474-2b77-4b0c-8873-4058a9652ff3",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795153424292
+      }
+    ],
+    "10.2 Write the Q13 spike": [
+      {
+        "executionId": "ecd94474-2b77-4b0c-8873-4058a9652ff3",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795152910629
+      },
+      {
+        "executionId": "ecd94474-2b77-4b0c-8873-4058a9652ff3",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795153424588
+      }
+    ],
+    "10.3 Write the Q12 spike and the sender-field finder": [
+      {
+        "executionId": "ecd94474-2b77-4b0c-8873-4058a9652ff3",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795152910760
+      },
+      {
+        "executionId": "ecd94474-2b77-4b0c-8873-4058a9652ff3",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795153425075
+      }
+    ],
+    "10.4 Write the Q1 spike and its metric helpers": [
+      {
+        "executionId": "ecd94474-2b77-4b0c-8873-4058a9652ff3",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795152910880
+      },
+      {
+        "executionId": "ecd94474-2b77-4b0c-8873-4058a9652ff3",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795153425891
+      }
+    ],
+    "10.5 Write the Q6 spike, stub sprite, node stub and respawn rule": [
+      {
+        "executionId": "ecd94474-2b77-4b0c-8873-4058a9652ff3",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795152911076
+      },
+      {
+        "executionId": "ecd94474-2b77-4b0c-8873-4058a9652ff3",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795153428981
+      }
+    ],
+    "10.7 Write the Q14 observer and the PATH check script": [
+      {
+        "executionId": "ecd94474-2b77-4b0c-8873-4058a9652ff3",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795153429128
+      },
+      {
+        "executionId": "ecd94474-2b77-4b0c-8873-4058a9652ff3",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795153594138
+      }
+    ],
+    "10.6 Write the property test for the metric helpers": [
+      {
+        "executionId": "ecd94474-2b77-4b0c-8873-4058a9652ff3",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795153599949
+      },
+      {
+        "executionId": "ecd94474-2b77-4b0c-8873-4058a9652ff3",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795153687560
+      }
+    ],
+    "10.8 Run the group verification (group 10)": [
+      {
+        "executionId": "ecd94474-2b77-4b0c-8873-4058a9652ff3",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795153693391
+      },
+      {
+        "executionId": "ecd94474-2b77-4b0c-8873-4058a9652ff3",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795153788055
+      }
+    ],
+    "10. Group A spike scripts: Q2, Q13, Q12, Q1, Q6, Q14 (P0, authoring only)": [
+      {
+        "executionId": "ecd94474-2b77-4b0c-8873-4058a9652ff3",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795153788147
+      }
     ]
   }
 }

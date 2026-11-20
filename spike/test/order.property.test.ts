@@ -1,6 +1,8 @@
 import * as fc from "fast-check";
 import { describe, it } from "vitest";
 import type { SpikeMeta } from "../../tools/lib/spike-meta.ts";
+import { cpuSeconds, increasePoints } from "../hc/q1/metrics.ts";
+import { CORE_STOP_REASONS, respawnDecision } from "../hc/q6/respawn.ts";
 import { OWNER_LIST, type SpikeId } from "../lib/ids.ts";
 import { orderBatch, runByGate } from "../lib/order.ts";
 import { pbt } from "./config.ts";
@@ -95,6 +97,66 @@ describe("Feature: s-spikes, Property 19: Run order respects dependencies and Ru
         if (ids.includes("q43") && ids.includes("q3") && pos("q43") > pos("q3")) return false;
         if (ids.includes("q3") && ids.includes("q23") && pos("q3") > pos("q23")) return false;
         return true;
+      }),
+    );
+  });
+});
+
+const cs = (n: number): string => {
+  const m = Math.floor(n / 6000);
+  const s = Math.floor((n % 6000) / 100);
+  const c = n % 100;
+  return `${m}:${String(s).padStart(2, "0")}.${String(c).padStart(2, "0")}`;
+};
+
+const samples = fc
+  .array(fc.integer({ min: 0, max: 600_000 }), { minLength: 4, maxLength: 4 })
+  .map((a) => a.sort((x, y) => x - y));
+const wall = fc.integer({ min: 1, max: 3600 });
+
+describe("Feature: s-spikes, Property 21: Metrics helpers", () => {
+  it("parses M:SS.cc cputime samples to seconds", () => {
+    pbt(
+      fc.property(fc.integer({ min: 0, max: 600_000 }), (n) => {
+        return Math.abs(cpuSeconds(cs(n)) - n / 100) < 1e-6;
+      }),
+    );
+  });
+
+  it("computes increasePoints as during minus baseline points, never negative", () => {
+    pbt(
+      fc.property(samples, wall, wall, (s, w1, w2) => {
+        const base = {
+          cpuStart: cpuSeconds(cs(s[0] ?? 0)),
+          cpuEnd: cpuSeconds(cs(s[1] ?? 0)),
+          wallSeconds: w1,
+        };
+        const during = {
+          cpuStart: cpuSeconds(cs(s[2] ?? 0)),
+          cpuEnd: cpuSeconds(cs(s[3] ?? 0)),
+          wallSeconds: w2,
+        };
+        const want =
+          ((during.cpuEnd - during.cpuStart) / w2) * 100 -
+          ((base.cpuEnd - base.cpuStart) / w1) * 100;
+        const got = increasePoints(base, during);
+        return got >= 0 && Math.abs(got - Math.max(0, want)) < 1e-6;
+      }),
+    );
+  });
+
+  it("respawns exactly for holder_lost and core stop, never for code 0 or killed", () => {
+    const reasons = fc.oneof(
+      fc.constantFrom("holder_lost", "killed", "exited", ...CORE_STOP_REASONS),
+      fc.string({ maxLength: 12 }),
+    );
+    const codes = fc.oneof(fc.constant(null), fc.integer({ min: 0, max: 255 }));
+    pbt(
+      fc.property(reasons, codes, (reason, code) => {
+        const d = respawnDecision(reason, code);
+        if (code === 0 || reason === "killed") return d === "none";
+        const should = reason === "holder_lost" || CORE_STOP_REASONS.includes(reason);
+        return d === (should ? "respawn" : "none");
       }),
     );
   });

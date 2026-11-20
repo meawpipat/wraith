@@ -474,59 +474,59 @@ Conventions:
 - [x] 9. Checkpoint - Libraries and runner
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 10. Group A spike scripts: Q2, Q13, Q12, Q1, Q6, Q14 (P0, authoring only)
+- [x] 10. Group A spike scripts: Q2, Q13, Q12, Q1, Q6, Q14 (P0, authoring only)
   - DoD: P0-D4 (supports: the scripts that stage 1 and Q14 run). Requirements: R13.1 to R13.12, R4.2, R5.1, R5.2, R10.1. Design: "Group A", Properties 21. The tasks WRITE the scripts, READMEs, metadata blocks and unit tests with fakes; RUNNING them is group 16 (Q2, Q13, Q12, Q1, Q6, loop) or an owner step (Q14, HS-S4).
   - Files owned: `spike/hc/<q>/{<q>.ts,README.md,evidence/.gitkeep}` for each of `q2 q13 q12 q1 q6 q14`, `spike/hc/q6/{stub-sprite,node-stub,respawn}.ts`, `spike/hc/q1/metrics.ts`, `spike/hc/q12/sender.ts`, `spike/hc/q14/path-check.sh`, `spike/test/spikes/{q2,q13,q12,q1,q6,q14}.test.ts`, `spike/test/order.property.test.ts` (task 10.6).
   - Common to every task of this group: the script starts with a metadata block (`// spike-meta` ... `// end-spike-meta`, keys of "Metadata block", values from the Register, labelled as Estimates with assumption A1 where cost is not none), exports `run(ctx)` returning a `SpikeOutcome`, talks to `hc` only through `ctx.hc`, writes evidence only through `ctx.evidence`, calls `ctx.humanStep` for owner actions, and records `hc --version`. The README is at most 40 lines (question, how to run, human steps, what to read in the evidence). No SI token is spelled. Results never come from the 2026-11-05 pre-checks (R17.7). Tests use `fake-hc` and never start a real core.
-  - [ ] 10.1 Write the Q2 spike
+  - [x] 10.1 Write the Q2 spike
     - Script: `hc schema` into `schema.json`; `terminal.run` of a stub that prints `$PWD`, `$WRAITH_X` and `$HC_TERMINAL_ID` with cwd, env and labels; `ls` with a labels filter; `get t<N>` with an address next to a terminal labelled with the same name, proving the address wins; `env -0` available on macOS; pane `PATH` and agent variables compared with a login shell's (names only for variables other than PATH); which `HC_*` names a pane really exports (settles the hazard of R1.6); Herdr.app visibility and the Herdr Core app PATH comparison are HS-S5, recorded "unobserved" (R13.1, R13.2); `publishNamedCopy("q2", ...)` on `PASS` or `PARTIAL`
     - Metadata: group A, cost none, run-by loop, agents none, max-prompts 0, max-wall-seconds 1800, estimate-credits none, human HS-S5, depends none, shares none, allow-always never
     - Test with `fake-hc`: the pass rule (cwd, env and labels applied and `HC_TERMINAL_ID` set), the address-versus-label check logic, the "unobserved" wording, the named copy only for `PASS` and `PARTIAL`
     - _Requirements: R13.1, R13.2, R5.6_
     - Design: "Group A" (Q2), D8
     - DoD: P0-D4 (supports)
-  - [ ] 10.2 Write the Q13 spike
+  - [x] 10.2 Write the Q13 spike
     - Script: reads Q2's `schema.json` evidence, runs `templates`, a template run and `wait` against a stub; records the observed behaviour only; `PASS` only if one of template, `first_message`, `terminal.wait` replaces part of the sprite's ACP or queue work, otherwise `FAIL` with the branch "use the sprite as designed" (the expected result; R13.10); the judgement text is written into the entry notes by the loop at `record` time
     - Metadata: group A, cost none, run-by loop, max-prompts 0, max-wall-seconds 900, human none, depends q2
     - Test with `fake-hc`: the verdict function for "replaces nothing" gives `FAIL` and the branch text; a stub where `wait` replaces queue work gives `PASS`
     - _Requirements: R13.10_
     - Design: "Group A" (Q13)
     - DoD: P0-D4 (supports)
-  - [ ] 10.3 Write the Q12 spike and the sender-field finder
+  - [x] 10.3 Write the Q12 spike and the sender-field finder
     - `q12/sender.ts`: pure `findSenderField(events)` (any event key matching `/client|source|sender|origin/i` next to a pane id); script: an `events` follower through `ctx.hc.spawnLong`, `hc send` from a second child, record whether an event names the pane and the sending client; expected `FAIL`, branch "drop `herdr-guard`, keep the limitation in §12" (R13.9)
     - Metadata: group A, cost none, run-by loop, max-prompts 0, max-wall-seconds 600, depends q2
     - Test: `findSenderField` on events with and without a sender-like key (generated examples); the verdict mapping
     - _Requirements: R13.9_
     - Design: "Group A" (Q12)
     - DoD: P0-D4 (supports)
-  - [ ] 10.4 Write the Q1 spike and its metric helpers
+  - [x] 10.4 Write the Q1 spike and its metric helpers
     - `q1/metrics.ts`: pure `cpuSeconds("M:SS.cc")` and `increasePoints(base, during)` (percentage points of one core from `ps -o cputime=` deltas over wall time); script: a full-screen program in a pane (`htop` when on PATH, else `top -s 1`, the substitute recorded, OQ-7, D17), 60 s baseline of Test_Core CPU (own pids from `server.status` that pass `pidIsOwn`), then `terminal.read` every 250 ms for 5 minutes, per-read payload bytes; `PASS` when the increase is below 5 points and the largest payload below 64 KB; branches "poll 1 s" and "send only line diffs (Q20)" (R13.3, R13.4); evidence `samples.csv` and `summary.json`; the caveat that the CLI `read` spawns a process per read is recorded
     - Metadata: group A, cost none, run-by loop, max-prompts 0, max-wall-seconds 2400, human HS-S1 (optional htop) and HS-S5, depends q2
     - Test with `fake-hc` and a shortened schedule injected by the test: thresholds at 5 points and 64 KB, the substitute is recorded when `htop` is absent
     - _Requirements: R13.3, R13.4, R13.5_
     - Design: "Group A" (Q1), D17
     - DoD: P0-D4 (supports)
-  - [ ] 10.5 Write the Q6 spike, stub sprite, node stub and respawn rule
+  - [x] 10.5 Write the Q6 spike, stub sprite, node stub and respawn rule
     - `q6/respawn.ts`: pure `respawnDecision(reason, code)` (respawn only for `holder_lost` or a core stop; never for `exited 0` or `killed`); `q6/stub-sprite.ts` (Wraith labels, exits 75 on SIGHUP); `q6/node-stub.ts` (follows `events`, polls `ls` by labels every 5 s, respawns with the same ids); script steps (a) `server restart` (same pid keeps running), (b) kill the holder pid from `server.status` after the own-pid check (`holder_lost`, respawn within 10 s), (c) `server stop` then `server start` (respawn within 10 s), (d) `hc kill` of the stub records `killed` and `kill -TERM` records `exited` 75 with no respawn on `killed`; monotonic clock; Herdr.app close-button reason is HS-S5, "unobserved" (R13.6 to R13.8); all under the Test_Session only; runs last of stage 1 because it restarts the Test_Core
     - Metadata: group A, cost none, run-by loop, max-prompts 0, max-wall-seconds 2700, human HS-S5, depends q2
     - Test with `fake-hc` scripted to return pids and reasons: each of a to d, the 10 s limit with an injected clock, no respawn for `killed`
     - _Requirements: R13.6, R13.7, R13.8, R3.3_
     - Design: "Group A" (Q6)
     - DoD: P0-D4 (supports)
-  - [ ] 10.6 Write the property test for the metric helpers
+  - [x] 10.6 Write the property test for the metric helpers
     - **Property 21: Metrics helpers**
     - Append to `test/order.property.test.ts`, tag `Feature: s-spikes, Property 21: Metrics helpers`; generators: nondecreasing lists of `M:SS.cc` cputime samples, wall windows, and (reason, code) pairs; assert `cpuSeconds` parses, `increasePoints` equals `(Δcpu / Δwall × 100)` of the during window minus the baseline window and is never negative for nondecreasing input, and `respawnDecision` returns respawn exactly for `holder_lost` and core stop, never for exit code 0 or `killed`
     - **Validates: Requirements 13.3, 13.4, 13.7**
     - Design: Property 21
     - DoD: P0-D4
-  - [ ] 10.7 Write the Q14 observer and the PATH check script
+  - [x] 10.7 Write the Q14 observer and the PATH check script
     - Script `q14.ts` (Observe_Mode only, run through `lib/observe.ts`): before the owner logs out it prints the instructions and a timestamped start line; after login it polls `["server","status"]` once per second for up to 60 s and records the time to the first success (pass line: 10 s or less); it starts nothing, creates no pane and never lists terminals; evidence `observe.txt` holds only `t+<seconds> ok|fail` lines, the measured time and the home-masked state directory, reduced before `ctx.evidence.addText` (R13.11, R13.12); the result is `PARTIAL` by construction with open HS-S4 items (Linux unit, reboot, reboot with nobody logged in, recorded pane reason not `killed`); `path-check.sh` is a short script the owner runs in a pane the owner creates, printing whether `kiro-cli` resolves
     - Metadata: group A, cost none, run-by owner, max-prompts 0, max-wall-seconds 1800, human HS-S4, depends none
     - Test with `fake-hc`: only `server status` reaches the fake, the evidence text holds no terminal list, label, cwd or project path, the outcome is `PARTIAL` with the open steps, a non-TTY run is refused
     - _Requirements: R13.11, R13.12, R10.5, R1.8, R1.9_
     - Design: "Group A" (Q14), D4
     - DoD: P0-D4 (supports)
-  - [ ] 10.8 Run the group verification (group 10)
+  - [x] 10.8 Run the group verification (group 10)
     - Run `pnpm -r test`, `pnpm -r build`, `pnpm typecheck`, `pnpm -r --if-present check`, `pnpm lint`, `pnpm check:secrets`, `pnpm check:platform`, `pnpm check:si` and `pnpm check:spikes` (it now validates six metadata blocks and scans the new files for SI tokens); all clean
     - List the files this group changed for the commit
     - _Requirements: R4.2, R7.9_
