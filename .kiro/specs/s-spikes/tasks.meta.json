@@ -7,6 +7,14 @@
     "3.3 Write the property test for idempotence and masking": {
       "status": "passed",
       "lastRunTimestamp": 1795005958695
+    },
+    "6.5 Write the property test for the approval picker": {
+      "status": "passed",
+      "lastRunTimestamp": 1795150284708
+    },
+    "6.9 Write the property test for Claude launch options": {
+      "status": "passed",
+      "lastRunTimestamp": 1795150304616
     }
   },
   "executionHistory": {
@@ -423,6 +431,133 @@
         "executionId": "75173174-65da-43ad-9c6c-f3af60b3cdea",
         "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
         "timestamp": 1795050201384
+      }
+    ],
+    "6.1 Implement `lib/budget.ts`, the ledger file and example tests": [
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795150091639
+      },
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795150205408
+      }
+    ],
+    "6.4 Implement `lib/approval.ts` and example tests": [
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795150091847
+      },
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795150205528
+      }
+    ],
+    "6.6 Implement `lib/agent-profile.ts` and example tests": [
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795150091992
+      },
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795150205691
+      }
+    ],
+    "6.8 Implement `lib/claude-launch.ts`, the fake SDK and example tests": [
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795150092162
+      },
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795150206194
+      }
+    ],
+    "6.2 Write the property test for the budget gates": [
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795150212305
+      },
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795150339325
+      }
+    ],
+    "6.3 Implement the budget CLI functions and tests": [
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795150212460
+      },
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795150340377
+      }
+    ],
+    "6.5 Write the property test for the approval picker": [
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795150212609
+      },
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795150341099
+      }
+    ],
+    "6.7 Write the property test for agent profiles": [
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795150213175
+      },
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795150341908
+      }
+    ],
+    "6.9 Write the property test for Claude launch options": [
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795150213691
+      },
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795150342517
+      }
+    ],
+    "6.10 Run the group verification (group 6)": [
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795150347417
+      },
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795150431642
+      }
+    ],
+    "6. Budget guard, approval client, agent profile and Claude launch assertion (P0)": [
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795150431677
       }
     ]
   }

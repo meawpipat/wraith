@@ -294,67 +294,67 @@ Conventions:
 - [x] 5. Checkpoint - Scaffold, safety core, redactor and tools side
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 6. Budget guard, approval client, agent profile and Claude launch assertion (P0)
+- [x] 6. Budget guard, approval client, agent profile and Claude launch assertion (P0)
   - DoD: P0-D4 (R8, R9, R7.11 safety contract). Requirements: R8.1 to R8.7, R9.1 to R9.11, R7.9 to R7.11, R15.8, R16.6, R16.9. Design: "Budget guard", "Approval client", "Agent profile generator", "Claude launch options", D10, A3, A5, Properties 15, 16, 18, 22.
   - Files owned: `spike/budget-ledger.json`, `spike/lib/{budget,budget-cli,approval,agent-profile,claude-launch}.ts`, `spike/test/{budget,budget.property,budget-cli,approval,approval.property,agent-profile,agent-profile.property,claude-launch,claude-launch.property}.test.ts`, `spike/test/support/fake-claude-sdk.ts`.
-  - [ ] 6.1 Implement `lib/budget.ts`, the ledger file and example tests
+  - [x] 6.1 Implement `lib/budget.ts`, the ledger file and example tests
     - `BudgetLedger` (v, kiroCeiling, claudePromptCeiling, days with authoring, stopped, claudePrompts, batches), `Ceilings`, `effectiveCeilings` (`kiro = min(kiroCeiling ?? 100, 200)`), `dayUse`, `Gate`, `canStart` with gates A (run credits against the spike ceiling), B (authoring plus runs against 200) and C (Claude prompts against 40), `STOPPED`, `NEEDS-ACTUAL` (non-interactive run with no actual for the previous batch), `NO-AUTHORING` (non-interactive run with no authoring record for the day); `reserve`, `settle`, `enterActual` (an actual above 1.5 times `estimateHi` sets `stopped`; `skip` accepted), `enterAuthoring`, `readLedger`, `writeLedger` (temp file and rename); `runKiro(day) = max(sum estimateHi, sum actualDelta)`; dates are local calendar dates (D10)
     - Create `spike/budget-ledger.json` with `{"v":1,"kiroCeiling":100,"claudePromptCeiling":40,"days":{}}`; it holds no secret and is committed by the loop
     - `test/budget.test.ts`: an owner ceiling of 500 is capped at 200; `skip` clears the actual requirement; a loop run with no authoring record is refused with `NO-AUTHORING`; gate B refuses when authoring plus run exceeds 200 although gate A passes
     - _Requirements: R9.1, R9.2, R9.3, R9.6, R9.8, R9.9, R9.11_
     - Design: "Budget guard", "`spike/budget-ledger.json`", D10, A3
     - DoD: P0-D4
-  - [ ] 6.2 Write the property test for the budget gates
+  - [x] 6.2 Write the property test for the budget gates
     - **Property 15: Budget gates are exact and monotonic**
     - `test/budget.property.test.ts`, tag `Feature: s-spikes, Property 15: Budget gates are exact and monotonic`; generators: ledgers, days, ceilings and estimates; assert `canStart` allows iff gates A, B, C hold, the day is not stopped and no actual is missing for a non-interactive run; `effectiveCeilings` never exceeds 200; added use never turns a refusal into an allow; an actual above 1.5 times the estimate stops the day; the ledger serialises and parses to an equal value
     - **Validates: Requirements 9.1, 9.2, 9.3, 9.6, 9.9, 9.11**
     - Design: Property 15
     - DoD: P0-D4
-  - [ ] 6.3 Implement the budget CLI functions and tests
+  - [x] 6.3 Implement the budget CLI functions and tests
     - `lib/budget-cli.ts`: `budgetCommand(argv, io)` with `show`, `authoring <hi>` (the loop records its own labelled Estimate for the day), `authoring-actual <n>`, `actual <batchId> <n|skip>`, `ceiling <n>` (capped at 200); prints that credits cannot be measured and that the owner must read the dashboard before and after each batch (R9.4, HS-S8); it never runs git and never reads an environment value
     - `test/budget-cli.test.ts` on a temp ledger: each subcommand updates only its field; a ceiling of 300 stores 300 but `effectiveCeilings` returns 200; the message of R9.4 is printed once per `show`
     - _Requirements: R9.2, R9.4, R9.6, R9.11_
     - Design: "Budget guard" (`enterAuthoring`, `enterActual`), "Runner" (`budget` subcommand)
     - DoD: P0-D4
-  - [ ] 6.4 Implement `lib/approval.ts` and example tests
+  - [x] 6.4 Implement `lib/approval.ts` and example tests
     - `PermissionOption`, `PermissionRequest`, `PermissionAnswer`, `ApprovalPolicy` (`ask-owner` or `reject-all`, `allowAlways: never|manual`, `timeoutMs: 120_000`), pure `pickOption(req, key, p, interactive, timedOut)` and `askOwner(req, p, io)` (requires `stdin.isTTY && stdout.isTTY`, prints tool, arguments and options to the terminal only, reads one raw key, 120 s timeout); `allow_always` is listed as "not offered" and its key ignored unless `allowAlways` is `manual` (Q33 only, R8.4); there is no code path that returns an allow kind without `by:"owner"` and a key
     - `test/approval.test.ts` with fake timers and stream stubs: the 120 s timeout answers `reject_once` (or `cancelled` when no reject option exists); a non-interactive stream answers a reject; `reject-all` never reads a key; a key for an `allow_once` option returns it with `by:"owner"`
     - _Requirements: R8.1 to R8.4, R16.9_
     - Design: "Approval client"
     - DoD: P0-D4
-  - [ ] 6.5 Write the property test for the approval picker
+  - [x] 6.5 Write the property test for the approval picker
     - **Property 16: The approval picker never allows without the owner's key and times out to a reject**
     - `test/approval.property.test.ts`, tag `Feature: s-spikes, Property 16: The approval picker never allows without the owner's key and times out to a reject`; generators: option lists, keys, policies, interactivity, timeout flag; assert non-interactive, `reject-all` or timed out gives a `reject_*` option or `cancelled`; an allow kind needs `by:"owner"` and a key mapping to it; `allow_always` only with `allowAlways: manual`; the answer is always an offered option or `cancelled`
     - **Validates: Requirements 8.1, 8.2, 8.3, 8.4, 16.9**
     - Design: Property 16
     - DoD: P0-D4
-  - [ ] 6.6 Implement `lib/agent-profile.ts` and example tests
+  - [x] 6.6 Implement `lib/agent-profile.ts` and example tests
     - `ProfileOptions`, `buildKiroProfile(o)` (name `wraith-spike-<q>`, prompt, pre-approved tools from `READ_ONLY_TOOLS` only, optional hook only for `q3b`, optional write allowlist for Q31 with the write tool never pre-approved, A5), `assertSafeProfile(p)` (name pattern, subset of `READ_ONLY_TOOLS`, no wildcard, no write or execute tool pre-approved, `findUnsafeToken(JSON.stringify(p)) === null`, hook only for `q3b`), `profilePlacement(q, scratch, qs43)` (scratch `.kiro/agents/` first, home as the fallback; Q32 always home), a writer that opens with flag `wx` (a file that already exists is never overwritten), records the path in the Own_Marker `agentFiles` and refuses any other file in `~/.kiro/agents/` (R15.8, R3.7)
     - `READ_ONLY_TOOLS` and the profile field names are working names marked unverified (🧪); Q43, Q32 and Q31 evidence confirm them before other spikes rely on them (design Risks)
     - `test/agent-profile.test.ts` (temp folders only, never the real `~/.kiro`): placement order, `wx` refusal of an existing file, a second file name is refused
     - _Requirements: R8.5, R15.8, R16.6, R7.9, R7.10_
     - Design: "Agent profile generator", Risks (Kiro profile field names), A5
     - DoD: P0-D4
-  - [ ] 6.7 Write the property test for agent profiles
+  - [x] 6.7 Write the property test for agent profiles
     - **Property 18: Agent profiles contain only read-only pre-approved tools and no SI tokens**
     - `test/agent-profile.property.test.ts`, tag `Feature: s-spikes, Property 18: Agent profiles contain only read-only pre-approved tools and no SI tokens`; generators: any `ProfileOptions`; assert `buildKiroProfile` output passes `assertSafeProfile`, and `assertSafeProfile` throws for each single mutation that adds a write tool, a wildcard or an SI literal (taken from `tools/lib/unsafe-tokens.ts` at test time, never spelled)
     - **Validates: Requirements 7.9, 7.10, 7.11, 8.5**
     - Design: Property 18
     - DoD: P0-D4
-  - [ ] 6.8 Implement `lib/claude-launch.ts`, the fake SDK and example tests
+  - [x] 6.8 Implement `lib/claude-launch.ts`, the fake SDK and example tests
     - `ClaudeLaunchView` (setting sources, permission mode, allowed tools, allow rules, settings file or object), `READ_ONLY_CLAUDE_TOOLS`, `buildClaudeLaunch({cwd, askOwner})` and pure `assertSafeClaudeLaunch(opts)` that throws on non-empty setting sources, a permission mode other than `default`, a non-empty allow-rule list, an allowed-tools list with a tool outside `READ_ONLY_CLAUDE_TOOLS` or a wildcard, a settings file or object, or an SI token in the serialised options (R7.11)
     - The field names are WORKING NAMES. The Claude Agent SDK is not installed when this task runs. Do not guess: task 13.8 installs the SDK, reads the names from its installed type definitions and renames `ClaudeLaunchView` and the fields of `assertSafeClaudeLaunch` (and the fake) to the real names
     - `test/support/fake-claude-sdk.ts` records the options it receives; `test/claude-launch.test.ts`: the object `buildClaudeLaunch` produced is the one the fake saw and passes `assertSafeClaudeLaunch`; each unsafe field is refused
     - _Requirements: R7.11, R15.6, R16.3_
     - Design: "Claude launch options", Risks (Claude SDK loading the owner's settings)
     - DoD: P0-D4
-  - [ ] 6.9 Write the property test for Claude launch options
+  - [x] 6.9 Write the property test for Claude launch options
     - **Property 22: Unsafe Claude launch options are refused**
     - `test/claude-launch.property.test.ts`, tag `Feature: s-spikes, Property 22: Unsafe Claude launch options are refused`; generators: option objects over all fields, SI tokens imported from `tools/lib/unsafe-tokens.ts`; assert `assertSafeClaudeLaunch` throws iff one of the listed conditions holds, never throws for empty setting sources, default mode, no allow rules and a read-only or absent tools list, and the options recorded by the fake SDK from `buildClaudeLaunch` always satisfy it
     - **Validates: Requirements 7.11, 15.6, 16.3**
     - Design: Property 22
     - DoD: P0-D4
-  - [ ] 6.10 Run the group verification (group 6)
+  - [x] 6.10 Run the group verification (group 6)
     - Run `pnpm -r test`, `pnpm -r build`, `pnpm typecheck`, `pnpm -r --if-present check`, `pnpm lint`, `pnpm check:secrets`, `pnpm check:platform`, `pnpm check:si` and `pnpm check:spikes`; all clean
     - List the files this group changed for the commit
     - _Requirements: R8.1, R9.1_
