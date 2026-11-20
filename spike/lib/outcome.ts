@@ -1,3 +1,10 @@
+import type { SpikeMeta } from "../../tools/lib/spike-meta.ts";
+import type { PermissionAnswer, PermissionRequest } from "./approval.ts";
+import type { EnvProfile } from "./env.ts";
+import type { EvidenceWriter } from "./evidence.ts";
+import type { Hc } from "./hc.ts";
+import type { SpikeId } from "./ids.ts";
+
 export type ResultValue = "PASS" | "FAIL" | "PARTIAL" | "pending";
 
 /** The observed text is redacted later, by the evidence writer. */
@@ -7,12 +14,29 @@ export interface CriterionRecord {
   observed: string;
 }
 
-/**
- * Handed to every spike's `run`. Later tasks add the evidence writer, the hc wrapper,
- * the approval client and `humanStep`; the shape is open until then.
- */
+/** A Kiro session reused inside one batch (q3 then q23). The owner spike fills `data`. */
+export interface SharedSession {
+  readonly owner: SpikeId;
+  readonly data: Record<string, unknown>;
+}
+
+/** Handed to every spike's `run` (design: "Runner"). */
 export interface SpikeContext {
-  readonly [key: string]: unknown;
+  q: SpikeId;
+  meta: SpikeMeta;
+  root: string;
+  session: string;
+  scratch: string;
+  /** Null for spikes that do not use hc. */
+  hc: Hc | null;
+  env: (profile: EnvProfile) => Record<string, string>;
+  evidence: EvidenceWriter;
+  approval: (req: PermissionRequest) => Promise<PermissionAnswer>;
+  shared: SharedSession | null;
+  /** Prints and records the step; never performs it (R10.2). */
+  humanStep(id: string, text: string): void;
+  now(): Date;
+  interactive: boolean;
 }
 
 export interface SpikeOutcome {

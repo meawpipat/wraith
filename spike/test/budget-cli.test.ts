@@ -2,9 +2,9 @@ import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import type { BudgetLedger } from "../lib/budget.js";
-import { effectiveCeilings, readLedger, reserve, writeLedger } from "../lib/budget.js";
-import { budgetCommand, CREDIT_NOTICE } from "../lib/budget-cli.js";
+import type { BudgetLedger } from "../lib/budget.ts";
+import { effectiveCeilings, readLedger, reserve, writeLedger } from "../lib/budget.ts";
+import { budgetCommand, CREDIT_NOTICE } from "../lib/budget-cli.ts";
 
 const DAY = "2026-11-20";
 let dir = "";

@@ -361,52 +361,52 @@ Conventions:
     - Design: Testing Strategy
     - DoD: P0-D4 (supports)
 
-- [ ] 7. Runner: order, metadata reader, pipeline, Observe_Mode entry (P0)
+- [x] 7. Runner: order, metadata reader, pipeline, Observe_Mode entry (P0)
   - DoD: P0-D4 (R4, R5.4, R6.10, R10, R12). Requirements: R1.3, R1.8, R1.9, R2.1, R2.9, R3.1, R4.2, R4.3, R5.4, R6.6, R6.10, R10.2, R10.4, R12.1 to R12.8. Design: "The run pipeline", "Order and Run_By gate", "Runner", D6, D16, A6, Properties 19.
   - Files owned: `spike/lib/{order,meta,observe}.ts`, `spike/run.ts`, `spike/test/{order,order.property,meta,observe,runner.integration}.test.ts`, root `package.json` (the `spike` script, task 7.7).
-  - [ ] 7.1 Implement `lib/order.ts` and example tests
+  - [x] 7.1 Implement `lib/order.ts` and example tests
     - `STAGES` (stage 1 order Q2, Q13, Q12, Q1, Q6; stage 2 Q7, Q43; stage 3 Q3, Q3b, Q10, Q4, Q11, Q23; stage 4 Q30, Q32, Q31, Q35 Kiro part; stage 5 Q33 and Q35 Claude part; any time Q14), `orderBatch(ids, metas)` (topological over `depends` and `shares`, stage order as the tie-break, a warning when a dependency is missing from the batch, Q33 rejected from a batch with other Agent_Spikes), `runByGate(m, io)` (`pending` with reason "needs interactive terminal" iff Run_By is `owner` and stdin or stdout is not a TTY), `dependencyNote(dep, depResult)` (for example Q43 `FAIL`: launch without the agent argument and select it after `initialize`, R12.8)
     - `test/order.test.ts`: the stage order of the Requirements, Q23 after Q3, Q6 last of Group A, Q14 first-class "any time"
     - _Requirements: R6.10, R12.1 to R12.8_
     - Design: "Order and Run_By gate"
     - DoD: P0-D4
-  - [ ] 7.2 Write the property test for ordering and the Run_By gate
+  - [x] 7.2 Write the property test for ordering and the Run_By gate
     - **Property 19: Run order respects dependencies and Run_By**
     - `test/order.property.test.ts`, tag `Feature: s-spikes, Property 19: Run order respects dependencies and Run_By`; generators: subsets of the 19 ids with the real metadata shapes and TTY flags; assert dependencies (and `shares`) come first when in the set, Q43 before every Kiro spike that depends on it, Q2 first and Q6 last among Group A, Q33 rejected from a mixed batch, and `runByGate` returns `pending` iff Run_By is `owner` and a stream is not a TTY
     - **Validates: Requirements 6.10, 12.1, 12.3, 12.4, 12.5, 12.6, 12.8**
     - Design: Property 19
     - DoD: P0-D4
-  - [ ] 7.3 Implement `lib/meta.ts` and its test
+  - [x] 7.3 Implement `lib/meta.ts` and its test
     - `readSpikeMeta(q)` reads the first 40 lines of `locate(q).script` and calls `parseMetaBlock` from `tools/lib/spike-meta.ts` (relative import, D2); a missing file or block refuses the run (R4.2)
     - `test/meta.test.ts` with temp scripts: a valid block returns the meta; a missing block and a missing file refuse with the reason; the block is found only in the first 40 lines
     - _Requirements: R4.2, R4.3_
     - Design: "Module layout" (`lib/meta.ts`), D2
     - DoD: P0-D4
-  - [ ] 7.4 Implement `spike/run.ts` (pipeline, signals, subcommand hooks)
+  - [x] 7.4 Implement `spike/run.ts` (pipeline, signals, subcommand hooks)
     - `parseArgs(argv)` (ids, `--observe-default`, subcommands `list`, `record`, `budget`), `main(argv, io)`, `RunIo` (stdin and stdout TTY flags, clock, a script loader `load(q)` so tests can inject spike modules, handlers for the `record` and `budget` subcommands), `SpikeContext` as in the design; the pipeline is: parse ids (unknown id lists the known ids and exits 1, R5.4), read metadata blocks, `orderBatch`, `runByGate`, budget gate for the batch (reserve before the first prompt), `gatherPreflightInput` and `runPreflight` (failure prints ids only, exit 20), write the Own_Marker, run each spike with its `SpikeContext`, redact and write evidence and `finish`, settle the budget, cleanup in `finally` (also stale roots from earlier runs, R3.6), print open human steps (`ctx.humanStep` prints, records and never performs, R10.2)
     - A batch shares one Spike_Root named after the first id and one Own_Marker (D6, A6); SIGINT and SIGTERM run `cleanupRun` once and exit 130 or 143, a second signal exits at once; exit codes from `EXIT`; a recorded `PASS`, `FAIL` or `PARTIAL` exits 0, pending exits 10; the runner never runs git and never edits `RESULTS.md` or `PHASE-STATUS.md` (D7); no `E_*` code (D16)
     - Messages are fixed strings plus ids and paths; no environment value, request body or file content is ever printed
     - _Requirements: R1.3, R2.1, R2.9, R3.1, R4.2, R4.3, R5.4, R6.6, R6.10, R10.2, R10.4, R12.4_
     - Design: "The run pipeline", "Runner", D6, D7, D16, A6, "Error Handling"
     - DoD: P0-D4
-  - [ ] 7.5 Implement the Observe_Mode entry and its tests
+  - [x] 7.5 Implement the Observe_Mode entry and its tests
     - `lib/observe.ts`: `runObserve(io)` for `pnpm spike q14 --observe-default`: refuses when stdin or stdout is not a TTY; refuses when any live Own_Marker exists under `/tmp/hcw/` (R1.9); creates `/tmp/hcw/.observe-lock` with flag `wx` and removes it in `finally`; the runner refuses to start any other spike while the lock exists; builds its hc wrapper with `createObserveHc` only (allow-list exactly `["server","status"]`, child env from the `tool` profile, no `HC_SESSION`); it does not use the normal preflight, which keeps refusing `default` (R2.16)
     - `test/observe.test.ts` with `fake-hc` and a temp lock path: a non-TTY run is refused; a live marker refuses; a held lock refuses another spike; only `server status` reaches the fake; the fake's recorded env names hold no `HC_*` or `HERDR_*`
     - _Requirements: R1.8, R1.9, R1.10, R2.16, R13.12_
     - Design: "hc wrapper" (observe), "The run pipeline" (Observe_Mode), Group A Q14, D4
     - DoD: P0-D4
-  - [ ] 7.6 Write the runner integration tests (part 1, with fakes)
+  - [x] 7.6 Write the runner integration tests (part 1, with fakes)
     - `test/runner.integration.test.ts` using injected spike modules, `fake-hc` and temp roots (the `/tmp/hcw` prefix is a parameter so tests stay in `os.tmpdir()`): a non-TTY run of an owner spike ends `pending` ("needs interactive terminal"), exit 10, and starts no fake process; unknown id lists the ids and exits 1; a batch cleans its root and deletes its agent files; a stale root with a dead pid is cleaned before a new run; a preflight failure (pane env names present with a leaking builder variant) exits 20 and starts nothing; a budget refusal exits 21; a planted secret (from fragments) in a spike's output fails the spike, deletes the evidence file and exits 1 with the class only; SIGINT leads to one cleanup pass
     - _Requirements: R2.1, R3.1, R3.6, R5.4, R6.10, R7.1, R7.5, R9.1_
     - Design: Testing Strategy (`runner.integration.test.ts` row)
     - DoD: P0-D4
-  - [ ] 7.7 Wire the root script `spike`
+  - [x] 7.7 Wire the root script `spike`
     - Root `package.json`: add `"spike": "node --experimental-strip-types spike/run.ts"` (pnpm appends the ids); do not change any other script
     - Run `pnpm spike nope` and confirm it lists the known ids and exits 1 (a local check that starts no spike, no core and no agent); run `pnpm spike list` and confirm it lists all 19 ids with their Run_By and group
     - _Requirements: R5.4_
     - Design: "Runner" (`pnpm spike`)
     - DoD: P0-D4 (supports)
-  - [ ] 7.8 Run the group verification (group 7)
+  - [x] 7.8 Run the group verification (group 7)
     - Run `pnpm -r test`, `pnpm -r build`, `pnpm typecheck`, `pnpm -r --if-present check`, `pnpm lint`, `pnpm check:secrets`, `pnpm check:platform`, `pnpm check:si` and `pnpm check:spikes`; all clean
     - List the files this group changed for the commit
     - _Requirements: R5.4_

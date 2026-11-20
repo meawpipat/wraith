@@ -559,6 +559,109 @@
         "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
         "timestamp": 1795150431677
       }
+    ],
+    "7.1 Implement `lib/order.ts` and example tests": [
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795150446385
+      },
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795150587167
+      }
+    ],
+    "7.3 Implement `lib/meta.ts` and its test": [
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795150446574
+      },
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795150587279
+      }
+    ],
+    "7.5 Implement the Observe_Mode entry and its tests": [
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795150447229
+      },
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795150587689
+      }
+    ],
+    "7.2 Write the property test for ordering and the Run_By gate": [
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795150593271
+      },
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795150883621
+      }
+    ],
+    "7.4 Implement `spike/run.ts` (pipeline, signals, subcommand hooks)": [
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795150593922
+      },
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795150883732
+      }
+    ],
+    "7.6 Write the runner integration tests (part 1, with fakes)": [
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795150889580
+      },
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795151093106
+      }
+    ],
+    "7.7 Wire the root script `spike`": [
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795150889708
+      },
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795151093204
+      }
+    ],
+    "7.8 Run the group verification (group 7)": [
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795151098933
+      },
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795151222999
+      }
+    ],
+    "7. Runner: order, metadata reader, pipeline, Observe_Mode entry (P0)": [
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795151223047
+      }
     ]
   }
 }

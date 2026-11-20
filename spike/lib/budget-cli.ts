@@ -1,4 +1,4 @@
-import type { BudgetLedger } from "./budget.js";
+import type { BudgetLedger } from "./budget.ts";
 import {
   dayUse,
   effectiveCeilings,
@@ -6,7 +6,7 @@ import {
   enterAuthoring,
   readLedger,
   writeLedger,
-} from "./budget.js";
+} from "./budget.ts";
 
 export interface BudgetIo {
   ledgerPath: string;
