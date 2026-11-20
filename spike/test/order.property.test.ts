@@ -2,7 +2,7 @@ import * as fc from "fast-check";
 import { describe, it } from "vitest";
 import type { SpikeMeta } from "../../tools/lib/spike-meta.ts";
 import { cpuSeconds, increasePoints } from "../hc/q1/metrics.ts";
-import { CORE_STOP_REASONS, respawnDecision } from "../hc/q6/respawn.ts";
+import { LOST_REASONS, respawnDecision } from "../hc/q6/respawn.ts";
 import { OWNER_LIST, type SpikeId } from "../lib/ids.ts";
 import { orderBatch, runByGate } from "../lib/order.ts";
 import { pbt } from "./config.ts";
@@ -145,21 +145,18 @@ describe("Feature: s-spikes, Property 21: Metrics helpers", () => {
     );
   });
 
-  it("respawns exactly for holder_lost, a core stop and exited 75, never for code 0 or killed", () => {
+  it("respawns unless killed, exited 0 or spawn_pending (7.6: anything else is lost)", () => {
     const reasons = fc.oneof(
-      fc.constantFrom("holder_lost", "killed", "exited", ...CORE_STOP_REASONS),
+      fc.constantFrom("killed", "exited", "spawn_pending", ...LOST_REASONS),
       fc.string({ maxLength: 12 }),
     );
     const codes = fc.oneof(fc.constant(null), fc.constant(75), fc.integer({ min: 0, max: 255 }));
     pbt(
       fc.property(reasons, codes, (reason, code) => {
         const d = respawnDecision(reason, code);
-        if (code === 0 || reason === "killed") return d === "none";
-        const should =
-          reason === "holder_lost" ||
-          CORE_STOP_REASONS.includes(reason) ||
-          (reason === "exited" && code === 75);
-        return d === (should ? "respawn" : "none");
+        if (reason === "killed" || (reason === "exited" && code === 0)) return d === "none";
+        if (reason === "spawn_pending") return d === "wait";
+        return d === "respawn";
       }),
     );
   });

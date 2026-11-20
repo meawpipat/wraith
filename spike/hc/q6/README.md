@@ -30,4 +30,4 @@ reason. Until then it is recorded as "unobserved". An `exited` 75 from the close
 
 `summary.json` (core pids, finish reason and decision for each pane) and `timeline.txt`
 (monotonic times). Raw `ls` and `status` output stays in `q6-raw.log` under the Spike_Root.
-`respawnDecision` respawns for `holder_lost`, a core stop, and `exited` 75 (no node intent); never for `exited 0` or `killed`.
+`respawnDecision` follows §7.6: with no node intent every finished pane is lost and respawned (`holder_lost`, a core stop, `signaled`, `exited` with any non-zero code, unknown reasons). Not respawned: `killed` and `exited 0`; `spawn_pending` is waited on (3 re-checks), then treated as lost.

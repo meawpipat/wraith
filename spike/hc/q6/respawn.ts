@@ -1,27 +1,39 @@
 /**
- * Q6 respawn rule (pure), after architecture §7.6: respawn when the holder was lost, the core
- * stopped, or the sprite exited 75 (a signal) with no node close intent; never after exited 0 or killed.
- * The Q6 node stub never closes a pane itself, so every exited 75 it sees has no node intent.
+ * Q6 respawn rule (pure), architecture §7.6: with no node close intent, a finished pane is LOST and
+ * respawned, whatever the reason. Only three cases are not respawned:
+ * - `killed`: a person closed it;
+ * - `exited` with code 0: the sprite exits 0 only with an intent (R13.7);
+ * - `spawn_pending`: wait and re-check, then treat as lost.
+ * The Q6 node stub never closes a pane itself, so it never has an intent.
  */
 
-/** The sprite exits 75 on signals or a refused duplicate (§7.6). */
-export const EXIT_LOST_CODE = 75;
+export type RespawnDecision = "respawn" | "none" | "wait";
 
-export type RespawnDecision = "respawn" | "none";
+/** Reasons §7.6 names as lost. Documentation and test data; the rule itself does not depend on this list. */
+export const LOST_REASONS: readonly string[] = [
+  "holder_lost",
+  "host_shutdown",
+  "signaled",
+  "stopped_by_restart",
+  "server_stop",
+  "exited",
+];
 
-/** Finish reasons that mean "the core stopped or restarted under the pane" (assumption: names from §7.6). */
+/** Finish reasons that mean "the core stopped or restarted under the pane". */
 export const CORE_STOP_REASONS: readonly string[] = [
   "server_stop",
   "stopped_by_restart",
   "host_shutdown",
 ];
 
+/** `spawn_pending` is re-checked at most this many times, then treated as lost (§7.6). */
+export const MAX_SPAWN_WAITS = 3;
+
 export function respawnDecision(reason: string, code: number | null): RespawnDecision {
-  if (code === 0) return "none";
   if (reason === "killed") return "none";
-  if (reason === "holder_lost") return "respawn";
-  if (reason === "exited" && code === EXIT_LOST_CODE) return "respawn";
-  return CORE_STOP_REASONS.includes(reason) ? "respawn" : "none";
+  if (reason === "spawn_pending") return "wait";
+  if (reason === "exited" && code === 0) return "none";
+  return "respawn";
 }
 
 /** True when `respawnedMs - triggerMs` is within the limit (both from the same monotonic clock). */

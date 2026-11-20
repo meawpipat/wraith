@@ -1,4 +1,4 @@
-import { respawnDecision } from "./respawn.ts";
+import { MAX_SPAWN_WAITS, respawnDecision } from "./respawn.ts";
 
 /**
  * Q6 node stub: tracks the panes it started, learns about finished ones from `ls` polls (default
@@ -47,6 +47,8 @@ export const POLL_MS = 5000;
 interface Tracked {
   spec: SlotSpec;
   addr: string | null;
+  /** Re-checks spent on a `spawn_pending` slot. */
+  waits: number;
 }
 
 export class NodeStub {
@@ -57,7 +59,7 @@ export class NodeStub {
 
   /** Starts following a pane the script started itself. */
   track(spec: SlotSpec, addr: string): void {
-    this.tracked.set(spec.token, { spec, addr });
+    this.tracked.set(spec.token, { spec, addr, waits: 0 });
   }
 
   addressOf(token: string): string | null {
@@ -76,7 +78,13 @@ export class NodeStub {
       const slot = slots.find((s) => s.addr === t.addr);
       if (slot === undefined || !slot.finished) continue;
       const reason = slot.reason ?? "unknown";
-      const decision = respawnDecision(reason, slot.code);
+      let decision = respawnDecision(reason, slot.code);
+      if (decision === "wait") {
+        // §7.6: wait and re-check, at most MAX_SPAWN_WAITS times, then treat the slot as lost.
+        t.waits++;
+        if (t.waits <= MAX_SPAWN_WAITS) continue;
+        decision = "respawn";
+      }
       const ev: StubEvent = {
         token: t.spec.token,
         addr: t.addr,

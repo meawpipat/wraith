@@ -3,9 +3,15 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import * as fc from "fast-check";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { parseSlots, parseStatusPids } from "../../hc/q6/node-stub.ts";
+import { NodeStub, parseSlots, parseStatusPids } from "../../hc/q6/node-stub.ts";
 import { run } from "../../hc/q6/q6.ts";
-import { CORE_STOP_REASONS, respawnDecision, withinLimit } from "../../hc/q6/respawn.ts";
+import {
+  CORE_STOP_REASONS,
+  LOST_REASONS,
+  MAX_SPAWN_WAITS,
+  respawnDecision,
+  withinLimit,
+} from "../../hc/q6/respawn.ts";
 import { EXIT_LOST, parseStubArgs, startStub } from "../../hc/q6/stub-sprite.ts";
 import type { Hc, HcResult } from "../../lib/hc.ts";
 import { readSpikeMeta } from "../../lib/meta.ts";
@@ -182,38 +188,60 @@ const depsFor = (core: FakeCore) => ({
 });
 
 describe("respawnDecision", () => {
-  it("respawns for holder_lost and every core stop reason", () => {
-    expect(respawnDecision("holder_lost", null)).toBe("respawn");
+  it("respawns for every lost reason of 7.6", () => {
+    for (const r of LOST_REASONS.filter((x) => x !== "exited")) {
+      expect(respawnDecision(r, null)).toBe("respawn");
+    }
     for (const r of CORE_STOP_REASONS) expect(respawnDecision(r, null)).toBe("respawn");
   });
-
-  it("respawns an external SIGTERM (exited 75, no node intent)", () => {
-    expect(respawnDecision("exited", 75)).toBe("respawn");
+  it("respawns exited with any non-zero code, and an unknown reason", () => {
+    for (const code of [1, 75, 76, 255, null]) {
+      expect(respawnDecision("exited", code)).toBe("respawn");
+    }
+    expect(respawnDecision("something-new", null)).toBe("respawn");
   });
-
-  it("never respawns for killed or exited 0", () => {
+  it("never respawns killed or exited 0, and waits on spawn_pending", () => {
     expect(respawnDecision("killed", 75)).toBe("none");
     expect(respawnDecision("killed", null)).toBe("none");
     expect(respawnDecision("exited", 0)).toBe("none");
-    expect(respawnDecision("exited", 76)).toBe("none");
+    expect(respawnDecision("spawn_pending", null)).toBe("wait");
   });
-
-  it("property: respawn exactly for holder_lost or a core stop, never for code 0 or killed", () => {
+  it("property: respawn unless killed, exited 0 or spawn_pending", () => {
     const reasons = fc.oneof(
-      fc.constantFrom("holder_lost", "killed", "exited", "signaled", ...CORE_STOP_REASONS),
+      fc.constantFrom("killed", "exited", "spawn_pending", ...LOST_REASONS),
       fc.string(),
     );
     pbt(
       fc.property(reasons, fc.option(fc.integer({ min: 0, max: 255 }), { nil: null }), (r, c) => {
         const want =
-          c !== 0 &&
-          r !== "killed" &&
-          (r === "holder_lost" || CORE_STOP_REASONS.includes(r) || (r === "exited" && c === 75));
-        expect(respawnDecision(r, c)).toBe(want ? "respawn" : "none");
+          r === "killed" || (r === "exited" && c === 0)
+            ? "none"
+            : r === "spawn_pending"
+              ? "wait"
+              : "respawn";
+        expect(respawnDecision(r, c)).toBe(want);
       }),
     );
   });
-
+  it("the node stub waits on spawn_pending, then treats the slot as lost", async () => {
+    const starts: string[] = [];
+    const stub = new NodeStub({
+      list: async () => [{ addr: "t1", finished: true, reason: "spawn_pending", code: null }],
+      start: async (spec) => {
+        starts.push(spec.token);
+        return "t2";
+      },
+      remove: async () => {},
+      now: () => 0,
+    });
+    stub.track({ token: "k", labels: {}, argv: [], cwd: "/" }, "t1");
+    for (let i = 0; i < MAX_SPAWN_WAITS; i++) await stub.pollOnce();
+    expect(stub.events).toEqual([]);
+    expect(starts).toEqual([]);
+    await stub.pollOnce();
+    expect(starts).toEqual(["k"]);
+    expect(stub.events[0]).toMatchObject({ reason: "spawn_pending", decision: "respawn" });
+  });
   it("withinLimit uses the inclusive 10 s default", () => {
     expect(withinLimit(0, 10_000)).toBe(true);
     expect(withinLimit(0, 10_001)).toBe(false);
