@@ -2,7 +2,13 @@ import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { type AcpEcho, PromptCapReached, startRawAcp, startSdkAcp } from "../lib/acp-echo.ts";
+import {
+  type AcpEcho,
+  type AcpStartInput,
+  PromptCapReached,
+  startRawAcp,
+  startSdkAcp,
+} from "../lib/acp-echo.ts";
 import {
   type ApprovalPolicy,
   type PermissionAnswer,
@@ -21,6 +27,7 @@ interface Ctx {
   start(over?: {
     maxPrompts?: number;
     killAfterMs?: number;
+    setTimer?: AcpStartInput["setTimer"];
     env?: Record<string, string>;
     sdk?: boolean;
   }): AcpEcho;
@@ -48,6 +55,7 @@ async function withFake<T>(opts: Partial<FakeKiroOptions>, fn: (c: Ctx) => Promi
               env: { ...env, ...over.env },
               maxPrompts: over.maxPrompts ?? 2,
               killAfterMs: over.killAfterMs ?? 20_000,
+              ...(over.setTimer === undefined ? {} : { setTimer: over.setTimer }),
               root: tmp,
               rawLog,
             });
@@ -72,6 +80,25 @@ async function withFake<T>(opts: Partial<FakeKiroOptions>, fn: (c: Ctx) => Promi
   } finally {
     await rm(tmp, { recursive: true, force: true });
   }
+}
+
+/** A wall timer that fires only when the test says so, so no real time decides the outcome. */
+function manualTimer(): { setTimer: NonNullable<AcpStartInput["setTimer"]>; fire(): void } {
+  const pending: (() => void)[] = [];
+  return {
+    setTimer: (fn) => {
+      pending.push(fn);
+      return {
+        clear: () => {
+          const i = pending.indexOf(fn);
+          if (i >= 0) pending.splice(i, 1);
+        },
+      };
+    },
+    fire: () => {
+      for (const fn of pending.splice(0)) fn();
+    },
+  };
 }
 
 const REJECT_ALL: ApprovalPolicy = { kind: "reject-all", allowAlways: "never", timeoutMs: 120_000 };
@@ -172,8 +199,13 @@ describe("acp-echo raw client with fake-kiro", () => {
 
   it("the wall-time timer closes the agent and reports a partial reason", async () => {
     await withFake({}, async (c) => {
-      const acp = c.start({ killAfterMs: 400 });
-      acp.onPermission(() => new Promise<PermissionAnswer>(() => undefined));
+      const timer = manualTimer();
+      const acp = c.start({ setTimer: timer.setTimer });
+      // The timer fires only once the prompt is pending: the agent asks, the handler never answers.
+      acp.onPermission(() => {
+        timer.fire();
+        return new Promise<PermissionAnswer>(() => undefined);
+      });
       await acp.initialize({});
       const { sessionId } = await acp.newSession(c.cwd);
       await expect(acp.prompt(sessionId, "hello")).rejects.toThrow();
@@ -304,8 +336,13 @@ describe("acp-echo SDK client with fake-kiro", () => {
 
   it("the wall-time timer closes the agent and reports a partial reason", async () => {
     await withFake({}, async (c) => {
-      const acp = c.start({ sdk: true, killAfterMs: 400 });
-      acp.onPermission(() => new Promise<PermissionAnswer>(() => undefined));
+      const timer = manualTimer();
+      const acp = c.start({ sdk: true, setTimer: timer.setTimer });
+      // The timer fires only once the prompt is pending: the agent asks, the handler never answers.
+      acp.onPermission(() => {
+        timer.fire();
+        return new Promise<PermissionAnswer>(() => undefined);
+      });
       await acp.initialize({});
       const { sessionId } = await acp.newSession(c.cwd);
       await expect(acp.prompt(sessionId, "hello")).rejects.toThrow();

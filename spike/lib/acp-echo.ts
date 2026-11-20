@@ -56,6 +56,18 @@ export interface AcpStartInput {
   /** The run's Spike_Root. Raw logs are unredacted, so `rawLog` must be under it (only the root is deleted). */
   root: string;
   rawLog: string;
+  /** Wall-time timer. Default: a real unref'd `setTimeout`. A test injects a manual one. */
+  setTimer?: (fn: () => void, ms: number) => TimerHandle;
+}
+
+export interface TimerHandle {
+  clear(): void;
+}
+
+function realTimer(fn: () => void, ms: number): TimerHandle {
+  const t = setTimeout(fn, ms);
+  t.unref();
+  return { clear: () => clearTimeout(t) };
 }
 
 export class PromptCapReached extends Error {
@@ -143,7 +155,7 @@ class RawAcp implements AcpEcho {
   private partial: string | null = null;
   private permission: ((r: PermissionRequest) => Promise<PermissionAnswer>) | null = null;
   private update: ((u: unknown) => void) | null = null;
-  private readonly timer: NodeJS.Timeout;
+  private readonly timer: TimerHandle;
   private readonly exitPromise: Promise<void>;
 
   constructor(private readonly i: AcpStartInput) {
@@ -174,11 +186,10 @@ class RawAcp implements AcpEcho {
     this.child.stderr.resume();
     this.child.stdout.setEncoding("utf8");
     this.child.stdout.on("data", (chunk: string) => this.onData(chunk));
-    this.timer = setTimeout(() => {
+    this.timer = (i.setTimer ?? realTimer)(() => {
       this.partial = "max-wall-seconds reached";
       void this.close();
     }, i.killAfterMs);
-    this.timer.unref();
   }
 
   private record(dir: AcpFrame["dir"], msg: unknown): AcpFrame {
@@ -328,7 +339,7 @@ class RawAcp implements AcpEcho {
   }
 
   async close(): Promise<void> {
-    clearTimeout(this.timer);
+    this.timer.clear();
     if (!this.exited) {
       this.child.stdin.end();
       const kill = setTimeout(() => this.child.kill("SIGKILL"), 1000);
@@ -359,7 +370,7 @@ class SdkAcp implements AcpEcho {
   private partial: string | null = null;
   private permission: ((r: PermissionRequest) => Promise<PermissionAnswer>) | null = null;
   private update: ((u: unknown) => void) | null = null;
-  private readonly timer: NodeJS.Timeout;
+  private readonly timer: TimerHandle;
   private readonly exitPromise: Promise<void>;
 
   constructor(private readonly i: AcpStartInput) {
@@ -400,11 +411,10 @@ class SdkAcp implements AcpEcho {
         this.update?.((ctx.params as unknown as Json).update);
       })
       .connect(this.makeStream());
-    this.timer = setTimeout(() => {
+    this.timer = (i.setTimer ?? realTimer)(() => {
       this.partial = "max-wall-seconds reached";
       void this.close();
     }, i.killAfterMs);
-    this.timer.unref();
   }
 
   private record(dir: AcpFrame["dir"], msg: unknown): void {
@@ -518,7 +528,7 @@ class SdkAcp implements AcpEcho {
   }
 
   async close(): Promise<void> {
-    clearTimeout(this.timer);
+    this.timer.clear();
     if (!this.exited) {
       this.child.stdin.end();
       const kill = setTimeout(() => this.child.kill("SIGKILL"), 1000);
