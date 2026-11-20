@@ -474,7 +474,7 @@ Conventions:
 - [x] 9. Checkpoint - Libraries and runner
   - Ensure all tests pass, ask the user if questions arise.
 
-- [x] 10. Group A spike scripts: Q2, Q13, Q12, Q1, Q6, Q14 (P0, authoring only)
+- [ ] 10. Group A spike scripts: Q2, Q13, Q12, Q1, Q6, Q14 (P0, authoring only)
   - DoD: P0-D4 (supports: the scripts that stage 1 and Q14 run). Requirements: R13.1 to R13.12, R4.2, R5.1, R5.2, R10.1. Design: "Group A", Properties 21. The tasks WRITE the scripts, READMEs, metadata blocks and unit tests with fakes; RUNNING them is group 16 (Q2, Q13, Q12, Q1, Q6, loop) or an owner step (Q14, HS-S4).
   - Files owned: `spike/hc/<q>/{<q>.ts,README.md,evidence/.gitkeep}` for each of `q2 q13 q12 q1 q6 q14`, `spike/hc/q6/{stub-sprite,node-stub,respawn}.ts`, `spike/hc/q1/metrics.ts`, `spike/hc/q12/sender.ts`, `spike/hc/q14/path-check.sh`, `spike/test/spikes/{q2,q13,q12,q1,q6,q14}.test.ts`, `spike/test/order.property.test.ts` (task 10.6).
   - Common to every task of this group: the script starts with a metadata block (`// spike-meta` ... `// end-spike-meta`, keys of "Metadata block", values from the Register, labelled as Estimates with assumption A1 where cost is not none), exports `run(ctx)` returning a `SpikeOutcome`, talks to `hc` only through `ctx.hc`, writes evidence only through `ctx.evidence`, calls `ctx.humanStep` for owner actions, and records `hc --version`. The README is at most 40 lines (question, how to run, human steps, what to read in the evidence). No SI token is spelled. Results never come from the 2026-11-05 pre-checks (R17.7). Tests use `fake-hc` and never start a real core.
@@ -531,6 +531,13 @@ Conventions:
     - List the files this group changed for the commit
     - _Requirements: R4.2, R7.9_
     - Design: Testing Strategy
+    - DoD: P0-D4 (supports)
+  - [ ] 10.9 Wire `pnpm spike q14 --observe-default` to `q14.run`
+    - `spike/run.ts` handles `q14 --observe-default` through `runObserve` (`lib/observe.ts`) but its default work is one `server status` call, not the Q14 observer. Pass `q14.run` as the observer's work: build the `SpikeContext` for Observe_Mode (`hc` = the `createObserveHc` wrapper handed to `run`, `interactive` from the two TTY flags, `evidence` from `createEvidenceWriter` for `q14`, `humanStep`, `now`; no scratch, no agent, no approval), run `run(ctx)` from `spike/hc/q14/q14.ts`, then write the evidence index through `finish` like any other spike
+    - Keep every Observe_Mode rule: no normal preflight, TTY on both streams, refusal while a live Own_Marker exists, the `.observe-lock` held during the run and removed in `finally`, only `server status` reaches hc, no `HC_*` or `HERDR_*` name in the child env; a result other than `PARTIAL` or `pending` is an internal error
+    - Test in `spike/test/runner.integration.test.ts` (or a new `runner.observe.test.ts`) with the fake hc and a fake clock: a TTY run polls only `server status`, writes `observe.txt` and an index with result `PARTIAL` and HS-S4 open, exits 0; a non-TTY run is `pending` with "needs interactive terminal" and calls nothing; the lock is removed after a throw; `q14` without `--observe-default` is refused by the run-by gate
+    - _Requirements: R1.8, R1.9, R13.11, R13.12_
+    - Design: "Observe_Mode", D4
     - DoD: P0-D4 (supports)
 
 - [ ] 11. Stage-2 spike scripts: Q43 and Q7 (P0, authoring only)
