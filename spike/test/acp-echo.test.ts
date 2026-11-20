@@ -48,6 +48,7 @@ async function withFake<T>(opts: Partial<FakeKiroOptions>, fn: (c: Ctx) => Promi
               env: { ...env, ...over.env },
               maxPrompts: over.maxPrompts ?? 2,
               killAfterMs: over.killAfterMs ?? 20_000,
+              root: tmp,
               rawLog,
             });
             started.push(acp);
@@ -231,13 +232,28 @@ describe("acp-echo raw client with fake-kiro", () => {
 
   it("refuses an argv holding an unsafe token and a relative raw log", () => {
     const unsafe = `--trust-all-${"tools"}`;
-    const base = { cwd: tmpdir(), env: {}, maxPrompts: 1, killAfterMs: 1000 };
+    const base = { cwd: tmpdir(), env: {}, maxPrompts: 1, killAfterMs: 1000, root: tmpdir() };
     expect(() =>
       startRawAcp({ ...base, argv: ["node", "acp", unsafe], rawLog: join(tmpdir(), "x.jsonl") }),
-    ).toThrow(/E_AGENT_UNSAFE/);
+    ).toThrow(/spike-agent-unsafe/);
     expect(() => startRawAcp({ ...base, argv: ["node"], rawLog: "relative.jsonl" })).toThrow(
       /absolute/,
     );
+  });
+
+  it("refuses a rawLog outside the Spike_Root, segment-wise, in both clients", () => {
+    const root = join(tmpdir(), "wsp-root");
+    const base = { argv: ["node"], cwd: tmpdir(), env: {}, maxPrompts: 1, killAfterMs: 1000, root };
+    for (const start of [startRawAcp, startSdkAcp]) {
+      for (const rawLog of [
+        join(tmpdir(), "elsewhere", "x.jsonl"),
+        join(`${root}-sibling`, "x.jsonl"),
+        join(root, "..", "x.jsonl"),
+        root,
+      ]) {
+        expect(() => start({ ...base, rawLog })).toThrow(/under the Spike_Root/);
+      }
+    }
   });
 });
 

@@ -11,6 +11,7 @@ import {
 import { findUnsafeToken } from "../../tools/lib/unsafe-tokens.ts";
 import type { PermissionAnswer, PermissionOption, PermissionRequest } from "./approval.ts";
 import { isPaneEnvName } from "./env.ts";
+import { isUnder } from "./preflight.ts";
 
 /** Raw ACP client for the spikes (design: "acp-echo client", R12.5, R14). Not product code. */
 
@@ -52,6 +53,8 @@ export interface AcpStartInput {
   env: Record<string, string>;
   maxPrompts: number;
   killAfterMs: number;
+  /** The run's Spike_Root. Raw logs are unredacted, so `rawLog` must be under it (only the root is deleted). */
+  root: string;
   rawLog: string;
 }
 
@@ -74,12 +77,16 @@ export function assertAcpInput(i: AcpStartInput): void {
     throw new Error("acp-echo: argv must be a non-empty string array");
   }
   for (const a of i.argv) {
-    if (findUnsafeToken(a) !== null) throw new Error("E_AGENT_UNSAFE: argv holds an unsafe token");
+    if (findUnsafeToken(a) !== null)
+      throw new Error("spike-agent-unsafe: argv holds an unsafe token");
   }
   if (findUnsafeToken(i.argv.join(" ")) !== null) {
-    throw new Error("E_AGENT_UNSAFE: argv holds an unsafe token");
+    throw new Error("spike-agent-unsafe: argv holds an unsafe token");
   }
   if (!isAbsolute(i.rawLog)) throw new Error("acp-echo: rawLog must be an absolute path");
+  if (!isAbsolute(i.root) || !isUnder(i.root, i.rawLog)) {
+    throw new Error("acp-echo: rawLog must be under the Spike_Root");
+  }
 }
 
 /** `HC_*`, `HERDR_*` and `XDG_*` never reach the agent, whatever the caller passed. */

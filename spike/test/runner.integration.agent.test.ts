@@ -160,6 +160,7 @@ function startAgent(
     env: { ...ctx.env("agent"), PATH: binEnv.PATH as string },
     maxPrompts: ctx.meta.maxPrompts,
     killAfterMs: 20_000,
+    root: ctx.root,
     rawLog: join(ctx.root, "frames.raw.jsonl"),
   });
 }
