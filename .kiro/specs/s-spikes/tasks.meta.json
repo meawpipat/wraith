@@ -15,6 +15,10 @@
     "6.9 Write the property test for Claude launch options": {
       "status": "passed",
       "lastRunTimestamp": 1795150304616
+    },
+    "8.6 Write the property test for the hook decision and example tests": {
+      "status": "passed",
+      "lastRunTimestamp": 1795151500756
     }
   },
   "executionHistory": {
@@ -661,6 +665,121 @@
         "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
         "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
         "timestamp": 1795151223047
+      }
+    ],
+    "8.1 Read the ACP SDK license and add the dependency": [
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795151238866
+      },
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795151419290
+      }
+    ],
+    "8.2 Extend `fake-kiro.ts` to a small ACP agent": [
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795151238959
+      },
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795151419397
+      }
+    ],
+    "8.5 Implement `lib/hook-receiver.ts` and `kiro/q3b/hook-client.ts`": [
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795151239052
+      },
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795151420111
+      }
+    ],
+    "8.7 Implement `lib/mcp-echo.ts` and its tests": [
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795151239447
+      },
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795151420903
+      }
+    ],
+    "8.3 Implement the raw ACP client in `lib/acp-echo.ts` and its tests": [
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795151427390
+      },
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795151581354
+      }
+    ],
+    "8.6 Write the property test for the hook decision and example tests": [
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795151427631
+      },
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795151581759
+      }
+    ],
+    "8.4 Add the SDK variant `startSdkAcp` and its tests (conditional on 8.1)": [
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795151587701
+      },
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795151750814
+      }
+    ],
+    "8.8 Write the runner integration tests (part 2, fake agent)": [
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795151588278
+      },
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795151750901
+      }
+    ],
+    "8.9 Run the group verification (group 8)": [
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795151756176
+      },
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795151851137
+      }
+    ],
+    "8. acp-echo, hook receiver and MCP echo libraries, with fake-agent tests (P0)": [
+      {
+        "executionId": "d67a0e9e-04f0-4fbd-b8d1-de41c5c06a69",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795151851213
       }
     ]
   }

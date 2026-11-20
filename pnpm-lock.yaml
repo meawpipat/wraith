@@ -91,6 +91,10 @@ importers:
   packages/ui-kit: {}
 
   spike:
+    dependencies:
+      '@agentclientprotocol/sdk':
+        specifier: 2.8.0
+        version: 2.8.0(zod@4.6.6)
     devDependencies:
       '@types/node':
         specifier: 22.20.5
@@ -118,6 +122,15 @@ importers:
         version: 2.9.1
 
 packages:
+
+  '@agentclientprotocol/sdk@2.8.0':
+    resolution: {integrity: sha512-EjsvoRX8nEH2z3PAVI2ILsVXAefVcSlLPeXGjlQoFgkJE71F2J0Fj7N6oL/k7SnP0vY+9hmONPFz/K2zalnTiw==}
+    peerDependencies:
+      '@modelcontextprotocol/server': ^2.4.0
+      zod: ^3.25.76 || ^4.0.0
+    peerDependenciesMeta:
+      '@modelcontextprotocol/server':
+        optional: true
 
   '@biomejs/biome@2.6.4':
     resolution: {integrity: sha512-8sKKwaNW4ot22awZ3lBjwWLHnUFXgXnrBPYS2gNlBAXRbDC++7kqjK2H7dR/FgCDtPvO1xfKpgEhJkGxAKYkxA==}
@@ -1083,6 +1096,10 @@ packages:
     resolution: {integrity: sha512-4UmzQUF5fxvfcYHlbjBmejU+w+hbDnWFx4aS8kBx7nPBHcO2SqPbpAG8snbdg+Xse4pRefR98hgjFgIMCI/UhA==}
 
 snapshots:
+
+  '@agentclientprotocol/sdk@2.8.0(zod@4.6.6)':
+    dependencies:
+      zod: 4.6.6
 
   '@biomejs/biome@2.6.4':
     optionalDependencies:

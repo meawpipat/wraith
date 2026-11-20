@@ -413,58 +413,58 @@ Conventions:
     - Design: Testing Strategy
     - DoD: P0-D4 (supports)
 
-- [ ] 8. acp-echo, hook receiver and MCP echo libraries, with fake-agent tests (P0)
+- [x] 8. acp-echo, hook receiver and MCP echo libraries, with fake-agent tests (P0)
   - DoD: P0-D4 (R14 support code; R7.12 and R8.6 safety contract). Requirements: R4.3, R5.8, R7.12, R8.1 to R8.3, R8.6, R9.7, R12.5, R14.1 to R14.5. Design: "acp-echo client", "Hook receiver", "MCP echo server", D11, D12, Property 17.
   - Files owned: `spike/lib/{acp-echo,hook-receiver,mcp-echo}.ts`, `spike/kiro/q3b/hook-client.ts`, `spike/test/{acp-echo,hook-receiver,hook-receiver.property,mcp-echo}.test.ts`, `spike/test/support/fake-kiro.ts` (extended), `spike/package.json` and `pnpm-lock.yaml` (the SDK dependency, task 8.1), `spike/test/runner.integration.test.ts` (part 2, task 8.8).
-  - [ ] 8.1 Read the ACP SDK license and add the dependency
+  - [x] 8.1 Read the ACP SDK license and add the dependency
     - Run `pnpm view @agentclientprotocol/sdk license version` (read-only). If the license is MIT, Apache-2.0, BSD or ISC, add the exact current version to `spike/package.json` `dependencies` and run `pnpm install`; record the package, exact version and license in the task evidence for task 17.1
     - If the license is not permissive or the package cannot be found, STOP and report to the owner: nothing is added, task 8.4 and the SDK half of Q10 (task 12.3) become conditional (Q10 ends `pending` with the reason); the raw client and every other task continue
     - _Requirements: R5.8_
     - Design: "acp-echo client", Risks (ACP field names)
     - DoD: P0-D4 (supports)
-  - [ ] 8.2 Extend `fake-kiro.ts` to a small ACP agent
+  - [x] 8.2 Extend `fake-kiro.ts` to a small ACP agent
     - Speaks newline-delimited JSON-RPC on stdio: `initialize` (with `mcpCapabilities` and the client's `terminal` flag echoed back), `session/new`, `session/load` (replays the earlier updates with stable ids, or with changed ids when the test asks), `session/prompt` that sends one `session/request_permission` (with `options[]`) and waits for the answer before a tool update with status completed or failed, a second prompt, `available_commands_update` after `session/new` and `session/load`, `terminal/create` and `terminal/output` calls when the client declared `terminal:true`, and an HTTP MCP call to a given `mcpServers` entry; it records the `permission` answers it received and refuses to proceed on any answer it did not get
     - Flags: `--agent-engine v3`, `--agent <name>` accepted or rejected by a test option (for the Q43 `FAIL` path); never reads the real `~/.kiro`
     - _Requirements: R12.5, R14.1 to R14.7, R16.1_
     - Design: Testing Strategy (`runner.integration.test.ts` row: fake-kiro speaks just enough ACP)
     - DoD: P0-D4 (supports)
-  - [ ] 8.3 Implement the raw ACP client in `lib/acp-echo.ts` and its tests
+  - [x] 8.3 Implement the raw ACP client in `lib/acp-echo.ts` and its tests
     - `AcpEcho`, `AcpFrame`, `PromptCapReached`, `startRawAcp({argv, cwd, env, maxPrompts, killAfterMs, rawLog})`: spawns the agent with `shell:false` and the `agent` env profile, writes every frame to `rawLog` under the Spike_Root, answers `session/request_permission` only through the approval client (R8.1, R8.2), throws `PromptCapReached` on prompt number `maxPrompts + 1` before anything is sent (R4.3, R9.7), closes the agent at `maxWallSeconds` and reports `PARTIAL` with that reason, declares `terminal:true` only when asked (Q4); argv containing an SI token is refused
     - `test/acp-echo.test.ts` with `fake-kiro`: initialize, new session, prompt, update and permission work; the prompt cap closes the agent and counts prompts sent; the wall-time timer closes it; a reject-all policy gives `reject_once` and the fake never runs the tool; frames are written; the child env holds no `HC_*`, `HERDR_*` or `XDG_*` name
     - _Requirements: R4.3, R8.1 to R8.3, R9.7, R12.5, R14.8_
     - Design: "acp-echo client"
     - DoD: P0-D4
-  - [ ] 8.4 Add the SDK variant `startSdkAcp` and its tests (conditional on 8.1)
+  - [x] 8.4 Add the SDK variant `startSdkAcp` and its tests (conditional on 8.1)
     - In `lib/acp-echo.ts`: `startSdkAcp(i)` with the same interface over `@agentclientprotocol/sdk`; same caps, same approval path, same frame log; `test/acp-echo.test.ts` (appended): the same scenario as 8.3 against `fake-kiro` produces the same method sequence as the raw client
     - If task 8.1 stopped, skip this task and record the reason; the loop continues
     - _Requirements: R14.3_
     - Design: "acp-echo client" (`startSdkAcp`), Risks (ACP field names)
     - DoD: P0-D4
-  - [ ] 8.5 Implement `lib/hook-receiver.ts` and `kiro/q3b/hook-client.ts`
+  - [x] 8.5 Implement `lib/hook-receiver.ts` and `kiro/q3b/hook-client.ts`
     - `decideHook(req, expectedToken, answer)` (pure and total), `startHookReceiver({port: 7782, token, ask, log})` bound to `127.0.0.1` only with header `x-wraith-spike-token` (a random 32-byte hex per run, written to `<root>/hook.token` with mode 0600); an allow exists only as an owner tap for that single request and is recorded; a busy port returns a `pending` outcome with the reason
     - `hook-client.ts`: reads stdin, posts to the receiver, reads the token from `<root>/hook.token` (argument: the root), exits 0 only on a JSON `{decision:"allow", nonce}` matching the request; every other case (timeout, connection error, wrong shape, `block`) exits 2 (D11); no token ever sits in a profile or in `~/.kiro`
     - _Requirements: R7.12, R8.6, R14.2_
     - Design: "Hook receiver", D11
     - DoD: P0-D4
-  - [ ] 8.6 Write the property test for the hook decision and example tests
+  - [x] 8.6 Write the property test for the hook decision and example tests
     - **Property 17: The hook decision fails closed**
     - `test/hook-receiver.property.test.ts`, tag `Feature: s-spikes, Property 17: The hook decision fails closed`; generators: any token, malformed body, any answer including `timeout` and `error`; assert exit code 2 and `block` unless the token matches, the body is well formed and the answer is an owner-selected `allow_once`, in which case exit code 0 and an `allow` whose nonce equals the request's
     - `test/hook-receiver.test.ts`: the server binds `127.0.0.1` only; a request without the token is refused; the client exits 2 on timeout (fake timers), on connection refused and on a `block`; the client exits 0 only on the matching allow
     - **Validates: Requirements 7.12, 8.6**
     - Design: Property 17
     - DoD: P0-D4
-  - [ ] 8.7 Implement `lib/mcp-echo.ts` and its tests
+  - [x] 8.7 Implement `lib/mcp-echo.ts` and its tests
     - Hand-written minimal MCP server over HTTP on `127.0.0.1` and a random port, header token required, handling `initialize`, `tools/list` and one `tools/call` tool `echo` with plain `application/json` replies (D12); `startMcpEcho({token}): Promise<{url, calls(), close()}>`; it records each call (tool, argument length, header presence, never the token)
     - `test/mcp-echo.test.ts`: a request without the token is refused; the three methods answer; `calls()` shows one tool call; the server binds `127.0.0.1` only
     - _Requirements: R7.12, R14.4_
     - Design: "MCP echo server", D12, Risks (MCP http handshake)
     - DoD: P0-D4
-  - [ ] 8.8 Write the runner integration tests (part 2, fake agent)
+  - [x] 8.8 Write the runner integration tests (part 2, fake agent)
     - Append to `test/runner.integration.test.ts`: a loop-run spike in the style of Q43 against `fake-kiro` answers the fake's permission request with `reject_once` and the fake records no allow; a spike that sends more prompts than its metadata maximum is stopped, `PARTIAL` with the reason and `promptsSent` recorded; a Kiro `--agent` rejection by the fake (Q43 `FAIL` path) makes the next spike's launch omit the argument and select the agent after `initialize` (R12.8)
     - _Requirements: R4.3, R8.3, R9.7, R12.8, R16.9_
     - Design: Testing Strategy (`runner.integration.test.ts` row)
     - DoD: P0-D4
-  - [ ] 8.9 Run the group verification (group 8)
+  - [x] 8.9 Run the group verification (group 8)
     - Run `pnpm -r test`, `pnpm -r build`, `pnpm typecheck`, `pnpm -r --if-present check`, `pnpm lint`, `pnpm check:secrets`, `pnpm check:platform`, `pnpm check:si` and `pnpm check:spikes`; all clean; no real `kiro-cli`, `claude` or core was started by any test
     - List the files this group changed for the commit
     - _Requirements: R7.12, R8.6_
