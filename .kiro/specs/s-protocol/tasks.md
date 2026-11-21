@@ -431,6 +431,12 @@ Conventions:
     - _Requirements: R21.4 to R21.8, R25.2_
     - Design: "Protocol-owned data (R21)", "Resolved decisions and remaining open point"
     - DoD: P0-D6 (supports: the guard unit test is data-side evidence; hook behaviour belongs to the other P0 hook specs), P1-D11 (supports)
+  - [x] 14.9 Claude asking-mode allow-list and prompts rule in `unsafe.ts` (P-SI2-1, done 2026-11-20, owner-approved)
+    - The Claude permission-mode patterns become an allow-list: a value outside `CLAUDE_ASKING_MODES` (`manual`, `default`) is unsafe in the SDK option form and the CLI flag form, unknown values included; the Claude prompts flag must be `host`, any other value is unsafe; exports `CLAUDE_ASKING_MODES`, `CLAUDE_PERMISSION_PROMPTS`, `CLAUDE_CODE_CHECKED_MIN` and `isClaudeAskingMode`
+    - Test `test/unsafe-claude-modes.test.ts` (flag names built from fragments, no token spelled); hook tests in `tools/test/si-hooks.test.ts`
+    - _Requirements: R21.2, R21.3_
+    - Design: "Protocol-owned data (R21)"
+    - DoD: P0-D6 (supports), P1-D11 (supports)
   - [ ] 14.8 Write the unsafe-literal scan
     - Node-only scan that no file outside `unsafe.ts` and the guard template spells a token from `UNSAFE_TOKENS` (read from the export, not retyped); test, fixture and spike paths are excluded as the SI-1 hook definition does; run after 14.7
     - _Requirements: R21.12_
