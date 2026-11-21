@@ -150,6 +150,37 @@ describe("unsafe groups block in --hook-stdin and path mode", () => {
   }
 });
 
+describe("Claude asking modes through the hooks (P-SI2-1)", () => {
+  // Flag names are built from fragments so this file spells no unsafe token.
+  const MODE_FLAG = ["--permission", "mode"].join("-");
+  const PROMPTS_FLAG = ["--permission", "prompts"].join("-");
+  const send = (h: string, text: string): number =>
+    hook(h, { tool_name: "fsWrite", tool_input: { path: PRODUCT_PATH, text } });
+
+  it("passes the asking modes and the host prompts value in both hooks", () => {
+    for (const text of [
+      `${MODE_FLAG} manual`,
+      `${MODE_FLAG}=default`,
+      `${PROMPTS_FLAG} host`,
+      `args: ["${MODE_FLAG}", "manual", "${PROMPTS_FLAG}", "host"]`,
+    ]) {
+      for (const h of [TRUST_ALL, AUTO_APPROVE]) expect(send(h, text), text).toBe(0);
+    }
+  });
+
+  it("blocks any other mode, an unknown mode and any other prompts value in both hooks", () => {
+    for (const text of [
+      `${MODE_FLAG} acceptable`,
+      `${MODE_FLAG}=plan`,
+      `${MODE_FLAG} manuals`,
+      `${PROMPTS_FLAG} nothing`,
+      `${PROMPTS_FLAG}=hostile`,
+    ]) {
+      for (const h of [TRUST_ALL, AUTO_APPROVE]) expect(send(h, text), text).toBe(2);
+    }
+  });
+});
+
 describe("real tree and runner", () => {
   it("both scanners pass --tree", () => {
     expect(run(TRUST_ALL, ["--tree"]).code).toBe(0);
