@@ -51,15 +51,45 @@ const SETTINGS_VALUES = [
 ] as const satisfies readonly UnsafeLiteral[];
 
 /**
+ * Claude permission modes that make the agent ask (SI-2, DECISION-60). These are the only allowed
+ * values. `manual` is the asking mode of Claude Code 2.1.323; `default` is the name older CLI
+ * versions use and, until task 13.8 reads the installed SDK types, possibly the SDK. Any other
+ * value, including a value nobody has seen yet, is unsafe (fail closed). The two mode patterns
+ * below spell this list as `default|manual`; a test keeps them equal.
+ */
+export const CLAUDE_ASKING_MODES = ["manual", "default"] as const;
+
+/** `--permission-prompts` must be `host` (Wraith answers prompts); `none` denies silently and is refused. */
+export const CLAUDE_PERMISSION_PROMPTS = "host";
+
+/** Lowest Claude Code version the lists above were checked against. Below or unparsed: a notice, not a refusal. */
+export const CLAUDE_CODE_CHECKED_MIN = "2.1.323";
+
+/** True when `mode` is one of the asking modes. Anything else, including a non-string, is false. */
+export function isClaudeAskingMode(mode: unknown): boolean {
+  return typeof mode === "string" && (CLAUDE_ASKING_MODES as readonly string[]).includes(mode);
+}
+
+/**
  * Settings shapes that need a pattern. The `approval_mode` value list is the
  * set of Grok values that skip asking; it is pinned here until spike Q38
  * confirms the exact Grok value names.
  */
 const PATTERNS = [
   {
-    id: "claude-permission-mode-not-default",
-    source: "permissionMode[\"']?\\s*[:=]\\s*[\"']?(?!default(?![A-Za-z0-9_-]))[A-Za-z]",
+    id: "claude-permission-mode-not-asking",
+    source: "permissionMode[\"']?\\s*[:=]\\s*[\"']?(?!(?:default|manual)(?![A-Za-z0-9_-]))[A-Za-z]",
     samples: ['permissionMode: "plan"', "permissionMode=auto", "permissionMode: 'auto'"],
+  },
+  {
+    id: "claude-cli-permission-mode-not-asking",
+    source: "--permission-mode(?:\\s+|=)[\"']?(?!(?:default|manual)(?![A-Za-z0-9_-]))[A-Za-z]",
+    samples: ["--permission-mode auto", "--permission-mode=plan"],
+  },
+  {
+    id: "claude-permission-prompts-not-host",
+    source: "--permission-prompts(?:\\s+|=)[\"']?(?!host(?![A-Za-z0-9_-]))[A-Za-z]",
+    samples: ["--permission-prompts none", "--permission-prompts=ask"],
   },
   {
     id: "grok-permission-mode-skips-asking",
