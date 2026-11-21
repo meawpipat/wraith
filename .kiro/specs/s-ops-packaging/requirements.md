@@ -36,7 +36,7 @@ Boundary (out of scope, owned by other specs):
 - **Pre_Commit_Hook**: The git hook file `.githooks/pre-commit`, tracked and executable, that runs the Secret_Scan in staged mode. It is active only after the owner sets `core.hooksPath` to `.githooks` (HS-3).
 - **Hook_File**: A file in `.kiro/hooks/` that defines a Kiro hook.
 - **P0_Hooks**: The three hooks of P0-D6: `no-trust-all`, `no-auto-approve`, `secret-scan`.
-- **No_Trust_All_Hook**: architecture §12.1/§17 calls this hook no-trust-all-tools; it is named no-trust-all because the old name contains an SI-1 token.
+- **No_Trust_All_Hook**: architecture §12.1/§17 calls this hook no-trust-all; it is named no-trust-all because the old name contains an SI-1 token.
 - **Suite_Report**: The machine-readable report of one Vitest run (JSON or JUnit) written by `pnpm -r test`.
 - **Required_Suites_File**: A data file, proposed `tools/required-suites.json`, listing the test files that must run, per Vitest project, with a minimum test count.
 - **Suites_Check**: The script, proposed `tools/check-suites-ran.ts`, that reads the Suite_Reports and the Required_Suites_File (Requirement 11).

@@ -560,7 +560,7 @@ Conventions:
 | P0-D1 | 1.1, 1.2, 4.2, 4.3, 5.2, 5.8, 6.1, 6.2, 15.4, 16.1, 16.2, 18.1, 18.2, 19.1, 19.2 (all "supports") | CI workflow on Linux and macOS (S-ops-packaging); the P0-D2 and P0-D3 suites (S-crypto) |
 | P0-D2 | 5.1, 11.13, 19.1 (supports) | JCS byte-equality test and its Node and Workers runs (S-crypto); this spec only runs its own suite in the Workers pool |
 | P0-D3 | 5.1, 5.2, 5.6, 9.4, 11.13 (supports) | Signing, verification, canonicalisation, hashing, HMAC and the sign/verify round-trip PBT (S-crypto) |
-| P0-D6 | 14.1, 14.2, 14.7, 14.8, 16.1, 17.3 (supports) | The hooks `no-trust-all-tools`, `no-auto-approve`, `secret-scan` and their sample-file tests (the other P0 hook specs) |
+| P0-D6 | 14.1, 14.2, 14.7, 14.8, 16.1, 17.3 (supports) | The hooks `no-trust-all`, `no-auto-approve`, `secret-scan` and their sample-file tests (the other P0 hook specs) |
 | P1-D6 | 1.1, 1.3, 2.x, 5.4 to 5.7, 8.6, 8.7, 9.5, 10.3, 10.4, 11.5 to 11.10, 13.2, 14.2, 14.6, 15.3 (Properties 1 to 19 at `PBT_MIN_RUNS`; PBT #14 zod part and #6 data part) | The remaining §21.1 group P1 properties (S-crypto, S-relay-core, S-node-core, S-approval) |
 | P1-D10 | 5.3, 8.1 to 8.5, 9.1 to 9.4, 11.1, 11.2, 11.4, 11.11, 13.1, 14.4, 14.5, 15.2, 17.1, 17.2, 17.4 | The fake agent, fake herdr and the integration suite itself (S-node-core and the fakes work) |
 | P1-D11 | 14.1, 14.3, 14.7 (supports; data side) | `wraith-node doctor` and the `agents validate` validators that reject unsafe launch settings (S-node-core) |
