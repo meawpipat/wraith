@@ -155,6 +155,24 @@ describe("EvidenceWriter", () => {
     expect(readFileSync(join(w.dir, "index.json"), "utf8")).not.toContain(secret);
   });
 
+  it("records the home-profile option in the index, false by default", async () => {
+    const off = await writer().finish(
+      outcome("PASS"),
+      { id: "q43", runBy: "loop" },
+      { node: "22" },
+    );
+    expect(off.options).toEqual({ allowHomeProfile: false });
+    const w = writer();
+    const on = await w.finish(
+      outcome("PASS"),
+      { id: "q43", runBy: "loop", allowHomeProfile: true },
+      { node: "22" },
+    );
+    expect(on.options).toEqual({ allowHomeProfile: true });
+    const disk = JSON.parse(readFileSync(join(w.dir, "index.json"), "utf8"));
+    expect(disk.options).toEqual({ allowHomeProfile: true });
+  });
+
   it("refuses a file name that leaves the evidence folder", async () => {
     await expect(writer().addText("../x.txt", "a")).rejects.toThrow("invalid evidence file name");
   });

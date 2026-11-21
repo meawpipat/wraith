@@ -120,6 +120,7 @@ function makeCtx(hc: Hc, humanSteps: string[]): SpikeContext {
     },
     now: () => new Date("2026-11-20T00:00:00Z"),
     interactive: false,
+    allowHomeProfile: false,
   };
 }
 

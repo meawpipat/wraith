@@ -48,6 +48,8 @@ const SUBCOMMANDS = ["list", "record", "budget"] as const;
 export interface RunArgs {
   ids: SpikeId[];
   observeDefault: boolean;
+  /** `--allow-home-profile`: lets Q43 write one new file into `~/.kiro/agents/` (HS-S6). */
+  allowHomeProfile: boolean;
   subcommand?: "list" | "record" | "budget";
   /** Arguments after the subcommand (for `record` and `budget`). */
   rest: string[];
@@ -64,15 +66,21 @@ export function parseArgs(argv: string[]): RunArgs | { error: string } {
     return {
       ids: [],
       observeDefault: false,
+      allowHomeProfile: false,
       subcommand: first as (typeof SUBCOMMANDS)[number],
       rest: argv.slice(1),
     };
   }
   const ids: SpikeId[] = [];
   let observeDefault = false;
+  let allowHomeProfile = false;
   for (const raw of argv) {
     if (raw === "--observe-default") {
       observeDefault = true;
+      continue;
+    }
+    if (raw === "--allow-home-profile") {
+      allowHomeProfile = true;
       continue;
     }
     if (raw.startsWith("-")) return { error: `unknown option; ${known}` };
@@ -84,7 +92,10 @@ export function parseArgs(argv: string[]): RunArgs | { error: string } {
   if (observeDefault && !(ids.length === 1 && ids[0] === "q14")) {
     return { error: "--observe-default is only for q14" };
   }
-  return { ids, observeDefault, rest: [] };
+  if (allowHomeProfile && !(ids.length === 1 && ids[0] === "q43")) {
+    return { error: "--allow-home-profile is only for q43" };
+  }
+  return { ids, observeDefault, allowHomeProfile, rest: [] };
 }
 
 export interface SignalHost {
@@ -511,6 +522,7 @@ export async function main(argv: string[], io: RunIo): Promise<number> {
           },
           now: io.now,
           interactive,
+          allowHomeProfile: args.allowHomeProfile,
         };
 
         let outcome: SpikeOutcome;
@@ -528,7 +540,11 @@ export async function main(argv: string[], io: RunIo): Promise<number> {
           }
           const versions: EvidenceIndex["versions"] = { node: process.version };
           if (pre.hcVersion !== null) versions.hc = pre.hcVersion;
-          await evidence.finish(outcome, { id: q, runBy: meta.runBy, interactive }, versions);
+          await evidence.finish(
+            outcome,
+            { id: q, runBy: meta.runBy, interactive, allowHomeProfile: args.allowHomeProfile },
+            versions,
+          );
         } catch (err) {
           if (err instanceof EvidenceSecretError) {
             io.err(`${q}: secret in evidence (${err.cls}); the file was deleted`);

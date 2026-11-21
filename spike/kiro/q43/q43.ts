@@ -46,6 +46,10 @@ export const PROFILE_PROMPT = "You are a throwaway Wraith spike agent. Do only w
 /** The profile pre-approves read-only tools only, so a shell request must ask. */
 export const PROBE_PROMPT = "Run `echo hi` with your shell tool and tell me the output.";
 
+export const HOME_PENDING_REASON = "scratch profile not found; HS-S6 open";
+export const HOME_PENDING_NOTE =
+  "Nothing was written to ~/.kiro/agents/. To allow one new file there (HS-S6), re-run: pnpm spike q43 --allow-home-profile";
+
 /** Every permission request is answered with a reject option (R16.9, R8.3). */
 const REJECT_ALL: ApprovalPolicy = { kind: "reject-all", allowAlways: "never", timeoutMs: 120_000 };
 
@@ -201,7 +205,23 @@ export async function run(ctx: SpikeContext, io: Q43Io = {}): Promise<SpikeOutco
     }
     if (first.started) placement = "scratch";
 
-    // 2. Home fallback: one new file (HS-S6), one retry. Deleted in `finally` and by cleanup.
+    // 2. Home fallback: only with `--allow-home-profile` (HS-S6). One new file, one retry.
+    //    Deleted in `finally` and by cleanup.
+    if (placement === null && !ctx.allowHomeProfile) {
+      await ctx.evidence.addText(
+        "placement.json",
+        `${JSON.stringify({ placement: null, profile: `${AGENT_NAME}.json` }, null, 2)}\n`,
+      );
+      return {
+        result: "pending",
+        reason: HOME_PENDING_REASON,
+        criteria: [],
+        affects: [],
+        openHumanSteps: ["HS-S6"],
+        promptsSent: attempts.reduce((n, a) => n + a.promptsSent, 0),
+        notes: [...notes, HOME_PENDING_NOTE],
+      };
+    }
     if (placement === null) {
       ctx.humanStep(
         "HS-S6",

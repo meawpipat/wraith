@@ -43,6 +43,7 @@ describe("parseArgs", () => {
     expect(parseArgs(["q3", "Q4", "q3"])).toEqual({
       ids: ["q3", "q4"],
       observeDefault: false,
+      allowHomeProfile: false,
       rest: [],
     });
     expect(parseArgs(["q14", "--observe-default"])).toMatchObject({
@@ -60,6 +61,26 @@ describe("parseArgs", () => {
 
   it("refuses --observe-default for anything but q14", () => {
     expect("error" in parseArgs(["q2", "--observe-default"])).toBe(true);
+  });
+});
+
+describe("parseArgs --allow-home-profile", () => {
+  it("is accepted with q43 only", () => {
+    expect(parseArgs(["q43", "--allow-home-profile"])).toMatchObject({
+      ids: ["q43"],
+      allowHomeProfile: true,
+    });
+    expect(parseArgs(["q43"])).toMatchObject({ allowHomeProfile: false });
+    expect(parseArgs(["q3", "--allow-home-profile"])).toEqual({
+      error: "--allow-home-profile is only for q43",
+    });
+    expect(parseArgs(["q43", "q3", "--allow-home-profile"])).toEqual({
+      error: "--allow-home-profile is only for q43",
+    });
+  });
+
+  it("still refuses an unknown flag", () => {
+    expect("error" in parseArgs(["q43", "--allow-everything"])).toBe(true);
   });
 });
 

@@ -83,6 +83,7 @@ function makeCtx(hc: Hc): { ctx: SpikeContext; root: string } {
     humanStep: () => {},
     now: () => new Date(),
     interactive: false,
+    allowHomeProfile: false,
   };
   return { ctx, root };
 }

@@ -23,7 +23,7 @@ interface Setup {
   steps: string[];
 }
 
-function setup(env: Record<string, string>): Setup {
+function setup(env: Record<string, string>, allowHomeProfile = false): Setup {
   const root = realpathSync(mkdtempSync(join(tmpdir(), "wraith-q43-")));
   const home = realpathSync(mkdtempSync(join(tmpdir(), "wraith-q43-home-")));
   dirs.push(root, home);
@@ -63,6 +63,7 @@ function setup(env: Record<string, string>): Setup {
     humanStep: (id: string) => {
       steps.push(id);
     },
+    allowHomeProfile,
   } as unknown as SpikeContext;
   return { ctx, root, home, logFile: join(root, "fake.log"), files, steps };
 }
@@ -80,6 +81,7 @@ async function withFake<T>(
   opts: Partial<FakeKiroOptions>,
   onlyWhenHomeFile: boolean,
   fn: (s: Setup) => Promise<T>,
+  allowHomeProfile = onlyWhenHomeFile,
 ): Promise<T> {
   const holder: { s: Setup | null } = { s: null };
   const probe = (): Setup => {
@@ -87,7 +89,7 @@ async function withFake<T>(
     return holder.s;
   };
   // The fake needs its log path and the home folder before the bin dir exists, so build them first.
-  const early = setup({});
+  const early = setup({}, allowHomeProfile);
   holder.s = early;
   const gate = onlyWhenHomeFile
     ? `if (!require("node:fs").existsSync(${JSON.stringify(
@@ -153,15 +155,34 @@ describe("Q43 script (fake kiro-cli)", () => {
   });
 
   it("fails with the branch text when the agent is rejected everywhere", async () => {
+    await withFake(
+      { acceptedAgents: [] },
+      false,
+      async (s) => {
+        const out = await run(s.ctx, io(s));
+        expect(out.result).toBe("FAIL");
+        expect(out.branch).toBe(FAIL_BRANCH);
+        expect(FAIL_BRANCH).toContain("§4.4/§5 argv");
+        expect(FAIL_BRANCH).toContain("session/set_mode");
+        expect(out.promptsSent).toBe(0);
+        expect(JSON.parse(s.files.get("placement.json") ?? "{}").placement).toBeNull();
+        expect(existsSync(join(s.home, ".kiro", "agents", "wraith-spike-q43.json"))).toBe(false);
+      },
+      true,
+    );
+  });
+
+  it("without the flag writes nothing to home, stays pending and launches once", async () => {
     await withFake({ acceptedAgents: [] }, false, async (s) => {
       const out = await run(s.ctx, io(s));
-      expect(out.result).toBe("FAIL");
-      expect(out.branch).toBe(FAIL_BRANCH);
-      expect(FAIL_BRANCH).toContain("§4.4/§5 argv");
-      expect(FAIL_BRANCH).toContain("session/set_mode");
-      expect(out.promptsSent).toBe(0);
+      expect(out.result).toBe("pending");
+      expect(out.reason).toBe("scratch profile not found; HS-S6 open");
+      expect(out.openHumanSteps).toEqual(["HS-S6"]);
+      expect(out.notes.join("\n")).toContain("pnpm spike q43 --allow-home-profile");
       expect(JSON.parse(s.files.get("placement.json") ?? "{}").placement).toBeNull();
-      expect(existsSync(join(s.home, ".kiro", "agents", "wraith-spike-q43.json"))).toBe(false);
+      expect(existsSync(join(s.home, ".kiro"))).toBe(false);
+      expect(records(s.logFile).filter((r) => r.kind === "argv")).toHaveLength(1);
+      expect(s.steps).toEqual([]);
     });
   });
 

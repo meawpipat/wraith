@@ -42,6 +42,7 @@ function makeCtx(
     q: "q14",
     hc,
     interactive,
+    allowHomeProfile: false,
     now: () => new Date("2026-01-01T00:00:00Z"),
     humanStep: (id: string) => {
       steps.push(id);

@@ -8,11 +8,12 @@ It writes `wraith-spike-q43.json` (read-only tools pre-approved, nothing else) i
 `<scratch>/.kiro/agents/` and starts `kiro-cli acp --agent-engine v3 --agent wraith-spike-q43`.
 It sends `initialize`, `session/new` and one prompt that asks for the shell tool.
 Every permission request is answered `reject_once`. Cost: about 0 to 3 credits.
-If the agent is not found, it writes the same new file into `~/.kiro/agents/` (flag `wx`, an
-existing file is never overwritten), retries once, and deletes the file afterwards.
+If the agent is not found and the run was started with `--allow-home-profile`, it writes the same
+new file into `~/.kiro/agents/` (flag `wx`, an existing file is never overwritten), retries once,
+and deletes the file afterwards. Without the flag it ends `pending` and writes nothing there.
 ## Human steps
 - HS-S2: Kiro is signed in on this machine.
-- HS-S6: only when the home fallback is used. One new file in `~/.kiro/agents/`, removed at the end.
+- HS-S6: only when the scratch placement fails and you start the run with `pnpm spike q43 --allow-home-profile`. Then one new file goes into `~/.kiro/agents/` and is removed at the end. Without the flag nothing is written there and the result is `pending` (HS-S6 open).
 ## What to read in the evidence
 - `placement.json`: `scratch`, `home`, or `null` (FAIL).
 - `summary.json`: result, each attempt, and the branch on FAIL.

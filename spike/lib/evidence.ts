@@ -27,6 +27,8 @@ export interface EvidenceIndex {
   endedAt: string;
   runner: "loop" | "owner";
   interactive: boolean;
+  /** Run options that widen what a spike may do. */
+  options: { allowHomeProfile: boolean };
   versions: {
     hc?: string;
     kiroCli?: string;
@@ -49,6 +51,7 @@ export interface FinishMeta {
   id: string;
   runBy: "loop" | "owner";
   interactive?: boolean;
+  allowHomeProfile?: boolean;
 }
 
 /** The stop condition 8 failure: a secret-shaped or SI-token line reached evidence. Class only. */
@@ -233,6 +236,7 @@ export function createEvidenceWriter(o: EvidenceOptions): EvidenceWriter {
         endedAt: now().toISOString(),
         runner: meta.runBy,
         interactive: meta.interactive ?? false,
+        options: { allowHomeProfile: meta.allowHomeProfile ?? false },
         versions,
         result: outcome.result,
         promptsSent: outcome.promptsSent,

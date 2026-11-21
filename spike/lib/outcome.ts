@@ -37,6 +37,8 @@ export interface SpikeContext {
   humanStep(id: string, text: string): void;
   now(): Date;
   interactive: boolean;
+  /** True only when the run was started with `--allow-home-profile` (Q43, HS-S6). */
+  allowHomeProfile: boolean;
 }
 
 export interface SpikeOutcome {

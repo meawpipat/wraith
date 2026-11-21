@@ -563,6 +563,15 @@ Conventions:
     - _Requirements: R16.5_
     - Design: Testing Strategy
     - DoD: P0-D4 (supports)
+  - [x] 11.4 Add the explicit home-profile opt-in for Q43 (owner request 2026-11-21)
+    - HS-S6 is an owner permission, but `ctx.humanStep` only prints and records. Q43 may write into `~/.kiro/agents/` only when the run was started with `pnpm spike q43 --allow-home-profile`: add the flag to `parseArgs` and `RunArgs` in `spike/run.ts`, carry it into `SpikeContext` as a boolean (for example `allowHomeProfile`, false by default; update `lib/outcome.ts` and the test contexts), and record it in the evidence index (a field such as `options: { allowHomeProfile: boolean }`; update the index type, `evidence.ts` and its tests)
+    - The flag is accepted only with `q43` (any other spike id in the batch refuses it with a fixed message and exit 1); an unknown flag is still refused
+    - `spike/kiro/q43/q43.ts`: when the scratch placement fails and the flag is not set, write nothing to the home folder, do not run the home retry, and end `pending` with reason "scratch profile not found; HS-S6 open" and a note saying how to re-run (`pnpm spike q43 --allow-home-profile`), `openHumanSteps: ["HS-S6"]`, `placement.json` with `placement: null`; with the flag set the behaviour of 11.1 is unchanged (one new file, one retry, deleted in `finally`)
+    - Tests: `spike/test/spikes/q43.test.ts` for both paths (no flag: the home folder stays empty, result `pending`, HS-S6 open, the fake's log shows one launch only; flag: the 11.1 home-fallback test), `spike/test/run-args.test.ts` for the flag (accepted with `q43`, refused with another id, refused unknown), and an evidence test for the recorded option
+    - Update `spike/kiro/q43/README.md` (HS-S6 now needs the flag) and the Q43 text in design.md "Group B" if it says the fallback is automatic
+    - _Requirements: R16.7, R7.9_
+    - Design: "Group B" (Q43), "Agent profile generator"
+    - DoD: P0-D4 (supports)
 
 - [ ] 12. Owner-run Group B spike scripts: Q3, Q3b, Q10, Q4, Q11, Q23 (P0, authoring only)
   - DoD: P0-D4 (supports). Requirements: R14.1 to R14.9, R8.1 to R8.6, R7.12, R4.3. Design: "Group B", Properties 16, 17. The tasks WRITE the scripts, READMEs, metadata blocks and fake-based tests; RUNNING them is an owner step (HS-S2, HS-S3; see Notes), never a task. Every agent argv is `kiro-cli acp --agent-engine v3 --agent wraith-spike-<q>` (or without `--agent` when Q43 failed), cwd is the Scratch_Workspace, the profile pre-approves read-only tools only, every permission request goes to `askOwner`, and no script contains a path that answers a permission request without the owner's key.
