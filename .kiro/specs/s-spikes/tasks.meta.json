@@ -891,6 +891,49 @@
         "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
         "timestamp": 1795153788147
       }
+    ],
+    "11.1 Write the Q43 spike": [
+      {
+        "executionId": "4558515c-cf9d-47e9-af0e-5885ecaeab75",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795256477689
+      },
+      {
+        "executionId": "4558515c-cf9d-47e9-af0e-5885ecaeab75",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795265771364
+      }
+    ],
+    "11.2 Write the Q7 spike": [
+      {
+        "executionId": "4558515c-cf9d-47e9-af0e-5885ecaeab75",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795256484419
+      },
+      {
+        "executionId": "4558515c-cf9d-47e9-af0e-5885ecaeab75",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795265528293
+      }
+    ],
+    "11.3 Run the group verification (group 11)": [
+      {
+        "executionId": "4558515c-cf9d-47e9-af0e-5885ecaeab75",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795265778062
+      },
+      {
+        "executionId": "4558515c-cf9d-47e9-af0e-5885ecaeab75",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795265861318
+      }
+    ],
+    "11. Stage-2 spike scripts: Q43 and Q7 (P0, authoring only)": [
+      {
+        "executionId": "4558515c-cf9d-47e9-af0e-5885ecaeab75",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795265861373
+      }
     ]
   }
 }

@@ -540,24 +540,24 @@ Conventions:
     - Design: "Observe_Mode", D4
     - DoD: P0-D4 (supports)
 
-- [ ] 11. Stage-2 spike scripts: Q43 and Q7 (P0, authoring only)
+- [x] 11. Stage-2 spike scripts: Q43 and Q7 (P0, authoring only)
   - DoD: P0-D4 (supports). Requirements: R14.6, R16.5 to R16.9, R15.8, R8.3, R3.7. Design: "Group B" (Q43, Q7), "Agent profile generator". The tasks WRITE the scripts; RUNNING them is group 16 (conditional).
   - Files owned: `spike/kiro/{q43,q7}/{<q>.ts,README.md,evidence/.gitkeep}`, `spike/test/spikes/{q43,q7}.test.ts`.
-  - [ ] 11.1 Write the Q43 spike
+  - [x] 11.1 Write the Q43 spike
     - Script: writes the profile (`buildKiroProfile`, read-only tools only) into `<scratch>/.kiro/agents/wraith-spike-q43.json` and tries `kiro-cli acp --agent-engine v3 --agent wraith-spike-q43`; if the agent is not found or its tools are not applied, writes the same new file into `~/.kiro/agents/` (HS-S6; flag `wx`, recorded in the marker, deleted in cleanup) and retries once; sends `initialize`, `session/new` and at most one prompt that asks for a tool the profile does not pre-approve; the approval policy is `reject-all` so every permission request is answered `reject_once` (R16.9, R8.3); `PASS` when the process starts, the agent's tools or prompt apply and the tool asks; writes `placement.json` (`scratch` or `home`) that later spikes read through `profilePlacement`; on `FAIL` the branch is "launch without `--agent`, select it after `initialize` with `session/set_mode` or the agent config option" and the text to update is "§4.4/§5 argv", recorded without editing the architecture (R16.7)
     - Metadata: group J, cost low, run-by loop, agents kiro, max-prompts 1, max-wall-seconds 900, estimate-credits 0-3, human HS-S2 and HS-S6, depends none, shares none, allow-always never, assumption A1 Estimate
     - Test with `fake-kiro` (accepting and rejecting `--agent`): scratch placement wins when applied; home fallback creates one new file and cleanup deletes it; a permission request gets `reject_once` and no allow; at most one prompt is sent; the `FAIL` branch text
     - _Requirements: R16.5, R16.6, R16.7, R16.9, R15.8, R3.7_
     - Design: "Group B" (Q43), A5
     - DoD: P0-D4 (supports)
-  - [ ] 11.2 Write the Q7 spike
+  - [x] 11.2 Write the Q7 spike
     - Script: runs `kiro-cli chat --list-sessions --help` and the same with `--format json` (help only, no model prompt, no login use); the help text goes through the redactor (SI-token lines are replaced); `PASS` when a JSON output option exists; branch on `FAIL`: "use ACP `session/list` only" (R14.6)
     - Metadata: group B, cost none, run-by loop, agents none, max-prompts 0, max-wall-seconds 300, estimate-credits none, human none, depends none
     - Test with `fake-kiro`'s help text (with and without a JSON option, and with a line that holds an imported SI token): verdict and redaction
     - _Requirements: R14.6, R7.9_
     - Design: "Group B" (Q7), D9
     - DoD: P0-D4 (supports)
-  - [ ] 11.3 Run the group verification (group 11)
+  - [x] 11.3 Run the group verification (group 11)
     - Run `pnpm -r test`, `pnpm -r build`, `pnpm typecheck`, `pnpm -r --if-present check`, `pnpm lint`, `pnpm check:secrets`, `pnpm check:si` and `pnpm check:spikes`; all clean; no real `kiro-cli` was started
     - List the files this group changed for the commit
     - _Requirements: R16.5_
