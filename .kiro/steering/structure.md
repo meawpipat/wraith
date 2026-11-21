@@ -8,7 +8,7 @@ inclusion: always
 .kiro/
   steering/   product, tech, structure, security, ux-theme, agent-loop
   specs/      one folder per spec unit (§20): requirements.md, design.md, tasks.md
-  hooks/      protocol-codegen, test-on-save, no-trust-all-tools, no-auto-approve, fixture-redact-check, secret-scan
+  hooks/      protocol-codegen, test-on-save, no-trust-all, no-auto-approve, fixture-redact-check, secret-scan
   agents/     build agents for THIS repo (architect, implementer, reviewer, tester). Explicit allowlists: read/grep everywhere;
               fs_write only inside the repo; shell only `pnpm` (install/build/test/lint/typecheck), `git` (no push --force), `wrangler dev`.
               No wildcards. reviewer is read/grep only. (Bot launch configs in ~/.wraith/agents.json are a different thing; SI-2 applies to those.)
