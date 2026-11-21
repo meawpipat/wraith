@@ -33,7 +33,7 @@ The loop proceeds with the default unless the human answers. Source: `docs/archi
 | S-ops-7 | 2026-11-16 | Pseudo-file name used by hook scanners when the payload has no path | `hook-input.ts`, shared by all hook scanners | rule output and allowed-location matching for path-less payloads | yes (2026-11-17, owner) |
 | S-ops-8 | 2026-11-16 | `secret-scan` hook mode edge behaviour | Fails closed on non-object JSON; line numbers are relative to the matched string | hook exit codes for malformed input; reported line numbers | yes (2026-11-16, owner) |
 | S-spikes-1 | 2026-11-20 | Exit code when a secret is found in spike evidence | 22 (`EXIT.NEEDS_HUMAN`): the owner must stop, revoke and report. The design error table said 1; task 7.6 text fixed to 22 (owner, 2026-11-20) | `run.ts` exit code, `runner.integration.test.ts`, the design error table | yes (2026-11-20, owner) |
-| P-SI2-1 | 2026-11-20 | Let Claude bots launch on a machine whose `~/.claude/settings.json` holds allow rules (proposal below; no spec, steering or `unsafe.ts` edited yet) | None. SI-2 stays as written, so a Claude bot is refused with `E_AGENT_UNSAFE` on the owner's machine until this is decided | `architecture.md` §12.1 SI-2 and §6.9, `security.md`, `unsafe.ts`, S-protocol and later sprite/node specs; see "Files and tests" below | no |
+| P-SI2-1 | 2026-11-20 | Let Claude bots launch on a machine whose `~/.claude/settings.json` holds allow rules (proposal below; no spec, steering or `unsafe.ts` edited yet) | None. SI-2 stays as written, so a Claude bot is refused with `E_AGENT_UNSAFE` on the owner's machine until this is decided | `architecture.md` §12.1 SI-2 and §6.9, `security.md`, `unsafe.ts`, S-protocol and later sprite/node specs; see "Files and tests" below | yes (2026-11-20, owner, with two changes below; applied 2026-11-20 as DECISION-60) |
 
 ## Proposal P-SI2-1: Claude bots launch without the user setting source
 
@@ -65,7 +65,7 @@ Proposal:
 
 - Allow-list, not block-list: the only allowed mode is the asking mode. That is `manual` for the CLI. For older CLI versions, or for the SDK if its installed types still name the asking mode `default`, the allowed value is that name (🧪 read the real names from the SDK types in 13.8). Any other value, including a value this list has never seen, is refused (fail closed).
 - Add `auto` to the unsafe set, as a mode value in the Claude positions only (the CLI mode flag and the SDK mode option). It must not become a bare word match: `unsafe.ts` already holds a Grok `auto` pattern and "auto" is common prose.
-- Add the `--permission-prompts` flag to the unsafe argv flags until its meaning is read from the CLI help and a decision is taken (🧪; if it only chooses how prompts are shown, it may move to an allowed list later).
+- ~~Add the prompts flag to the unsafe argv flags~~ Superseded by change (a) of the resolution below: it is not unsafe, it must be `host`.
 - The existing pattern `claude-permission-mode-not-default` becomes "mode not in the asking set" and keeps its samples; samples for `manual` (allowed) and `auto` (refused) are added.
 - Version pinning: the SDK stays exact-pinned (RD-11). A constant `CLAUDE_CODE_CHECKED` (version range the allow-list was verified against) lives in `packages/protocol`. The sprite reads `claude --version` (argv array, no shell) before a launch and records it. Outside the range the launch still passes only if its mode is in the allow-list, and the node shows a "Claude Code version not checked" notice; a mode list change in a new version therefore cannot widen what is allowed. Task 13.8 re-reads the mode list from `claude --help` whenever the pinned version changes, owner-run.
 
@@ -94,3 +94,13 @@ Tests to add beyond those above: a launch-builder test that the user source is n
 1. Should project and local sources ever be loaded (CLAUDE.md-style project settings)? Proposal: no, until a later decision; then SI-2 checks those files too.
 2. Is "version not checked" a notice or a refusal? Proposal: notice, because the allow-list already fails closed.
 3. Which Claude Code versions does the owner run daily? The range in `CLAUDE_CODE_CHECKED` starts at 2.1.323.
+
+### Resolution (owner, 2026-11-20): approved with two changes
+
+- **(a) The prompts flag is not unsafe.** In `claude --help` (2.1.323) its choices are `host` (the SDK host or `--permission-prompt-tool` answers; the default) and `none` (anything that would prompt is denied). It is not added to the unsafe set as a flag. SI-2 requires it to be `host` (Wraith answers prompts) and refuses any other or unknown value. A launch that leaves it out is allowed because the default is `host`.
+- **(b) Project instructions, open item for task 13.8.** Check whether launching with no `project` setting source also drops the project instructions file. If it does, add the open item "how project instructions reach a Claude bot" to this file; until then it is unknown.
+- **Open questions decided:** (1) no project or local sources for now; (2) an unchecked Claude Code version is a notice, not a refusal; (3) the checked range starts at 2.1.323 (`CLAUDE_CODE_CHECKED_MIN`).
+
+Applied (one commit per area, 2026-11-20): `packages/protocol/src/unsafe.ts` (asking-mode allow-list `manual` and `default`, CLI and SDK forms, prompts must be `host`, `isClaudeAskingMode`, `CLAUDE_CODE_CHECKED_MIN`) with `test/unsafe-claude-modes.test.ts`; hook tests in `tools/test/si-hooks.test.ts` (the hooks and `check:si` read `unsafe.ts`, so no separate hook pattern file changed); `spike/lib/claude-launch.ts` (field `permMode` is `manual`, new `permPrompts`); the s-spikes and s-protocol requirement, design and task texts (new s-protocol task 14.9, done); `docs/architecture.md` 4.1.8 (SI-1 grep pattern, SI-2, §4.4, §6.9, §8.1, changelog C80, hook name `no-trust-all`), `security.md`, `agent-loop.md`, `structure.md`.
+
+Left open: the Terminal guard template still pins `defaultMode` to `"default"`; which name Claude Code 2.1.323 reads is confirmed in Q40 and task 13.8. The old hook name is still spelled in `.kiro/specs/s-ops-packaging/requirements.md`, `.kiro/specs/s-protocol/tasks.md` and `docs/PHASE-STATUS.md` (not in the owner's list).
