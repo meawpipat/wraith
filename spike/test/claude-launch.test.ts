@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { UNSAFE_TOKENS } from "../../tools/lib/unsafe-tokens.ts";
+import { CLAUDE_ASKING_MODES, UNSAFE_TOKENS } from "../../tools/lib/unsafe-tokens.ts";
 import {
   assertSafeClaudeLaunch,
   buildClaudeLaunch,
@@ -18,6 +18,16 @@ describe("claude launch options", () => {
     expect(() => assertSafeClaudeLaunch(sdk.received[0] as ClaudeLaunchView)).not.toThrow();
   });
 
+  it("accepts both asking modes and an absent or host prompts value", () => {
+    const { permPrompts: _p, ...noPrompts } = safe();
+    for (const permMode of CLAUDE_ASKING_MODES) {
+      expect(() => assertSafeClaudeLaunch({ ...safe(), permMode })).not.toThrow();
+    }
+    expect(() => assertSafeClaudeLaunch(noPrompts)).not.toThrow();
+    expect(safe().permPrompts).toBe("host");
+    expect(safe().settingSources).toEqual([]);
+  });
+
   it("accepts an absent tools list", () => {
     const { allowedTools: _t, ...rest } = safe();
     expect(() => assertSafeClaudeLaunch(rest)).not.toThrow();
@@ -33,6 +43,12 @@ describe("claude launch options", () => {
       { ...base, allowedTools: ["Read*"] },
       { ...base, settings: "/some/settings.json" },
       { ...base, settings: {} },
+      { ...base, permMode: "auto" },
+      { ...base, permMode: "bogus-new-mode" },
+      { ...base, permMode: "" },
+      { ...base, permPrompts: "none" },
+      { ...base, permPrompts: "something-else" },
+      { ...base, permPrompts: "" },
     ];
     for (const o of bad) expect(() => assertSafeClaudeLaunch(o)).toThrow(/^spike-claude-unsafe: /);
   });

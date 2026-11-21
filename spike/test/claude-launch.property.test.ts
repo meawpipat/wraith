@@ -1,6 +1,10 @@
 import * as fc from "fast-check";
 import { describe, it } from "vitest";
-import { UNSAFE_TOKENS } from "../../tools/lib/unsafe-tokens.ts";
+import {
+  CLAUDE_ASKING_MODES,
+  CLAUDE_PERMISSION_PROMPTS,
+  UNSAFE_TOKENS,
+} from "../../tools/lib/unsafe-tokens.ts";
 import {
   assertSafeClaudeLaunch,
   buildClaudeLaunch,
@@ -25,13 +29,18 @@ const tool = fc.oneof(
   fc.constantFrom("Write", "Bash", "Edit", "*", "Read*", "Task"),
   word,
 );
-const mode = fc.oneof(fc.constant("default"), fc.constantFrom("plan", "auto", "x"));
+const mode = fc.oneof(
+  fc.constantFrom(...CLAUDE_ASKING_MODES),
+  fc.constantFrom("plan", "auto", "x", "manuals", ""),
+);
+const prompts = fc.constantFrom<string | undefined>(undefined, undefined, "host", "none", "x", "");
 const settings = fc.constantFrom<unknown>(undefined, undefined, null, "", "/s.json", {});
 
 const options: fc.Arbitrary<ClaudeLaunchView> = fc
   .record({
     settingSources: fc.oneof(fc.constant([]), fc.array(word, { maxLength: 2 })),
     permMode: mode,
+    permPrompts: prompts,
     allowedTools: fc.option(fc.array(tool, { maxLength: 4 }), { nil: undefined }),
     allowRules: fc.oneof(fc.constant([]), fc.array(word, { maxLength: 2 })),
     settings,
@@ -48,6 +57,7 @@ const options: fc.Arbitrary<ClaudeLaunchView> = fc
       cwd: r.cwd,
       askOwner: () => {},
     };
+    if (r.permPrompts !== undefined) o.permPrompts = r.permPrompts;
     if (r.allowedTools !== undefined) o.allowedTools = r.allowedTools;
     if (r.settings !== undefined) o.settings = r.settings;
     return o;
@@ -56,7 +66,8 @@ const options: fc.Arbitrary<ClaudeLaunchView> = fc
 function expectedUnsafe(o: ClaudeLaunchView): boolean {
   return (
     o.settingSources.length > 0 ||
-    o.permMode !== "default" ||
+    !CLAUDE_ASKING_MODES.some((m) => m === o.permMode) ||
+    (o.permPrompts !== undefined && o.permPrompts !== CLAUDE_PERMISSION_PROMPTS) ||
     o.allowRules.length > 0 ||
     (o.allowedTools ?? []).some((t) => t.includes("*") || !READ_ONLY_CLAUDE_TOOLS.includes(t)) ||
     (o.settings !== undefined && o.settings !== null) ||

@@ -1,4 +1,9 @@
-import { findUnsafeToken } from "../../tools/lib/unsafe-tokens.ts";
+import {
+  CLAUDE_ASKING_MODES,
+  CLAUDE_PERMISSION_PROMPTS,
+  findUnsafeToken,
+  isClaudeAskingMode,
+} from "../../tools/lib/unsafe-tokens.ts";
 
 /**
  * Launch options for the Claude Agent SDK. UNVERIFIED (🧪): the field names are
@@ -7,8 +12,10 @@ import { findUnsafeToken } from "../../tools/lib/unsafe-tokens.ts";
 export interface ClaudeLaunchView {
   /** Filesystem setting sources. Must be empty. */
   readonly settingSources: readonly string[];
-  /** Must be "default". */
+  /** Must be an asking mode (`CLAUDE_ASKING_MODES`: `manual`, or `default` on older versions); any other value is refused. */
   readonly permMode: string;
+  /** Who answers prompts. Absent (the CLI default is `host`) or exactly `host`; anything else is refused. */
+  readonly permPrompts?: string;
   /** Tools that run without asking. Read-only tools only, or absent. */
   readonly allowedTools?: readonly string[];
   /** Allow rules. Must be empty. */
@@ -31,7 +38,8 @@ export interface BuildClaudeLaunchInput {
 export function buildClaudeLaunch(input: BuildClaudeLaunchInput): ClaudeLaunchView {
   return {
     settingSources: [],
-    permMode: "default",
+    permMode: CLAUDE_ASKING_MODES[0],
+    permPrompts: CLAUDE_PERMISSION_PROMPTS,
     allowedTools: [...READ_ONLY_CLAUDE_TOOLS],
     allowRules: [],
     cwd: input.cwd,
@@ -43,7 +51,10 @@ export function buildClaudeLaunch(input: BuildClaudeLaunchInput): ClaudeLaunchVi
 export function assertSafeClaudeLaunch(opts: ClaudeLaunchView): void {
   if (opts.settingSources.length > 0)
     throw new Error("spike-claude-unsafe: setting sources not empty");
-  if (opts.permMode !== "default") throw new Error("spike-claude-unsafe: permission mode");
+  if (!isClaudeAskingMode(opts.permMode)) throw new Error("spike-claude-unsafe: permission mode");
+  if (opts.permPrompts !== undefined && opts.permPrompts !== CLAUDE_PERMISSION_PROMPTS) {
+    throw new Error("spike-claude-unsafe: permission prompts must be host");
+  }
   if (opts.allowRules.length > 0) throw new Error("spike-claude-unsafe: allow rules not empty");
   for (const tool of opts.allowedTools ?? []) {
     if (tool.includes("*") || !READ_ONLY_CLAUDE_TOOLS.includes(tool)) {
