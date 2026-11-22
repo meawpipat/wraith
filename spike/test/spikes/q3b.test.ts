@@ -66,8 +66,8 @@ interface FakeOptions {
   hooks: "run" | "none";
   /** Run the tool whatever the hook exit code (Q3b FAIL: exit 2 does not block). */
   ignoreExit: boolean;
-  /** Kill the hook after this many ms on the second prompt; 0 waits for it. */
-  killSecondMs: number;
+  /** On the second prompt, kill the hook once this file exists; "" waits for the hook to end. */
+  releaseFile: string;
   logFile: string;
   /** Also look for the profile in <home>/.kiro/agents (Q43 home placement). */
   home: string;
@@ -78,7 +78,7 @@ function fakeAgentSource(o: FakeOptions): string {
   return `const CONFIG = ${JSON.stringify(o)};\n${String.raw`
 const fs = require("node:fs");
 const path = require("node:path");
-const { spawnSync } = require("node:child_process");
+const { spawn } = require("node:child_process");
 const argv = process.argv.slice(2);
 function log(r) { fs.appendFileSync(CONFIG.logFile, JSON.stringify(r) + "\n"); }
 function send(m) { process.stdout.write(JSON.stringify({ jsonrpc: "2.0", ...m }) + "\n"); }
@@ -95,7 +95,7 @@ function hookCommand() {
   }
   return null;
 }
-function onRequest(msg) {
+async function onRequest(msg) {
   const p = msg.params || {};
   if (msg.method === "initialize") {
     send({ id: msg.id, result: { protocolVersion: 1, agentCapabilities: {}, authMethods: [] } });
@@ -107,11 +107,15 @@ function onRequest(msg) {
     let run = true;
     const cmd = hookCommand();
     if (CONFIG.hooks === "run" && cmd !== null) {
-      const timeout = prompts === 2 && CONFIG.killSecondMs > 0 ? CONFIG.killSecondMs : undefined;
-      const r = spawnSync("/bin/sh", ["-c", cmd], {
-        input: JSON.stringify({ hook_event_name: "preToolUse", tool_name: "execute_bash", tool_input: { command: "echo hi" } }),
-        timeout,
-        killSignal: "SIGKILL",
+      const r = await new Promise((resolve) => {
+        const child = spawn("/bin/sh", ["-c", cmd], { stdio: ["pipe", "ignore", "ignore"] });
+        let poll = null;
+        child.on("close", (status, signal) => { if (poll) clearInterval(poll); resolve({ status, signal }); });
+        child.stdin.on("error", () => {});
+        child.stdin.end(JSON.stringify({ hook_event_name: "preToolUse", tool_name: "execute_bash", tool_input: { command: "echo hi" } }));
+        if (prompts === 2 && CONFIG.releaseFile !== "") {
+          poll = setInterval(() => { if (fs.existsSync(CONFIG.releaseFile)) child.kill("SIGKILL"); }, 20);
+        }
       });
       log({ kind: "hook", status: r.status, signal: r.signal, prompt: prompts });
       if (!CONFIG.ignoreExit && r.status !== 0) run = false;
@@ -146,6 +150,7 @@ interface Setup {
   repo: string;
   home: string;
   logFile: string;
+  releaseFile: string;
   files: Map<string, string>;
   asked: PermissionRequest[];
 }
@@ -209,7 +214,16 @@ function setup(answer: PermissionAnswer, allowHomeProfile = false): Setup {
     interactive: true,
     allowHomeProfile,
   };
-  return { ctx, root, repo, home, logFile: join(root, "fake.log"), files, asked };
+  return {
+    ctx,
+    root,
+    repo,
+    home,
+    logFile: join(root, "fake.log"),
+    releaseFile: join(root, "release"),
+    files,
+    asked,
+  };
 }
 
 function records(logFile: string): Record<string, unknown>[] {
@@ -224,9 +238,8 @@ async function withFake<T>(s: Setup, opts: Partial<FakeOptions>, fn: () => Promi
   const body = fakeAgentSource({
     hooks: "run",
     ignoreExit: false,
-    // Long enough for the hook client (a Node process) to start and reach the receiver under
-    // full-workspace parallel load; 300 ms let it be killed first about 1 run in 4.
-    killSecondMs: 3000,
+    // The hold is ended by the test (the release file), never by a real-time kill timer.
+    releaseFile: s.releaseFile,
     logFile: s.logFile,
     home: s.home,
     ...opts,
@@ -250,6 +263,12 @@ function baseIo(s: Setup, extra: Q3bIo = {}): Q3bIo {
     placement: "scratch",
     q3Result: "PASS",
     ...clock(),
+    // The held request is registered when the cap timer is set: that is the moment the fake agent
+    // may end its hook. The cap timer itself never fires here.
+    setTimer: () => {
+      writeFileSync(s.releaseFile, "go");
+      return { clear: () => {} };
+    },
     ...extra,
   };
 }
@@ -331,7 +350,7 @@ describe("Q3b script (fake kiro-cli that runs the hook command, stubbed owner)",
       timers.push({ fn, ms });
       return { clear: () => {} };
     };
-    await withFake(s, { killSecondMs: 0 }, async () => {
+    await withFake(s, { releaseFile: "" }, async () => {
       const done = run(s.ctx, baseIo(s, { setTimer }));
       for (let i = 0; i < 200 && timers.length === 0; i++) {
         await new Promise((r) => setTimeout(r, 50));
