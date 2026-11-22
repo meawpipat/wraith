@@ -625,6 +625,33 @@ Conventions:
     - _Requirements: R14.8_
     - Design: Testing Strategy
     - DoD: P0-D4 (supports)
+  - [x] 12.8 Fix the command form in the spike READMEs and test it (owner review 2026-11-22)
+    - `parseArgs` has no `run` subcommand: the form is `pnpm spike <id> [<id> ...] [flags]`. Replace every `pnpm spike run <id>` in the READMEs of `q13 q7 q23 q3b q10 q43 q11 q4 q3` (and any other `spike/**/README.md` that has it) and the text in `spike/kiro/q23/q23.ts` (standalone reason note and any other string) with `pnpm spike q3 q23` form
+    - Test `spike/test/spike-readmes.test.ts`: read every `spike/**/README.md`, extract each `pnpm spike ...` command (inline code), split it into arguments and check that `parseArgs` accepts it (known ids, known flags such as `--allow-home-profile` and `--observe-default`, no unknown subcommand); the test also reads the strings of `q23.ts` and the other `spike/**/*.ts` home-profile and standalone notes that contain `pnpm spike` and applies the same check
+    - _Requirements: R5.1, R5.4_
+    - Design: "Runner" (`pnpm spike`)
+    - DoD: P0-D4 (supports)
+  - [x] 12.9 Add `stop` to the evidence index and set it for Q3 and Q3b both FAIL
+    - `spike/lib/evidence.ts`: `EvidenceIndex.stop` (as the design says: read the design text "index.stop" and use its exact shape; if the design gives no shape, use `stop: { reason: string } | null`, null by default) written to `index.json`; `SpikeOutcome` gets the optional field the runner copies into the index (update `lib/outcome.ts`, `run.ts` and the evidence tests)
+    - `spike/kiro/q3b/q3b.ts`: when the Q3 result (read as now) and the Q3b result are both `FAIL`, return the stop field with the reason "Q3 and Q3b both FAIL: STOP (agent-loop 22.2)"; the runner prints it and ends the batch exit code with `EXIT.NEEDS_HUMAN` (22) only if the design says so, otherwise exit 0 and a printed line; keep `decision.json` as it is
+    - Tests: an evidence test that `stop` is written and defaults to null, a Q3b test for both FAIL (stop set) and for any other combination (stop null), a runner test that the stop line is printed
+    - _Requirements: R11.1, R11.2, R17.5_
+    - Design: "Group B" (Q3b), "Evidence"
+    - DoD: P0-D4 (supports)
+  - [x] 12.10 Record the Q3b timeout as an upper bound
+    - The receiver cannot see the hook connection close, so the measured hold time is the time to the next tool update of the agent or the 130 s cap, whichever came first: an upper bound of the time the agent waited. In `q3b.ts` name the evidence field accordingly (for example `timeoutUpperBoundMs` and `timeoutBoundKind: "agent-resumed" | "cap"` in `hook-timeout.json`), add a note to the outcome, and say it in `spike/kiro/q3b/README.md` under "What to read in the evidence"; update the Q3b tests
+    - _Requirements: R11.1_
+    - Design: "Group B" (Q3b)
+    - DoD: P0-D4 (supports)
+  - [x] 12.11 Make the Q3b test independent of real time (low priority)
+    - The Q3b test still waits for a real 3000 ms kill timer of its local fake agent. If cheap, give the fake and the script an injectable timer or clock as in `acp-echo` (`setTimer`), so no real time decides the outcome; if it is not cheap, STOP and report what blocks it, change nothing
+    - Run `spike/test/spikes/q3b.test.ts` 10 times in a row and report the count
+    - DoD: P0-D4 (supports)
+  - [x] 12.12 Accept `--allow-home-profile` for every Kiro profile spike, not only Q43
+    - Task 11.4 made `parseArgs` accept the flag only for `q43` alone, so Q3, Q3b, Q10, Q4, Q11 and Q23 can never write a home profile (their `ctx.allowHomeProfile` is always false) while their notes and READMEs tell the owner to re-run with the flag. Fix: `parseArgs` accepts `--allow-home-profile` when every id of the batch is a Kiro profile spike (`q43 q3 q3b q10 q4 q11 q23 q30 q31 q32 q35`), still refuses it for any other id with the fixed message; the notes and READMEs name the spike's own command (`pnpm spike q3 --allow-home-profile`; for Q23 `pnpm spike q3 q23 --allow-home-profile`; Q43 stays `pnpm spike q43 --allow-home-profile`); keep `spike/test/spike-readmes.test.ts` green
+    - Tests: `run-args.test.ts` (accepted for `q3 q23`, `q10`, `q43`; refused for `q2`, `q3 q2`, `q14`), and the existing home-profile tests of the Kiro spikes still pass
+    - _Requirements: R16.7_
+    - DoD: P0-D4 (supports)
 
 - [ ] 13. Owner-run Group I and J spike scripts: Q30, Q32, Q31, Q33, Q35 (P0, authoring only)
   - DoD: P0-D4 (supports). Requirements: R15.1 to R15.10, R16.1 to R16.4, R16.8, R7.11, R8.4, R8.7. Design: "Group I", "Group J", "Claude launch options", Properties 18, 22. The tasks WRITE the scripts; RUNNING them is an owner step (HS-S2, HS-S3, HS-S6, HS-S7; see Notes). Every Group I script runs in a Scratch_Workspace inside the Spike_Root, never in one of the owner's projects (R15.1).

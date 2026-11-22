@@ -1041,6 +1041,71 @@
         "executionId": "5853e0cd-1c29-4ebc-bbb0-8f148ebb1589",
         "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
         "timestamp": 1795319215345
+      },
+      {
+        "executionId": "b3ac4b92-d98b-424d-8ece-cc709a5e95df",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795321935000
+      }
+    ],
+    "12.8 Fix the command form in the spike READMEs and test it (owner review 2026-11-22)": [
+      {
+        "executionId": "b3ac4b92-d98b-424d-8ece-cc709a5e95df",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795321325020
+      },
+      {
+        "executionId": "b3ac4b92-d98b-424d-8ece-cc709a5e95df",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795321595773
+      }
+    ],
+    "12.9 Add `stop` to the evidence index and set it for Q3 and Q3b both FAIL": [
+      {
+        "executionId": "b3ac4b92-d98b-424d-8ece-cc709a5e95df",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795321325283
+      },
+      {
+        "executionId": "b3ac4b92-d98b-424d-8ece-cc709a5e95df",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795321583600
+      }
+    ],
+    "12.12 Accept `--allow-home-profile` for every Kiro profile spike, not only Q43": [
+      {
+        "executionId": "b3ac4b92-d98b-424d-8ece-cc709a5e95df",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795321603401
+      },
+      {
+        "executionId": "b3ac4b92-d98b-424d-8ece-cc709a5e95df",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795321706680
+      }
+    ],
+    "12.10 Record the Q3b timeout as an upper bound": [
+      {
+        "executionId": "b3ac4b92-d98b-424d-8ece-cc709a5e95df",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795321716590
+      },
+      {
+        "executionId": "b3ac4b92-d98b-424d-8ece-cc709a5e95df",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795321805674
+      }
+    ],
+    "12.11 Make the Q3b test independent of real time (low priority)": [
+      {
+        "executionId": "b3ac4b92-d98b-424d-8ece-cc709a5e95df",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795321812651
+      },
+      {
+        "executionId": "b3ac4b92-d98b-424d-8ece-cc709a5e95df",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795321934940
       }
     ]
   }
