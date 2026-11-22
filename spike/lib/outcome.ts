@@ -47,6 +47,8 @@ export interface SpikeOutcome {
   reason?: string;
   criteria: CriterionRecord[];
   branch?: string;
+  /** Set by a spike whose result is an agent-loop stop condition (Q3 and Q3b both FAIL). */
+  stop?: { reason: string };
   affects: string[];
   /** HS-S1 .. HS-S8. */
   openHumanSteps: string[];

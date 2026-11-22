@@ -380,6 +380,7 @@ describe("Q3b script (fake kiro-cli that runs the hook command, stubbed owner)",
       expect(out.result).toBe("FAIL");
       expect(criterion(out, "q3b-exit2-blocks")).toBe(false);
       expect(out.branch).toBe(STOP_BRANCH);
+      expect(out.stop).toEqual({ reason: "Q3 and Q3b both FAIL: STOP (agent-loop 22.2)" });
       expect(JSON.parse(s.files.get("decision.json") ?? "{}")).toEqual({
         q3: "FAIL",
         q3b: "FAIL",

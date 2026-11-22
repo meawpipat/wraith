@@ -155,6 +155,22 @@ describe("EvidenceWriter", () => {
     expect(readFileSync(join(w.dir, "index.json"), "utf8")).not.toContain(secret);
   });
 
+  it("writes stop=false by default and stop=true with a reason when the outcome sets it", async () => {
+    const off = await writer().finish(outcome("PASS"), { id: "q2", runBy: "loop" }, { node: "22" });
+    expect(off.stop).toBe(false);
+    expect(off.stopReason).toBeUndefined();
+    const w = writer();
+    const on = await w.finish(
+      { ...outcome("FAIL"), stop: { reason: "both FAIL" } },
+      { id: "q3b", runBy: "loop" },
+      { node: "22" },
+    );
+    expect(on.stop).toBe(true);
+    const disk = JSON.parse(readFileSync(join(w.dir, "index.json"), "utf8"));
+    expect(disk.stop).toBe(true);
+    expect(disk.stopReason).toBe("both FAIL");
+  });
+
   it("records the home-profile option in the index, false by default", async () => {
     const off = await writer().finish(
       outcome("PASS"),

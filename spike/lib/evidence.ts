@@ -43,6 +43,10 @@ export interface EvidenceIndex {
   files: { path: string; bytes: number; sha256: string; redacted: Record<string, number> }[];
   openHumanSteps: string[];
   branch?: string;
+  /** Design "Q3b": `index.stop = true` when the loop must stop; false otherwise. */
+  stop: boolean;
+  /** One redacted line, present only when `stop` is true. */
+  stopReason?: string;
   affects: string[];
 }
 
@@ -247,8 +251,10 @@ export function createEvidenceWriter(o: EvidenceOptions): EvidenceWriter {
         })),
         files: [...files],
         openHumanSteps: [...outcome.openHumanSteps],
+        stop: outcome.stop !== undefined,
         affects: [...outcome.affects],
       };
+      if (outcome.stop !== undefined) index.stopReason = oneLine(outcome.stop.reason);
       if (outcome.reason !== undefined) index.reason = oneLine(outcome.reason);
       if (outcome.branch !== undefined) index.branch = oneLine(outcome.branch);
       writeChecked(join(dir, "index.json"), `${JSON.stringify(index, null, 2)}\n`, toolsRoot);

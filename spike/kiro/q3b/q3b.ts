@@ -63,6 +63,7 @@ export const HOME_PENDING_REASON = "Q43 placed the profile in ~/.kiro/agents/; H
 export const HOME_PENDING_NOTE =
   "Nothing was written to ~/.kiro/agents/. To allow one new file there (HS-S6), re-run: pnpm spike q3b --allow-home-profile";
 export const ONE_SHOT_BRANCH = "approval via `preToolUse` + one-shot grant";
+export const STOP_REASON = "Q3 and Q3b both FAIL: STOP (agent-loop 22.2)";
 export const STOP_BRANCH =
   "STOP: Q3 and Q3b both FAIL; neither `session/request_permission` nor a blocking `preToolUse` hook works (exit code stays 0)";
 
@@ -419,6 +420,7 @@ export async function run(ctx: SpikeContext, io: Q3bIo = {}): Promise<SpikeOutco
   const q3 = io.q3Result !== undefined ? io.q3Result : readQ3Result(repoRoot);
   const decision = decideBranch(outcome.result, q3);
   if (decision.branch !== undefined) outcome.branch = decision.branch;
+  if (decision.stop) outcome.stop = { reason: STOP_REASON };
   notes.push(decision.note);
 
   await ctx.evidence.addJsonl("frames.jsonl", asyncFileLines([rawLog]));

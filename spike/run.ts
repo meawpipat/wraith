@@ -560,6 +560,7 @@ export async function main(argv: string[], io: RunIo): Promise<number> {
         openSteps.push(...outcome.openHumanSteps);
         if (outcome.result === "pending") anyPending = true;
         io.out(`${q}: ${outcome.result} (evidence ${evidence.stamp})`);
+        if (outcome.stop !== undefined) io.out(`${q}: STOP, ${outcome.stop.reason}`);
       }
 
       if (openSteps.length > 0) {
