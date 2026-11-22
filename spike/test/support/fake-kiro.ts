@@ -11,6 +11,13 @@ export interface FakeKiroOptions {
   readonly changeReplayIds?: boolean;
   /** When false, no `session/request_permission` is sent (Q43 `FAIL`: no request arrives). Default true. */
   readonly askPermission?: boolean;
+  /**
+   * Q32: a temp home. With `--agent <name>` the fake reads `<profileHome>/.kiro/agents/<name>.json`
+   * at start (exit 1 when missing) and answers every prompt with that profile's `prompt` text.
+   */
+  readonly profileHome?: string;
+  /** Q32: file where session ids survive a process restart, so `session/load` works after one. */
+  readonly sessionsFile?: string;
 }
 
 /**
@@ -28,6 +35,8 @@ export function fakeKiroSource(opts: FakeKiroOptions): string {
     acceptedAgents: opts.acceptedAgents ?? null,
     changeReplayIds: opts.changeReplayIds ?? false,
     askPermission: opts.askPermission ?? true,
+    profileHome: opts.profileHome ?? null,
+    sessionsFile: opts.sessionsFile ?? null,
   };
   return `const CONFIG = ${JSON.stringify(config)};\n${ACP_BODY}`;
 }
@@ -61,6 +70,25 @@ function runAcp() {
     if (CONFIG.acceptedAgents && !CONFIG.acceptedAgents.includes(name)) {
       process.stderr.write("unknown agent: " + name + "\n");
       process.exit(1);
+    }
+  }
+
+  let agentPrompt = null;
+  if (CONFIG.profileHome && agentAt >= 0) {
+    const file = CONFIG.profileHome + "/.kiro/agents/" + argv[agentAt + 1] + ".json";
+    try {
+      agentPrompt = String(JSON.parse(fs.readFileSync(file, "utf8")).prompt);
+    } catch (error) {
+      process.stderr.write("cannot read agent profile\n");
+      process.exit(1);
+    }
+  }
+  function knownSessions() {
+    if (!CONFIG.sessionsFile) return [];
+    try {
+      return fs.readFileSync(CONFIG.sessionsFile, "utf8").split("\n").filter(Boolean);
+    } catch (error) {
+      return [];
     }
   }
 
@@ -192,9 +220,13 @@ function runAcp() {
     } else if (msg.method === "session/new") {
       const sessionId = "sess-" + ++sessionCount;
       sessions.set(sessionId, { mcpServers: p.mcpServers || [], prompts: 0 });
+      if (CONFIG.sessionsFile) fs.appendFileSync(CONFIG.sessionsFile, sessionId + "\n");
       send({ id: msg.id, result: { sessionId } });
       commands(sessionId);
     } else if (msg.method === "session/load") {
+      if (!sessions.has(p.sessionId) && knownSessions().includes(p.sessionId)) {
+        sessions.set(p.sessionId, { mcpServers: [], prompts: 0 });
+      }
       const session = sessions.get(p.sessionId);
       if (!session) return fail(msg.id, -32602, "unknown session");
       if (p.mcpServers) session.mcpServers = p.mcpServers;
@@ -223,7 +255,13 @@ function runAcp() {
       if (!session) return fail(msg.id, -32602, "unknown session");
       session.prompts++;
       log({ kind: "prompt", number: session.prompts });
-      if (session.prompts === 1) {
+      if (agentPrompt !== null) {
+        notify(p.sessionId, {
+          sessionUpdate: "agent_message_chunk",
+          messageId: "m-" + p.sessionId + "-a" + session.prompts,
+          content: { type: "text", text: agentPrompt },
+        });
+      } else if (session.prompts === 1) {
         if (!(await firstPrompt(msg.id, p.sessionId, session))) return;
       } else {
         notify(p.sessionId, {
