@@ -24,8 +24,11 @@ file is written there and deleted afterwards. Without the flag the result is `pe
 The timeout probe takes up to 130 s and needs no key: the receiver holds one request unanswered.
 ## What to read in the evidence
 - `frames.jsonl`: the redacted ACP frames. `hook-events.jsonl`: what the receiver decided per call.
-- `hook-timeout.json`: the measured value. The receiver cannot see the connection close, so `ms` is the time
-  until the agent's next terminal tool update (`agent-resumed`), or the 130 s cap (`cap`: the timeout is above it).
+- `hook-timeout.json`: an upper bound, not the hook timeout itself. The receiver cannot see the hook connection
+  close, so `timeoutUpperBoundMs` is the time until the agent's next tool update (`timeoutBoundKind` =
+  `agent-resumed`), the end of the prompt (`prompt-ended`), or the 130 s cap (`cap`: the timeout is above it),
+  whichever came first. It bounds how long the agent waited; the real timeout is at most that value.
+  Both fields are `null` when nothing was measured.
 - `decision.json`: Q3 result, Q3b result, `stop`, and the selected branch.
 - `index.json`: criteria `q3b-hook-fires`, `q3b-before-tool`, `q3b-exit2-blocks`, `q3b-timeout-measured`.
 - `PASS`: the hook fired before the tool, the block stopped it, and the timeout was measured.

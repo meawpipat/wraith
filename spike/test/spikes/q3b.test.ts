@@ -289,7 +289,12 @@ describe("Q3b script (fake kiro-cli that runs the hook command, stubbed owner)",
         "wraith-spike-q3b",
       ]);
       const timeout = JSON.parse(s.files.get("hook-timeout.json") ?? "{}");
-      expect(timeout.measured).toEqual({ ms: 7000, how: "agent-resumed" });
+      expect(timeout.timeoutUpperBoundMs).toBe(7000);
+      expect(timeout.timeoutBoundKind).toBe("agent-resumed");
+      expect(timeout.measured).toBeUndefined();
+      expect(timeout.note).toContain("upper bound");
+      expect(out.notes.some((n) => n.includes("upper bound"))).toBe(true);
+      expect(criterion(out, "q3b-timeout-measured")).toBe(true);
       const events = (s.files.get("hook-events.jsonl") ?? "")
         .split("\n")
         .filter((l) => l !== "")
@@ -336,7 +341,8 @@ describe("Q3b script (fake kiro-cli that runs the hook command, stubbed owner)",
       const out = await done;
       expect(out.result).toBe("PASS");
       const timeout = JSON.parse(s.files.get("hook-timeout.json") ?? "{}");
-      expect(timeout.measured.how).toBe("cap");
+      expect(timeout.timeoutBoundKind).toBe("cap");
+      expect(timeout.timeoutUpperBoundMs).toBe(7000);
       expect(out.criteria.find((c) => c.id === "q3b-timeout-measured")?.observed).toContain("cap");
       expect(
         records(s.logFile)

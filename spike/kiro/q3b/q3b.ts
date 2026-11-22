@@ -59,6 +59,8 @@ export const PROBE_PROMPT = "Run `echo hi` with your shell tool and tell me the 
 export const HOLD_PROMPT = "Run `echo hi` once more with your shell tool and tell me the output.";
 export const HOOK_MATCHER = "*";
 export const HOLD_CAP_MS = 130_000;
+export const TIMEOUT_BOUND_NOTE =
+  "The receiver cannot see the hook connection close. timeoutUpperBoundMs is the time until the agent's next tool update (agent-resumed), the end of the prompt (prompt-ended) or the cap (cap), whichever came first: an upper bound of how long the agent waited, not the hook timeout itself.";
 export const HOME_PENDING_REASON = "Q43 placed the profile in ~/.kiro/agents/; HS-S6 open";
 export const HOME_PENDING_NOTE =
   "Nothing was written to ~/.kiro/agents/. To allow one new file there (HS-S6), re-run: pnpm spike q3b --allow-home-profile";
@@ -383,11 +385,12 @@ export async function run(ctx: SpikeContext, io: Q3bIo = {}): Promise<SpikeOutco
         m === null
           ? "not measured"
           : m.how === "cap"
-            ? `agent still waiting at the ${m.ms} ms cap; hook timeout is above the cap`
-            : `${m.ms} ms until ${m.how}`,
+            ? `upper bound ${m.ms} ms (cap): the agent was still waiting at the cap; the hook timeout is above it`
+            : `upper bound ${m.ms} ms (${m.how}): the agent had stopped waiting by then; the real timeout is at most this`,
     },
   ];
   if (error !== null) notes.push(`run error: ${error}`);
+  if (m !== null) notes.push(TIMEOUT_BOUND_NOTE);
   if (permissions.length > 0)
     notes.push(`Kiro also sent ${permissions.length} permission request(s)`);
 
@@ -434,10 +437,11 @@ export async function run(ctx: SpikeContext, io: Q3bIo = {}): Promise<SpikeOutco
     "hook-timeout.json",
     `${JSON.stringify(
       {
-        measured: m,
+        timeoutUpperBoundMs: m === null ? null : m.ms,
+        timeoutBoundKind: m === null ? null : m.how,
         capMs,
         probeStopReason,
-        note: "the receiver cannot see the connection close; ms is until the agent's next terminal tool update or the cap",
+        note: TIMEOUT_BOUND_NOTE,
       },
       null,
       2,
