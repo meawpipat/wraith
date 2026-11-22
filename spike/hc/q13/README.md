@@ -7,7 +7,7 @@ the sprite's ACP or queue work? The expected answer is no (branch "use the sprit
 
 Run after Q2 (it reads Q2's `schema.json`). The loop runs it, never CI:
 
-`pnpm spike run q13`
+`pnpm spike q13`
 
 Uses the Test_Session only. Runs `hc templates`, a stub run, a template run and `hc wait`.
 No agent CLI, no prompts, no cost.

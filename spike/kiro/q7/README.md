@@ -2,7 +2,7 @@
 Question: can the node list Kiro sessions as JSON from the CLI? If not, the branch is
 "use ACP `session/list` only".
 ## How to run
-The loop runs it (group 16), never CI: `pnpm spike run q7`
+The loop runs it (group 16), never CI: `pnpm spike q7`
 It runs only `kiro-cli chat --list-sessions --help` and the same with `--format json`.
 No model prompt, no login use, no cost.
 ## Human steps

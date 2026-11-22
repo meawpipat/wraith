@@ -3,7 +3,7 @@ Question: if Kiro does not send `session/request_permission` (Q3 `FAIL`), can ap
 `preToolUse` hook? The hook must fire before the tool, exit code 2 must stop the tool, and the time
 Kiro waits for a hook that does not answer must be known. Q43 decides where the profile is loaded from.
 ## How to run
-The owner runs it in a real terminal (never CI, never the loop): `pnpm spike run q3b`
+The owner runs it in a real terminal (never CI, never the loop): `pnpm spike q3b`
 Run Q3 first (`depends: q3`), so the joint branch can be decided.
 It writes `wraith-spike-q3b.json` (read-only tools pre-approved, plus one `preToolUse` hook) into
 `<scratch>/.kiro/agents/` and starts `kiro-cli acp --agent-engine v3 --agent wraith-spike-q3b`

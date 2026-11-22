@@ -48,12 +48,27 @@ const SUBCOMMANDS = ["list", "record", "budget"] as const;
 export interface RunArgs {
   ids: SpikeId[];
   observeDefault: boolean;
-  /** `--allow-home-profile`: lets Q43 write one new file into `~/.kiro/agents/` (HS-S6). */
+  /** `--allow-home-profile`: lets a Kiro profile spike write one new file into `~/.kiro/agents/` (HS-S6). */
   allowHomeProfile: boolean;
   subcommand?: "list" | "record" | "budget";
   /** Arguments after the subcommand (for `record` and `budget`). */
   rest: string[];
 }
+
+/** Spikes that launch a Kiro agent from a profile and may need the home fallback (HS-S6). */
+const KIRO_PROFILE_SPIKES: readonly string[] = [
+  "q43",
+  "q3",
+  "q3b",
+  "q10",
+  "q4",
+  "q11",
+  "q23",
+  "q30",
+  "q31",
+  "q32",
+  "q35",
+];
 
 function isSpikeId(s: string): s is SpikeId {
   return (OWNER_LIST as readonly string[]).includes(s);
@@ -92,8 +107,8 @@ export function parseArgs(argv: string[]): RunArgs | { error: string } {
   if (observeDefault && !(ids.length === 1 && ids[0] === "q14")) {
     return { error: "--observe-default is only for q14" };
   }
-  if (allowHomeProfile && !(ids.length === 1 && ids[0] === "q43")) {
-    return { error: "--allow-home-profile is only for q43" };
+  if (allowHomeProfile && !ids.every((id) => KIRO_PROFILE_SPIKES.includes(id))) {
+    return { error: "--allow-home-profile is only for the Kiro profile spikes" };
   }
   return { ids, observeDefault, allowHomeProfile, rest: [] };
 }

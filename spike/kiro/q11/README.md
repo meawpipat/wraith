@@ -3,7 +3,7 @@ Question: when the ACP client passes `mcpServers:[{type:"http", name, url, heade
 to `session/new`, does `kiro-cli acp` connect to it and call the `echo` tool? The entry shape was
 checked against the SDK types by Q10; the `mcpCapabilities` of the `initialize` response are recorded.
 ## How to run
-The owner runs it in a real terminal (never CI, never the loop): `pnpm spike run q11`
+The owner runs it in a real terminal (never CI, never the loop): `pnpm spike q11`
 (normally in the stage 3 batch: `pnpm spike q3 q3b q10 q4 q11 q23`).
 It starts a local MCP echo server on `127.0.0.1` (random port, random token required in the
 `x-wraith-spike-token` header), writes `wraith-spike-q11.json` (read-only tools pre-approved, nothing

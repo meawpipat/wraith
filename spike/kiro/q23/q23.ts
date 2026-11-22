@@ -48,7 +48,7 @@ export const DEDUPE_BRANCH =
   "replayed ids differ between loads: dedupe replayed updates with hash(turnIndex, text)";
 export const HOME_PENDING_REASON = "Q43 placed the profile in ~/.kiro/agents/; HS-S6 open";
 export const HOME_PENDING_NOTE =
-  "Nothing was written to ~/.kiro/agents/. To allow one new file there (HS-S6), re-run: pnpm spike run q3 q23 --allow-home-profile";
+  "Nothing was written to ~/.kiro/agents/. To allow one new file there (HS-S6), re-run: pnpm spike q3 q23 --allow-home-profile";
 
 export interface Q23Io {
   /** Replaces `os.homedir()`; tests point it at a temp folder. */
@@ -84,7 +84,7 @@ export async function run(ctx: SpikeContext, io: Q23Io = {}): Promise<SpikeOutco
   const sessionId = shared?.owner === "q3" ? shared.data.sessionId : undefined;
   const sharedCwd = shared?.owner === "q3" ? shared.data.cwd : undefined;
   if (typeof sessionId !== "string" || sessionId === "") {
-    return pending(STANDALONE_REASON, ["Run it as `pnpm spike run q3 q23`."], []);
+    return pending(STANDALONE_REASON, ["Run it as `pnpm spike q3 q23`."], []);
   }
   const cwd = typeof sharedCwd === "string" && sharedCwd !== "" ? sharedCwd : ctx.scratch;
 

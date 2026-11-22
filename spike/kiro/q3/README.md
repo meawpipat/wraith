@@ -3,7 +3,7 @@ Question: for a tool the profile does not pre-approve (the shell tool), does `ki
 ACP `session/request_permission` with `options[]`, and does the tool run after the owner selects an
 allow option? Q43 decides where the profile is loaded from (`placement.json`).
 ## How to run
-The owner runs it in a real terminal (never CI, never the loop): `pnpm spike run q3`
+The owner runs it in a real terminal (never CI, never the loop): `pnpm spike q3`
 It writes `wraith-spike-q3.json` (read-only tools pre-approved, nothing else) into
 `<scratch>/.kiro/agents/` and starts `kiro-cli acp --agent-engine v3 --agent wraith-spike-q3`
 (without `--agent` when Q43 failed). One prompt: "run `echo hi`". Cost: about 2 to 6 credits.

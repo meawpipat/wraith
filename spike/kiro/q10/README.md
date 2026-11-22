@@ -4,7 +4,7 @@ raw client (initialize, new session, one prompt, update stream, permission reque
 frames and no schema rejection? It also confirms against the SDK's own schema the field names Q11
 uses (`mcpServers` http entry, `session/list`).
 ## How to run
-The owner runs it in a real terminal (never CI, never the loop): `pnpm spike run q10`
+The owner runs it in a real terminal (never CI, never the loop): `pnpm spike q10`
 It writes `wraith-spike-q10.json` (read-only tools pre-approved, nothing else) into
 `<scratch>/.kiro/agents/`, then starts `kiro-cli acp --agent-engine v3 --agent wraith-spike-q10`
 twice, one run per client (raw, then SDK). One prompt each, asking for a read-only tool. Cost:

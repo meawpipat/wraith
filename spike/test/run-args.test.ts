@@ -65,18 +65,25 @@ describe("parseArgs", () => {
 });
 
 describe("parseArgs --allow-home-profile", () => {
-  it("is accepted with q43 only", () => {
+  const refused = { error: "--allow-home-profile is only for the Kiro profile spikes" };
+
+  it("is accepted when every id is a Kiro profile spike", () => {
     expect(parseArgs(["q43", "--allow-home-profile"])).toMatchObject({
       ids: ["q43"],
       allowHomeProfile: true,
     });
+    expect(parseArgs(["q3", "q23", "--allow-home-profile"])).toMatchObject({
+      ids: ["q3", "q23"],
+      allowHomeProfile: true,
+    });
+    expect(parseArgs(["q10", "--allow-home-profile"])).toMatchObject({ allowHomeProfile: true });
     expect(parseArgs(["q43"])).toMatchObject({ allowHomeProfile: false });
-    expect(parseArgs(["q3", "--allow-home-profile"])).toEqual({
-      error: "--allow-home-profile is only for q43",
-    });
-    expect(parseArgs(["q43", "q3", "--allow-home-profile"])).toEqual({
-      error: "--allow-home-profile is only for q43",
-    });
+  });
+
+  it("is refused when any id is not a Kiro profile spike", () => {
+    expect(parseArgs(["q2", "--allow-home-profile"])).toEqual(refused);
+    expect(parseArgs(["q3", "q2", "--allow-home-profile"])).toEqual(refused);
+    expect(parseArgs(["q14", "--allow-home-profile"])).toEqual(refused);
   });
 
   it("still refuses an unknown flag", () => {

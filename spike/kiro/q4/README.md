@@ -3,7 +3,7 @@ Question: when the client sends `clientCapabilities.terminal: true`, does `kiro-
 shell command through the ACP terminal methods, so a chat client could stream its live output?
 Q43 decides where the profile is loaded from (`placement.json`). Q3 should have passed first.
 ## How to run
-The owner runs it in a real terminal (never CI, never the loop): `pnpm spike run q4`
+The owner runs it in a real terminal (never CI, never the loop): `pnpm spike q4`
 It writes `wraith-spike-q4.json` (read-only tools pre-approved, nothing else) into
 `<scratch>/.kiro/agents/` and starts `kiro-cli acp --agent-engine v3 --agent wraith-spike-q4`
 (without `--agent` when Q43 failed). One prompt: run `sleep 20; echo done` with the shell tool.

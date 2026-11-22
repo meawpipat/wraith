@@ -3,7 +3,7 @@ Question: is a profile in the Scratch_Workspace (`<scratch>/.kiro/agents/`) foun
 `--agent`, or only one in `~/.kiro/agents/`? Do its tools apply (a tool it does not
 pre-approve must ask)? Later Kiro spikes read the answer from `placement.json`.
 ## How to run
-The loop runs it (group 16), never CI: `pnpm spike run q43`
+The loop runs it (group 16), never CI: `pnpm spike q43`
 It writes `wraith-spike-q43.json` (read-only tools pre-approved, nothing else) into
 `<scratch>/.kiro/agents/` and starts `kiro-cli acp --agent-engine v3 --agent wraith-spike-q43`.
 It sends `initialize`, `session/new` and one prompt that asks for the shell tool.
