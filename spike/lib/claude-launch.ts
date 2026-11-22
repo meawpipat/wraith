@@ -6,8 +6,13 @@ import {
 } from "../../tools/lib/unsafe-tokens.ts";
 
 /**
- * Launch options for the Claude Agent SDK. UNVERIFIED (🧪): the field names are
- * WORKING NAMES. Task 13.8 reads the real names from the installed SDK types.
+ * Launch options for the Claude Agent SDK. `settingSources`, `allowedTools`,
+ * `settings` and `cwd` are the real SDK `Options` names (0.3.330, task 13.8).
+ * `permMode` and `permPrompts` are Wraith short names for the SDK's longer
+ * permission options: the SDK's long names are flagged by `check:spikes`
+ * (spike/unsafe-token-patterns), so the rename is NOT done; see
+ * spike/notes/claude-sdk-13-8.md. `allowRules` is not an SDK option.
+ * `askOwner` is bound to the SDK `canUseTool` callback.
  */
 export interface ClaudeLaunchView {
   /** Filesystem setting sources. Must be empty. */
@@ -38,7 +43,8 @@ export interface BuildClaudeLaunchInput {
 export function buildClaudeLaunch(input: BuildClaudeLaunchInput): ClaudeLaunchView {
   return {
     settingSources: [],
-    permMode: CLAUDE_ASKING_MODES[0],
+    // The SDK asking mode is named in its PermissionMode type; it is the second entry of CLAUDE_ASKING_MODES.
+    permMode: CLAUDE_ASKING_MODES[1],
     permPrompts: CLAUDE_PERMISSION_PROMPTS,
     allowedTools: [...READ_ONLY_CLAUDE_TOOLS],
     allowRules: [],

@@ -25,6 +25,7 @@ describe("claude launch options", () => {
     }
     expect(() => assertSafeClaudeLaunch(noPrompts)).not.toThrow();
     expect(safe().permPrompts).toBe("host");
+    expect(safe().permMode).toBe("default");
     expect(safe().settingSources).toEqual([]);
   });
 
