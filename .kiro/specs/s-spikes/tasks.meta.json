@@ -1107,6 +1107,61 @@
         "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
         "timestamp": 1795321934940
       }
+    ],
+    "13.1 Write the Q30 spike": [
+      {
+        "executionId": "b3ac4b92-d98b-424d-8ece-cc709a5e95df",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795321992237
+      },
+      {
+        "executionId": "b3ac4b92-d98b-424d-8ece-cc709a5e95df",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795322277973
+      }
+    ],
+    "13.2 Write the Q32 spike": [
+      {
+        "executionId": "b3ac4b92-d98b-424d-8ece-cc709a5e95df",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795321992303
+      },
+      {
+        "executionId": "b3ac4b92-d98b-424d-8ece-cc709a5e95df",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795322278072
+      }
+    ],
+    "13.3 Write the Q31 spike": [
+      {
+        "executionId": "b3ac4b92-d98b-424d-8ece-cc709a5e95df",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795321992360
+      },
+      {
+        "executionId": "b3ac4b92-d98b-424d-8ece-cc709a5e95df",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795322279489
+      }
+    ],
+    "13.4 Write the Claude driver port and its fake": [
+      {
+        "executionId": "b3ac4b92-d98b-424d-8ece-cc709a5e95df",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795321992413
+      },
+      {
+        "executionId": "b3ac4b92-d98b-424d-8ece-cc709a5e95df",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795322279780
+      }
+    ],
+    "13.8 Install the Claude Agent SDK and bind the driver port (type-level and fake only)": [
+      {
+        "executionId": "b3ac4b92-d98b-424d-8ece-cc709a5e95df",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795322298723
+      }
     ]
   }
 }

@@ -656,28 +656,28 @@ Conventions:
 - [ ] 13. Owner-run Group I and J spike scripts: Q30, Q32, Q31, Q33, Q35 (P0, authoring only)
   - DoD: P0-D4 (supports). Requirements: R15.1 to R15.10, R16.1 to R16.4, R16.8, R7.11, R8.4, R8.7. Design: "Group I", "Group J", "Claude launch options", Properties 18, 22. The tasks WRITE the scripts; RUNNING them is an owner step (HS-S2, HS-S3, HS-S6, HS-S7; see Notes). Every Group I script runs in a Scratch_Workspace inside the Spike_Root, never in one of the owner's projects (R15.1).
   - Files owned: `spike/kiro/{q30,q31,q32}/{<q>.ts,README.md,evidence/.gitkeep}`, `spike/agents/{q33,q35}/{<q>.ts,README.md,evidence/.gitkeep}`, `spike/agents/q33/harness.ts`, `spike/agents/q33/marker.ts`, `spike/lib/claude-driver.ts`, `spike/lib/claude-launch.ts`, `spike/test/support/fake-claude-sdk.ts`, `spike/package.json`, `pnpm-lock.yaml`, `spike/test/support/fake-claude-driver.ts`, `spike/test/spikes/{q30,q31,q32,q33,q35,claude-driver}.test.ts`.
-  - [ ] 13.1 Write the Q30 spike
+  - [x] 13.1 Write the Q30 spike
     - Script: new ACP session in a scratch folder, end the process, then check that `session/list` (ACP) or `--list-sessions` from the same cwd lists the session id; `PASS` when the id appears for that cwd; branch on `FAIL`: "rely only on the node's `workspaces` table"
     - Metadata: group I, cost low, run-by owner, agents kiro, max-prompts 2, max-wall-seconds 1200, estimate-credits 2-4, human HS-S2, depends q43
     - Test with `fake-kiro`: verdicts and the scratch cwd being inside the root
     - _Requirements: R15.1, R15.2_
     - Design: "Group I" (Q30)
     - DoD: P0-D4 (supports)
-  - [ ] 13.2 Write the Q32 spike
+  - [x] 13.2 Write the Q32 spike
     - Script: always `~/.kiro/agents/wraith-spike-q32.json` (new file only, flag `wx`, recorded in the marker, deleted in cleanup; HS-S6) with a prompt "answer with the word ALPHA when asked your instructions" and read-only pre-approved tools; start `acp --agent wraith-spike-q32`, ask "what are your instructions?", stop, edit the file (prompt now BRAVO), restart with `session/load`, ask again; `PASS` when the new prompt is used and the history is present; when `--agent` is not accepted (Q43 `FAIL`) select the agent after `initialize` and record the difference; branch on `FAIL`: default agent, no pre-approved tools, instructions as a first context block (R15.4, R15.5)
     - Metadata: group I, cost low, run-by owner, agents kiro, max-prompts 4, max-wall-seconds 1800, estimate-credits 4-10, human HS-S2 and HS-S6, depends q43
     - Test with `fake-kiro` and a temp home: the file is created once and deleted, an existing file of the same name is never overwritten, the edit is detected, other files in the folder are untouched
     - _Requirements: R15.4, R15.5, R15.8, R3.7_
     - Design: "Group I" (Q32)
     - DoD: P0-D4 (supports)
-  - [ ] 13.3 Write the Q31 spike
+  - [x] 13.3 Write the Q31 spike
     - Script: profile with a write allowlist for the scratch folder (field name taken from Q32 and Q43 evidence, working name until then) while the write tool is NOT pre-approved; the agent is asked to write one file inside and one outside the scratch folder (the outside path is another folder inside the Spike_Root); every permission request goes to the owner, who may veto the inside write at the tap (A5); `PASS` when the outside write is refused or asks; records whether the inside write asked; branch on `FAIL`: "Outside workspace" badge only
     - Metadata: group I, cost low, run-by owner, agents kiro, max-prompts 4, max-wall-seconds 1500, estimate-credits 4-10, human HS-S2 and HS-S3, depends q43 and q32
     - Test with `fake-kiro`: the profile never pre-approves the write tool (`assertSafeProfile`), the verdicts for refused, asked and silently allowed outside writes (the last is `FAIL` and aborts)
     - _Requirements: R15.3, R8.5, R8.7_
     - Design: "Group I" (Q31), A5, Risks (Q31 write allowlist may pre-approve)
     - DoD: P0-D4 (supports)
-  - [ ] 13.4 Write the Claude driver port and its fake
+  - [x] 13.4 Write the Claude driver port and its fake
     - `lib/claude-driver.ts`: an injected interface `ClaudeDriver` (start session with a `ClaudeLaunchView` that has passed `assertSafeClaudeLaunch`, prompt, permission callback routed through `askOwner` with deny on timeout, `supportedCommands()`, fork offer, close) so the Claude halves of Q33 and Q35 are written and tested without the real SDK; `test/support/fake-claude-driver.ts` records the launch options it receives
     - The real SDK binding is written by task 13.8 (it needs the installed type definitions); until a binding is bound, and when the STOP rule of 13.8 fires, the Claude halves end `pending` with the reason "Claude driver not available", never `FAIL`
     - `test/claude-driver.test.ts`: the options the fake saw pass `assertSafeClaudeLaunch`; an unsafe view is refused before the driver starts; the permission callback denies on timeout
@@ -699,7 +699,7 @@ Conventions:
     - _Requirements: R16.1 to R16.4, R16.8_
     - Design: "Group J" (Q35)
     - DoD: P0-D4 (supports)
-  - [ ] 13.8 Install the Claude Agent SDK and bind the driver port (type-level and fake only)
+  - [-] 13.8 Install the Claude Agent SDK and bind the driver port (type-level and fake only)
     - Owner exception to R5.8 (RD-11, 2026-11-18): `@anthropic-ai/claude-agent-sdk` has the npm license "SEE LICENSE IN README.md" (Anthropic terms, not permissive). It is allowed ONLY as an exact-pinned devDependency of `@wraith/spike`, never shipped, in no other package
     - Run `pnpm view @anthropic-ai/claude-agent-sdk version license` (read-only), then `pnpm --filter @wraith/spike add -D @anthropic-ai/claude-agent-sdk@<exact version>` (no `^` or `~`); this task owns `spike/package.json` and `pnpm-lock.yaml` in its wave
     - Read the option names from the INSTALLED type definitions (`.d.ts` under `node_modules`), not from memory. Rename `ClaudeLaunchView` and the fields of `assertSafeClaudeLaunch` (setting sources, permission mode, allowed tools, allow rules, settings) to the real names, update `lib/claude-launch.ts`, `test/support/fake-claude-sdk.ts`, `test/support/fake-claude-driver.ts` and their tests; Property 22 and the fake-SDK tests must still pass
