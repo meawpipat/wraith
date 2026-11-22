@@ -951,6 +951,97 @@
         "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
         "timestamp": 1795276405436
       }
+    ],
+    "12.1 Write the Q3 spike": [
+      {
+        "executionId": "5853e0cd-1c29-4ebc-bbb0-8f148ebb1589",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795276429186
+      },
+      {
+        "executionId": "5853e0cd-1c29-4ebc-bbb0-8f148ebb1589",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795276637623
+      }
+    ],
+    "12.2 Write the Q3b spike": [
+      {
+        "executionId": "5853e0cd-1c29-4ebc-bbb0-8f148ebb1589",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795276644458
+      },
+      {
+        "executionId": "5853e0cd-1c29-4ebc-bbb0-8f148ebb1589",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795277063618
+      }
+    ],
+    "12.3 Write the Q10 spike and the frame comparison": [
+      {
+        "executionId": "5853e0cd-1c29-4ebc-bbb0-8f148ebb1589",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795276644853
+      },
+      {
+        "executionId": "5853e0cd-1c29-4ebc-bbb0-8f148ebb1589",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795277063700
+      }
+    ],
+    "12.4 Write the Q4 spike": [
+      {
+        "executionId": "5853e0cd-1c29-4ebc-bbb0-8f148ebb1589",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795276645662
+      },
+      {
+        "executionId": "5853e0cd-1c29-4ebc-bbb0-8f148ebb1589",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795277063808
+      }
+    ],
+    "12.5 Write the Q11 spike": [
+      {
+        "executionId": "5853e0cd-1c29-4ebc-bbb0-8f148ebb1589",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795276646774
+      },
+      {
+        "executionId": "5853e0cd-1c29-4ebc-bbb0-8f148ebb1589",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795277064565
+      }
+    ],
+    "12.6 Write the Q23 spike and the replay comparison": [
+      {
+        "executionId": "5853e0cd-1c29-4ebc-bbb0-8f148ebb1589",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795276647353
+      },
+      {
+        "executionId": "5853e0cd-1c29-4ebc-bbb0-8f148ebb1589",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795277065405
+      }
+    ],
+    "12.7 Run the group verification (group 12)": [
+      {
+        "executionId": "5853e0cd-1c29-4ebc-bbb0-8f148ebb1589",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795277071272
+      },
+      {
+        "executionId": "5853e0cd-1c29-4ebc-bbb0-8f148ebb1589",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795319215209
+      }
+    ],
+    "12. Owner-run Group B spike scripts: Q3, Q3b, Q10, Q4, Q11, Q23 (P0, authoring only)": [
+      {
+        "executionId": "5853e0cd-1c29-4ebc-bbb0-8f148ebb1589",
+        "chatSessionId": "sess_8b3e38b0-d9c9-4aa6-a515-da5718b302f3",
+        "timestamp": 1795319215345
+      }
     ]
   }
 }

@@ -573,24 +573,24 @@ Conventions:
     - Design: "Group B" (Q43), "Agent profile generator"
     - DoD: P0-D4 (supports)
 
-- [ ] 12. Owner-run Group B spike scripts: Q3, Q3b, Q10, Q4, Q11, Q23 (P0, authoring only)
+- [x] 12. Owner-run Group B spike scripts: Q3, Q3b, Q10, Q4, Q11, Q23 (P0, authoring only)
   - DoD: P0-D4 (supports). Requirements: R14.1 to R14.9, R8.1 to R8.6, R7.12, R4.3. Design: "Group B", Properties 16, 17. The tasks WRITE the scripts, READMEs, metadata blocks and fake-based tests; RUNNING them is an owner step (HS-S2, HS-S3; see Notes), never a task. Every agent argv is `kiro-cli acp --agent-engine v3 --agent wraith-spike-<q>` (or without `--agent` when Q43 failed), cwd is the Scratch_Workspace, the profile pre-approves read-only tools only, every permission request goes to `askOwner`, and no script contains a path that answers a permission request without the owner's key.
   - Files owned: `spike/kiro/<q>/{<q>.ts,README.md,evidence/.gitkeep}` for each of `q3 q3b q10 q4 q11 q23`, `spike/kiro/q10/compare.ts`, `spike/kiro/q23/compare.ts`, `spike/test/spikes/{q3,q3b,q10,q4,q11,q23}.test.ts`.
-  - [ ] 12.1 Write the Q3 spike
+  - [x] 12.1 Write the Q3 spike
     - Script: profile that does not pre-approve the shell tool, prompt "run `echo hi`", `onPermission` to `askOwner`; evidence `frames.jsonl` (copied by `publishNamedCopy("q3", ...)` to `spike/kiro/q3.jsonl` on `PASS` or `PARTIAL`) and `session.json` (session id and cwd, kept for Q23 in the same batch through `ctx.shared`); `PASS` when `session/request_permission` arrives with `options[]` and the owner's selection makes the tool run; an approval timeout gives `PARTIAL` "approval tap missing"
     - Metadata: group B, cost low, run-by owner, agents kiro, max-prompts 4, max-wall-seconds 1800, estimate-credits 2-6, human HS-S2 and HS-S3, depends q43, shares none, allow-always never, assumption A1 Estimate
     - Test with `fake-kiro` and a stubbed owner: `PASS` on a selected `allow_once`, `PARTIAL` on timeout, `FAIL` when no `request_permission` arrives; `session.json` written
     - _Requirements: R14.1, R14.9, R8.2, R8.3_
     - Design: "Group B" (Q3)
     - DoD: P0-D4 (supports)
-  - [ ] 12.2 Write the Q3b spike
+  - [x] 12.2 Write the Q3b spike
     - Script: profile with a `preToolUse` hook running `node --experimental-strip-types <abs>/spike/kiro/q3b/hook-client.ts <root>` against the receiver (no token in the profile), prompt as Q3; `PASS` when the hook fires before the tool, exit code 2 blocks the tool, and the hook timeout is measured by a probe in which the receiver holds one request unanswered and logs when the agent closes the connection or kills the hook (cap 130 s, then answers block); records the measured value; sets `stop = true` in the index when Q3 and Q3b both end `FAIL` (exit code stays 0); Q3 `FAIL` with Q3b `PASS` selects "approval via `preToolUse` + one-shot grant"; Q3 `PASS` still records Q3b (R14.2, R14.9, OQ-8)
     - Metadata: group B, cost low, run-by owner, agents kiro, max-prompts 4, max-wall-seconds 1800, estimate-credits 2-6, human HS-S2 and HS-S3, depends q43 and q3
     - Test with `fake-kiro` set to call the hook command and a fake clock: block on exit 2, the measured timeout recorded, receiver blocks on timeout, an allow only after a stubbed owner tap
     - _Requirements: R14.2, R14.9, R8.6, R7.12, R11.2_
     - Design: "Group B" (Q3b), D11
     - DoD: P0-D4 (supports)
-  - [ ] 12.3 Write the Q10 spike and the frame comparison
+  - [x] 12.3 Write the Q10 spike and the frame comparison
     - `q10/compare.ts`: pure `compareFrames(raw, sdk)` (same method sequence, no SDK schema rejection thrown); script: the same scenario (initialize, new session, one prompt asking for a read-only tool, update stream, one permission) with `startRawAcp` and with `startSdkAcp`; `PASS` when everything works through the SDK; branch on `FAIL`: `packages/acp-lite` (+1 to 2 days); also confirms the ACP field names used by Q11 (`mcpServers` http entry, `session/list`) against the SDK types and records them (design Risks)
     - If task 8.1 stopped (SDK not added), the script ends `pending` with that reason
     - Metadata: group B, cost low, run-by owner, agents kiro, max-prompts 6, max-wall-seconds 2400, estimate-credits 4-10, human HS-S2 and HS-S3, depends q3
@@ -598,28 +598,28 @@ Conventions:
     - _Requirements: R14.3, R5.8_
     - Design: "Group B" (Q10)
     - DoD: P0-D4 (supports)
-  - [ ] 12.4 Write the Q4 spike
+  - [x] 12.4 Write the Q4 spike
     - Script: `clientCapabilities.terminal:true`; prompt for a long command (`sleep 20; echo done` through the shell tool, with the owner's tap); the client's `terminal/create` and `terminal/output` handlers run nothing, only log the calls and answer with an error result, so no command runs outside the agent's own approval; `PASS` when `terminal/create` and `terminal/output` arrive; branch on `FAIL`: "show output in the ToolCard"
     - Metadata: group B, cost low, run-by owner, agents kiro, max-prompts 3, max-wall-seconds 1200, estimate-credits 2-6, human HS-S2 and HS-S3, depends q43 and q3
     - Test with `fake-kiro` (declares terminal calls only when the client asked): the handlers run no process, the verdicts
     - _Requirements: R14.5_
     - Design: "Group B" (Q4)
     - DoD: P0-D4 (supports)
-  - [ ] 12.5 Write the Q11 spike
+  - [x] 12.5 Write the Q11 spike
     - Script: reads `mcpCapabilities` from the `initialize` response, starts `mcp-echo` with a token, passes `mcpServers:[{type:"http", name, url, headers:[{name, value}]}]` in `session/new` (field names confirmed by Q10), asks the agent to call the `echo` tool; `PASS` when `mcp-echo.calls()` shows a call from the agent; branch on `FAIL`: stdio shim `wraith-mcp-stdio`; the entry notes must say whether a `FAIL` may be the echo server's fault (design Risks, MCP http handshake)
     - Metadata: group B, cost low, run-by owner, agents kiro, max-prompts 3, max-wall-seconds 1800, estimate-credits 2-6, human HS-S2 and HS-S3, depends q43 and q3
     - Test with `fake-kiro` calling the echo server: `PASS` with a call, `FAIL` without; the token header is required
     - _Requirements: R14.4, R7.12_
     - Design: "Group B" (Q11)
     - DoD: P0-D4 (supports)
-  - [ ] 12.6 Write the Q23 spike and the replay comparison
+  - [x] 12.6 Write the Q23 spike and the replay comparison
     - `q23/compare.ts`: pure `compareReplays(a, b)` over the ids of `agent_message_chunk` and `tool_call`; script (`shares: q3`): inside the same invocation as Q3, `loadSession` twice on the Q3 session (same cwd, no prompt) and compare; `PASS` when the ids are equal; branch on `FAIL`: dedupe with `hash(turnIndex, text)`; run alone (without Q3 in the batch) it ends `pending` with the reason "needs q3 session in the same run" (D6)
     - Metadata: group B, cost low, run-by owner, agents kiro, max-prompts 0, max-wall-seconds 1200, estimate-credits 0-2, human HS-S2, depends q3, shares q3
     - Test with `fake-kiro` replaying equal and changed ids: verdicts, and the standalone `pending`
     - _Requirements: R14.7, R12.5_
     - Design: "Group B" (Q23), D6
     - DoD: P0-D4 (supports)
-  - [ ] 12.7 Run the group verification (group 12)
+  - [x] 12.7 Run the group verification (group 12)
     - Run `pnpm -r test`, `pnpm -r build`, `pnpm typecheck`, `pnpm -r --if-present check`, `pnpm lint`, `pnpm check:secrets`, `pnpm check:si` and `pnpm check:spikes`; all clean; no real `kiro-cli` was started
     - List the files this group changed for the commit
     - _Requirements: R14.8_
